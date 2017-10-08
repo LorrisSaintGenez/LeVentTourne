@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Le Vent Tourne</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -70,6 +70,18 @@
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
+                        @if (Auth::user()->role == 0)
+                            <a href="{{ url('/backoffice') }}">Backoffice</a>
+                        @endif
+                        <a href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
@@ -79,7 +91,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Le Vent Tourne
                 </div>
 
                 <div class="links">
