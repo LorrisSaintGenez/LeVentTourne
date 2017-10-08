@@ -11,6 +11,8 @@
 |
 */
 
+use App\Quiz;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -28,10 +30,17 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
     Route::prefix('quiz')->group(function() {
 
         Route::get('/', function () {
+            $quizzes = Quiz::all();
+            return view('admin/allQuizzes', ['quizzes' => $quizzes]);
+        })->name('getAllQuizzes');
+
+        Route::get('create', function () {
             return view('admin/quiz');
         });
 
         Route::post('create', 'QuizController@create')->name('create');
+
+        Route::get('edit/{id}', 'QuizController@edit')->name('edit');
 
     });
 

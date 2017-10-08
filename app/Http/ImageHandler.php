@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class ImageHandler
 {
-    private function resizeImage($fileToResize)
+    public function resizeImage($fileToResize)
     {
         list($orig_width, $orig_height) = getimagesize($fileToResize);
 
