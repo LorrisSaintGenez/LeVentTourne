@@ -15,9 +15,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/backoffice', ['middleware' => 'admin', function() {
-    return view('admin/backoffice');
-}]);
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
+
+    Route::get('/', function () {
+        return view('admin/backoffice');
+    })->name('backoffice');
+
+    Route::prefix('quiz')->group(function() {
+
+        Route::get('/', function () {
+            return view('admin/quiz');
+        });
+
+        Route::post('create', 'QuizController@create')->name('create');
+
+    });
+
+});
