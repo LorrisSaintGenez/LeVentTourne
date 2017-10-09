@@ -63,18 +63,6 @@
                 margin-bottom: 30px;
             }
 
-            .conteneur {
-                position: relative;
-            }
-
-            .conteneur iframe {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-
         </style>
     </head>
     <body>

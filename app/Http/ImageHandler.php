@@ -18,7 +18,7 @@ class ImageHandler
         $width = $orig_width;
         $height = $orig_height;
 
-        $dst_image = imagecreatetruecolor(420, 420);
+        $dst_image = imagecreatetruecolor(600, 300);
         $type = mime_content_type($fileToResize);
         $src_image = null;
         switch (substr($type, 6)) {
@@ -35,7 +35,7 @@ class ImageHandler
                 $src_image = imagecreatefromwbmp($fileToResize);
                 break;
         }
-        imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, 420, 420, $width, $height);
+        imagecopyresampled($dst_image, $src_image, 0, 0, 0, 0, 600, 300, $width, $height);
 
         imagejpeg($dst_image, $fileToResize, 100);
     }

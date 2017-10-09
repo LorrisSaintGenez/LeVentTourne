@@ -4,6 +4,16 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            @if (session('successQuiz'))
+                <div class="alert alert-success">
+                    {{ session('successQuiz') }}
+                </div>
+            @endif
+            @if (session('successEdit'))
+                <div class="alert alert-success">
+                    {{ session('successEdit') }}
+                </div>
+            @endif
             <div class="panel panel-default">
                 <div class="panel-heading">Quiz</div>
 
@@ -14,7 +24,7 @@
                     @foreach ($quizzes_water as $quiz)
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-3 text-center">
+                            <div class="col-md-2 text-center">
                                 <h3>
                                     {{ $quiz->title }}
                                 </h3>
@@ -34,9 +44,14 @@
                                     <?php if ($quiz->video) echo "Vidéo" ?>
                                 </h3>
                             </div>
-                            <div class="col-md-3 text-center" style="margin-top: 10px">
-                                <a href="{{ route('edit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                     Editer
+                                </a>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                    Visualiser
                                 </a>
                             </div>
                         </div>
@@ -49,7 +64,7 @@
                     @foreach ($quizzes_nature as $quiz)
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-3 text-center">
+                            <div class="col-md-2 text-center">
                                 <h3>
                                     {{ $quiz->title }}
                                 </h3>
@@ -69,9 +84,14 @@
                                     <?php if ($quiz->video) echo "Vidéo" ?>
                                 </h3>
                             </div>
-                            <div class="col-md-3 text-center" style="margin-top: 10px">
-                                <a href="{{ route('edit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                     Editer
+                                </a>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                    Visualiser
                                 </a>
                             </div>
                         </div>
@@ -84,7 +104,7 @@
                     @foreach ($quizzes_food as $quiz)
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-3 text-center">
+                            <div class="col-md-2 text-center">
                                 <h3>
                                     {{ $quiz->title }}
                                 </h3>
@@ -105,8 +125,13 @@
                                 </h3>
                             </div>
                             <div class="col-md-3 text-center" style="margin-top: 10px">
-                                <a href="{{ route('edit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                     Editer
+                                </a>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                    Visualiser
                                 </a>
                             </div>
                         </div>
@@ -119,7 +144,7 @@
                     @foreach ($quizzes_waste as $quiz)
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="col-md-3 text-center">
+                            <div class="col-md-2 text-center">
                                 <h3>
                                     {{ $quiz->title }}
                                 </h3>
@@ -140,8 +165,13 @@
                                 </h3>
                             </div>
                             <div class="col-md-3 text-center" style="margin-top: 10px">
-                                <a href="{{ route('edit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                     Editer
+                                </a>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                    Visualiser
                                 </a>
                             </div>
                         </div>

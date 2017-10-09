@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Création de quiz</div>
 
@@ -198,7 +198,7 @@
                         </div>
 
                         <div class="col-md-12">
-                            <span>Les champs avec une étoile sont obligatoires.</span>
+                            <span><span style="color: red">*</span> Les champs avec une étoile sont obligatoires.</span>
                         </div>
                     </form>
                 </div>

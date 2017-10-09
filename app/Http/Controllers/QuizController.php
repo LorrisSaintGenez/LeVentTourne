@@ -61,7 +61,7 @@ class QuizController extends Controller
             'video' => $videoPath,
         ])->push();
 
-        return redirect()->route('admin/quiz');
+        return redirect('backoffice/quiz')->with('successQuiz', 'Quiz crée avec succès !');
     }
 
     function YoutubeID($url)
@@ -142,7 +142,33 @@ class QuizController extends Controller
             'video' => $videoPath,
         ]);
 
-        return redirect()->to('backoffice/quiz/');
+        return redirect('backoffice/quiz')->with('successEdit', 'Quiz modifié avec succès !');
+    }
+
+    public function visualize($id) {
+        $quiz = Quiz::find($id);
+
+        switch ($quiz->theme) {
+            case "water":
+                $quiz->theme = "Eau";
+                break;
+            case "food":
+                $quiz->theme = "Nutrition";
+                break;
+            case "nature":
+                $quiz->theme = "Nature";
+                break;
+            case "waste":
+                $quiz->theme = "Tri des déchets";
+                break;
+        }
+
+        if ($quiz->sound != null)
+            $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
+        if ($quiz->picture != null)
+            $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
+
+        return view('admin/visualizeQuiz', ['quiz' => $quiz]);
     }
 
 }

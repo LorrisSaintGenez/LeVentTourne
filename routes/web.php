@@ -37,8 +37,10 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
         Route::post('create', 'QuizController@create')->name('create');
 
-        Route::get('edit/{id}', 'QuizController@edit')->name('edit');
+        Route::get('edit/{id}', 'QuizController@edit')->name('editQuiz');
         Route::post('update', 'QuizController@update')->name('update');
+
+        Route::get('visualize/{id}', 'QuizController@visualize')->name('visualizeQuiz');
 
     });
 
