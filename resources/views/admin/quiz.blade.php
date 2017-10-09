@@ -25,6 +25,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('theme') ? ' has-error' : '' }}">
+                            <label for="theme" class="col-md-4 control-label">Theme <span style="color: red">*</span></label>
+
+                            <div class="col-md-6">
+                                <select id="theme" name="theme" required autofocus>
+                                    <option value="water">Eau</option>
+                                    <option value="nature">Nature</option>
+                                    <option value="food">Nutrition</option>
+                                    <option value="waste">Tri des déchets</option>
+                                </select>
+
+                                @if ($errors->has('theme'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('theme') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('question') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Question <span style="color: red">*</span></label>
 

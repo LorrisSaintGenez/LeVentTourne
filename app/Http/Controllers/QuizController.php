@@ -36,14 +36,19 @@ class QuizController extends Controller
 
         $locationPicture = null;
         $locationSound = null;
+        $videoPath = null;
 
         if (Input::file('picture') != null)
             $locationPicture = $this->uploadOnDisk('picture', 'images', true);
         if (Input::file('sound') != null)
             $locationSound = $this->uploadOnDisk('sound', 'sounds', false);
 
+        if ($request->input('video') != "")
+            $videoPath = $this->YoutubeID($request->input('video'));
+
         Quiz::create([
             'title' => $request->input('title'),
+            'theme' => $request->input('theme'),
             'question' => $request->input('question'),
             'answer_1' => $request->input('answer_1'),
             'answer_2' => $request->input('answer_2'),
@@ -53,7 +58,7 @@ class QuizController extends Controller
             'point' => $request->input('point'),
             'picture' => $locationPicture,
             'sound' => $locationSound,
-            'video' => $this->YoutubeID($request->input('video')),
+            'video' => $videoPath,
         ])->push();
 
         return redirect()->route('backoffice');
@@ -78,6 +83,8 @@ class QuizController extends Controller
         $quiz = Quiz::find($id);
         if ($quiz->sound != null)
             $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
+        if ($quiz->picture != null)
+            $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
         return view('admin/editQuiz', ['quiz' => $quiz]);
     }
@@ -86,4 +93,51 @@ class QuizController extends Controller
         $quizzes = Quiz::all();
         return view('admin/allQuizzes', ['quizzes' => $quizzes]);
     }
+
+    public function update(Request $request) {
+
+        $quiz = Quiz::find($request->input('id'));
+
+        $locationPicture = $quiz->picture;
+        $locationSound = $quiz->sound;
+        $videoPath = $quiz->video;
+
+        if (Input::file('picture') != null) {
+            $item = $_FILES['picture'];
+            $imageHandler = new ImageHandler();
+            if ($quiz->picture != null)
+                $locationPicture = $imageHandler->updateImageOnDisk($item, $quiz->picture);
+            else
+                $locationPicture = $imageHandler->uploadImageOnDisk($item);
+        }
+
+        if (Input::file('sound') != null) {
+            $item = Input::file('sound');
+            $locationSound = $item->getClientOriginalName();
+            if ($quiz->sound != null)
+                Storage::disk('images')->delete($quiz->sound);
+            Storage::disk('sounds')->put($locationSound, file_get_contents($item->getRealPath()));
+        }
+
+        if ($request->input('video') != "")
+            $videoPath = $this->YoutubeID($request->input('video'));
+
+        $quiz->update([
+            'title' => $request->input('title'),
+            'theme' => $request->input('theme'),
+            'question' => $request->input('question'),
+            'answer_1' => $request->input('answer_1'),
+            'answer_2' => $request->input('answer_2'),
+            'answer_3' => $request->input('answer_3'),
+            'answer_4' => $request->input('answer_4'),
+            'solution' => (int) $request->input('solution'),
+            'point' => $request->input('point'),
+            'picture' => $locationPicture,
+            'sound' => $locationSound,
+            'video' => $videoPath,
+        ]);
+
+        return redirect()->to('backoffice/quiz/');
+    }
+
 }

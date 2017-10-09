@@ -16,6 +16,6 @@ class Quiz extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'title', 'question', 'answer_1', 'answer_2', 'answer_3', 'answer_4', 'solution', 'point', 'picture', 'sound', 'video'
+        'title', 'theme', 'question', 'answer_1', 'answer_2', 'answer_3', 'answer_4', 'solution', 'point', 'picture', 'sound', 'video'
     ];
 }

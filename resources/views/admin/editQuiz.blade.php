@@ -15,8 +15,12 @@
                 <div class="panel-heading">Edition du quiz <b>{{ $quiz->title }}</b></div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('create') }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('update') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
+
+                        <div class="hidden">
+                            <input type="hidden" id="id" name="id" value="{{ $quiz->id }}">
+                        </div>
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Titre <span style="color: red">*</span></label>
@@ -27,6 +31,41 @@
                                 @if ($errors->has('title'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('title') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('theme') ? ' has-error' : '' }}">
+                            <label for="theme" class="col-md-4 control-label">Thème <span style="color: red">*</span></label>
+
+                            <div class="col-md-6">
+                                <select id="theme" name="theme" required autofocus>
+                                    @if ($quiz->theme == "water")
+                                    <option selected value="water">Eau</option>
+                                    @else
+                                    <option value="water">Eau1</option>
+                                    @endif
+                                    @if ($quiz->theme == "nature")
+                                    <option selected value="nature">Nature</option>
+                                    @else
+                                    <option value="nature">Nature</option>
+                                    @endif
+                                    @if ($quiz->theme == "food")
+                                    <option selected value="food">Food</option>
+                                    @else
+                                    <option value="food">Food</option>
+                                    @endif
+                                    @if ($quiz->theme == "waste")
+                                    <option selected value="waste">Waste</option>
+                                    @else
+                                    <option value="waste">Waste</option>
+                                    @endif
+                                </select>
+
+                                @if ($errors->has('theme'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('theme') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -113,19 +152,19 @@
                                         <option value="1">Réponse 1</option>
                                     @endif
                                     @if ($quiz->solution == "2")
-                                    <option selected value="2">Réponse 2</option>
+                                        <option selected value="2">Réponse 2</option>
                                     @else
-                                    <option value="2">Réponse 2</option>
+                                        <option value="2">Réponse 2</option>
                                     @endif
                                     @if ($quiz->solution == "3")
-                                    <option selected value="3">Réponse 3</option>
+                                        <option selected value="3">Réponse 3</option>
                                     @else
-                                    <option value="3">Réponse 3</option>
+                                        <option value="3">Réponse 3</option>
                                     @endif
                                     @if ($quiz->solution == "4")
-                                    <option selected value="4">Réponse 4</option>
+                                        <option selected value="4">Réponse 4</option>
                                     @else
-                                    <option value="4">Réponse 4</option>
+                                        <option value="4">Réponse 4</option>
                                     @endif
                                 </select>
 
@@ -156,7 +195,7 @@
 
                             <div class="col-md-6">
                                 @if ($quiz->picture != null)
-                                    <img src="data:image/jpeg;base64,{{ base64_encode(Storage::disk('images')->get($quiz->picture)) }}"/>
+                                    <img src="data:image/jpeg;base64,{{ $quiz->picture }}"/>
                                 @endif
 
                                 <input type="file" id="picture" class="form-control" name="picture" autofocus>
