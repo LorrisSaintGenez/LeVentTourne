@@ -44,7 +44,7 @@
                                     @if ($quiz->theme == "water")
                                     <option selected value="water">Eau</option>
                                     @else
-                                    <option value="water">Eau1</option>
+                                    <option value="water">Eau</option>
                                     @endif
                                     @if ($quiz->theme == "nature")
                                     <option selected value="nature">Nature</option>

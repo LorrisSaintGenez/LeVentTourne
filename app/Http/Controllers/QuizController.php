@@ -61,7 +61,7 @@ class QuizController extends Controller
             'video' => $videoPath,
         ])->push();
 
-        return redirect()->route('backoffice');
+        return redirect()->route('admin/quiz');
     }
 
     function YoutubeID($url)
@@ -90,8 +90,13 @@ class QuizController extends Controller
     }
 
     public function getAllQuizzes() {
-        $quizzes = Quiz::all();
-        return view('admin/allQuizzes', ['quizzes' => $quizzes]);
+
+        $quizzes_water = Quiz::where('theme', 'water')->get();
+        $quizzes_nature = Quiz::where('theme', 'nature')->get();
+        $quizzes_food = Quiz::where('theme', 'food')->get();
+        $quizzes_waste = Quiz::where('theme', 'waste')->get();
+
+        return view('admin/allQuizzes', ['quizzes_water' => $quizzes_water, 'quizzes_nature' => $quizzes_nature, 'quizzes_food' => $quizzes_food, 'quizzes_waste' => $quizzes_waste]);
     }
 
     public function update(Request $request) {

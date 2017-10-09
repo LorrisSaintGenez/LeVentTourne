@@ -29,10 +29,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
     Route::prefix('quiz')->group(function() {
 
-        Route::get('/', function () {
-            $quizzes = Quiz::all();
-            return view('admin/allQuizzes', ['quizzes' => $quizzes]);
-        })->name('getAllQuizzes');
+        Route::get('/', 'QuizController@getAllQuizzes')->name('getAllQuizzes');
 
         Route::get('create', function () {
             return view('admin/quiz');
