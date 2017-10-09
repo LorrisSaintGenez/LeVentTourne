@@ -44,4 +44,8 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
     });
 
+    Route::prefix('users')->group(function () {
+        Route::get('/', 'UserController@index')->name('userIndex');
+    });
+
 });

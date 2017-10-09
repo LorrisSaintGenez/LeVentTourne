@@ -15,6 +15,7 @@ class QuizController extends Controller
     {
         return Validator::make($data, [
             'sound' => 'mimes:mp3',
+            'title' => 'unique'
         ]);
     }
 

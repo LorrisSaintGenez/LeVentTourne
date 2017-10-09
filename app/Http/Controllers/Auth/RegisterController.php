@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Student;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -62,10 +63,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $role = 0;
+
+        if (isset($data['isTeacher']) && $data['isTeacher'] == "on") {
+            $role = 1;
+        }
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'role' => $role
         ]);
+
+        if ($role == 0) {
+            $student = Student::create([
+                'student_id' => $user->id,
+                'teacher_id' => null
+            ]);
+
+            $student->push();
+        }
+
+        return $user;
     }
 }

@@ -17,7 +17,7 @@ class CreateQuizzesTable extends Migration
             $table->increments('id');
             $table->string('title')->unique();
             $table->string('theme');
-            $table->string('question');
+            $table->string('question', 2000);
             $table->string('answer_1');
             $table->string('answer_2');
             $table->string('answer_3')->nullable();
