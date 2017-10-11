@@ -3,21 +3,25 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="max-height: 100vh;">
             <div class="panel panel-default">
                 <div class="panel-heading">Utilisateurs</div>
                 <div class="panel-body">
-                    @foreach ($users as $user)
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <h3>
-                                {{ $user->name }}
-                            </h3>
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <a href="{{ route('studentsIndex') }}" type="submit">
+                                <h4>Voir les élèves</h4>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{{ route('teachersIndex') }}" type="submit">
+                                <h4>Voir les professeurs</h4>
+                            </a>
                         </div>
                     </div>
-                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection

@@ -46,6 +46,16 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
     Route::prefix('users')->group(function () {
         Route::get('/', 'UserController@index')->name('userIndex');
+
+        Route::prefix('students')->group(function () {
+            Route::get('/', 'StudentController@index')->name('studentsIndex');
+            Route::get('visualize/{id}', 'StudentController@visualize')->name('visualizeStudent');
+        });
+
+        Route::prefix('teachers')->group(function () {
+            Route::get('/', 'TeacherController@index')->name('teachersIndex');
+            Route::get('students/{id}', 'TeacherController@studentByTeacher')->name('studentByTeacher');
+        });
     });
 
 });

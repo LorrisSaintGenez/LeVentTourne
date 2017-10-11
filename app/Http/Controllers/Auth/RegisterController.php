@@ -63,7 +63,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $role = 0;
+        $role = 2;
 
         if (isset($data['isTeacher']) && $data['isTeacher'] == "on") {
             $role = 1;
@@ -76,7 +76,7 @@ class RegisterController extends Controller
             'role' => $role
         ]);
 
-        if ($role == 0) {
+        if ($role == 2) {
             $student = Student::create([
                 'student_id' => $user->id,
                 'teacher_id' => null
