@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-3">
                             <a href="{{ route('visualizeStudent', $user->id) }}" type="submit">
-                                <h4>Editer</h4>
+                                <h4>Fiche élève</h4>
                             </a>
                         </div>
                     </div>

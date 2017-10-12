@@ -12,7 +12,7 @@
             </div>
 
             <div class="panel panel-default">
-                <div class="panel-heading">Liste des élèves de {{ $teacher->name }}</div>
+                <div class="panel-heading">Liste des élèves de <b>{{ $teacher->name }}</b></div>
                 <div class="panel-body">
                     @foreach ($students as $student)
                     <div class="row text-center">
@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-4">
                             <a href="{{ route('visualizeStudent', $student->id) }}" type="submit">
-                                <h4>Editer</h4>
+                                <h4>Fiche élève</h4>
                             </a>
                         </div>
                     </div>
