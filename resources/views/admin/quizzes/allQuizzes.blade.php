@@ -19,16 +19,6 @@
 
                 <div class="panel-body">
 
-                    <div class="row">
-                        <div class="col-md-2">
-                            <form method="GET" action="{{ route('create') }}">
-                                <button type="submit" class="btn btn-primary">
-                                    Créer un quiz
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
                     @if (count($quizzes_water) > 0)
                     <div class="title"><h2>Quiz sur l'eau</h2></div>
 
@@ -196,6 +186,17 @@
                     <hr/>
                     @endforeach
                     @endif
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="GET" action="{{ route('create') }}">
+                        <button type="submit" class="btn btn-primary">
+                            Créer un quiz
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

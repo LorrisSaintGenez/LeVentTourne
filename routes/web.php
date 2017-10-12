@@ -32,7 +32,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
         Route::get('/', 'QuizController@getAllQuizzes')->name('getAllQuizzes');
 
         Route::get('create', function () {
-            return view('admin/quiz');
+            return view('admin/quizzes/quiz');
         });
 
         Route::post('create', 'QuizController@create')->name('create');
@@ -56,6 +56,18 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
             Route::get('/', 'TeacherController@index')->name('teachersIndex');
             Route::get('students/{id}', 'TeacherController@studentByTeacher')->name('studentByTeacher');
         });
+    });
+
+    Route::prefix('pages')->group(function () {
+        Route::get('/', 'GhostPageController@index')->name('ghostPageIndex');
+
+        Route::get('visualize/{id}', 'GhostPageController@visualize')->name('ghostPagevisualize');
+
+        Route::get('create', 'GhostPageController@creation')->name('ghostPageCreation');
+        Route::post('create', 'GhostPageController@create')->name('ghostPageCreate');
+
+        Route::get('edit/{id}', 'GhostPageController@edition')->name('ghostPageEdition');
+        Route::post('update', 'GhostPageController@update')->name('ghostPageEdit');
     });
 
 });

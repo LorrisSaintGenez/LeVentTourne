@@ -57,6 +57,7 @@
                                             <a href="{{ url('/backoffice') }}">Backoffice</a>
                                             <a href="{{ url('/backoffice/quiz') }}">Quiz</a>
                                             <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
+                                            <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
                                         @endif
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

@@ -87,7 +87,7 @@ class QuizController extends Controller
         if ($quiz->picture != null)
             $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
-        return view('admin/editQuiz', ['quiz' => $quiz]);
+        return view('admin/quizzes/editQuiz', ['quiz' => $quiz]);
     }
 
     public function getAllQuizzes() {
@@ -97,7 +97,7 @@ class QuizController extends Controller
         $quizzes_food = Quiz::where('theme', 'food')->get();
         $quizzes_waste = Quiz::where('theme', 'waste')->get();
 
-        return view('admin/allQuizzes', ['quizzes_water' => $quizzes_water, 'quizzes_nature' => $quizzes_nature, 'quizzes_food' => $quizzes_food, 'quizzes_waste' => $quizzes_waste]);
+        return view('admin/quizzes/allQuizzes', ['quizzes_water' => $quizzes_water, 'quizzes_nature' => $quizzes_nature, 'quizzes_food' => $quizzes_food, 'quizzes_waste' => $quizzes_waste]);
     }
 
     public function update(Request $request) {
@@ -169,7 +169,7 @@ class QuizController extends Controller
         if ($quiz->picture != null)
             $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
-        return view('admin/visualizeQuiz', ['quiz' => $quiz]);
+        return view('admin/quizzes/visualizeQuiz', ['quiz' => $quiz]);
     }
 
 }
