@@ -36,12 +36,12 @@
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                Nombre de quiz réussis : <b>{{ $quizzes_done->count() }}</b> / <b>{{ $quizzes }}</b>
+                                Nombre de quiz réussis : <b>{{ $quizzes_done->count() }}</b> / <b>{{ $quizzes->count() }}</b>
                             </h4>
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                Nombre de points : <b>{{ $quiz_points }}</b>
+                                Nombre de points : <b>{{ $quiz_points }} / <b>{{ $total_points }}</b></b>
                             </h4>
                         </div>
 

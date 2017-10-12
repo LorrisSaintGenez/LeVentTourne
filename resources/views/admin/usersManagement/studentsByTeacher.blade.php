@@ -7,7 +7,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <a href="{{ url('/backoffice/users') }}">Retour</a>
+                    <a href="{{ url('/backoffice/users/teachers') }}">Retour</a>
                 </div>
             </div>
 

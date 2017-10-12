@@ -28,7 +28,13 @@ class StudentController extends Controller
         $student = User::find($id);
         $student->teacher = User::find(Student::where("student_id", $id)->pluck('teacher_id'))->first();
 
-        $quizzes = Quiz::all()->count();
+        $quizzes = Quiz::all();
+
+        $total_points = 0;
+
+        foreach ($quizzes as $quiz) {
+            $total_points += $quiz->point;
+        }
 
         $quizzes_done = QuizStudent::where([['student_id', $id], ['isSuccess', 1]])->get();
 
@@ -36,10 +42,9 @@ class StudentController extends Controller
 
         foreach ($quizzes_done as $quiz_done) {
             $quiz_points += (int) Quiz::find($quiz_done->quiz_id)->pluck('point')->first();
-
         }
 
         return view('admin/usersManagement/studentDetails',
-            ['student' => $student, 'quizzes' => $quizzes, 'quizzes_done' => $quizzes_done, 'quiz_points' => $quiz_points]);
+            ['student' => $student, 'quizzes' => $quizzes, 'quizzes_done' => $quizzes_done, 'quiz_points' => $quiz_points, 'total_points' => $total_points]);
     }
 }

@@ -4,6 +4,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="{{ url('/backoffice/quiz') }}">Retour aux quiz</a>
+                </div>
+            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Création de quiz</div>
 
