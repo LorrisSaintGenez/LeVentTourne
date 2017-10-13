@@ -14,6 +14,11 @@
                     {{ session('successEdit') }}
                 </div>
             @endif
+            @if (session('successDelete'))
+                <div class="alert alert-success">
+                    {{ session('successDelete') }}
+                </div>
+            @endif
             <div class="row">
                 <div class="col-md-6">
                     <a href="{{ url('/backoffice') }}">Retour</a>

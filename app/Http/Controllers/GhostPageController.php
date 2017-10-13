@@ -58,4 +58,14 @@ class GhostPageController extends Controller
 
         return view('admin/ghostPages/visualizeGhostPage', ['page' => $page]);
     }
+
+
+
+    public function delete($id) {
+        $title = GhostPage::find($id)->pluck('title')->first();
+
+        GhostPage::destroy($id);
+
+        return redirect('backoffice/pages')->with('successDelete', 'Page '.$title.' supprimée avec succès');
+    }
 }

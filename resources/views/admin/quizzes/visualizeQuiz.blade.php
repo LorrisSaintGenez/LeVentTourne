@@ -42,7 +42,7 @@
 
                     <div class="col-md-12 text-center">
                         <div class="panel panel-info">
-                            <h4>{{ $quiz->question }}</h4>
+                            <h4 style="white-space: pre-wrap;">{{ $quiz->question }}</h4>
                         </div>
                     </div>
 
@@ -73,10 +73,19 @@
                     @endif
 
                     <div class="form-group">
-                        <div class="col-md-12">
-                            <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                        <div class="col-md-2">
+                            <a href="{{ route('ghostPageEdition', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                 Editer
                             </a>
+                        </div>
+                        <div class="col-md-2">
+                            <form method="POST" action="{{ route('deleteQuiz', $quiz->id) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="_method" value="DELETE" />
+                                <button type="submit" class="btn btn-lg btn-danger">
+                                    Supprimer
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -32,13 +32,15 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
         Route::get('/', 'QuizController@getAllQuizzes')->name('getAllQuizzes');
 
         Route::get('create', function () {
-            return view('admin/quizzes/quiz');
+            return view('admin/quizzes/createQuiz');
         });
 
         Route::post('create', 'QuizController@create')->name('create');
 
         Route::get('edit/{id}', 'QuizController@edit')->name('editQuiz');
         Route::post('update', 'QuizController@update')->name('update');
+
+        Route::delete('delete/{id}', 'QuizController@delete')->name('deleteQuiz');
 
         Route::get('visualize/{id}', 'QuizController@visualize')->name('visualizeQuiz');
 
@@ -68,6 +70,8 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
         Route::get('edit/{id}', 'GhostPageController@edition')->name('ghostPageEdition');
         Route::post('update', 'GhostPageController@update')->name('ghostPageEdit');
+
+        Route::delete('delete/{id}', 'GhostPageController@delete')->name('ghostPageDelete');
     });
 
 });

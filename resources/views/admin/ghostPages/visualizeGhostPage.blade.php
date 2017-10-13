@@ -17,7 +17,23 @@
                     </div>
 
                     <div class="col-md-12 text-center">
-                        <h4>{{ $page->description }}</h4>
+                        <h4 style="white-space: pre-wrap;">{{ $page->description }}</h4>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            <a href="{{ route('ghostPageEdition', $page->id) }}" type="submit" class="btn btn-lg btn-info">
+                                Editer
+                            </a>
+                        </div>
+                        <div class="col-md-2">
+                            <form method="POST" action="{{ route('ghostPageDelete', $page->id) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="_method" value="DELETE" />
+                                <button type="submit" class="btn btn-lg btn-danger">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

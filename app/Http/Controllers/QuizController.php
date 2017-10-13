@@ -172,4 +172,13 @@ class QuizController extends Controller
         return view('admin/quizzes/visualizeQuiz', ['quiz' => $quiz]);
     }
 
+    public function delete($id) {
+
+        $title = Quiz::find($id)->pluck('title')->first();
+
+        Quiz::destroy($id);
+
+        return redirect('backoffice/quiz')->with('successDelete', 'Quiz '.$title.' supprimé avec succès');
+    }
+
 }
