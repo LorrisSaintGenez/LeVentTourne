@@ -74,6 +74,9 @@
                         @if (Auth::user()->role == 0)
                             <a href="{{ url('/backoffice') }}">Backoffice</a>
                         @endif
+                        @if (Auth::user()->role == 2)
+                            <a href="{{ url('/student') }}">Mon Compte</a>
+                        @endif
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">

@@ -59,6 +59,9 @@
                                             <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
                                             <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
                                         @endif
+                                        @if (Auth::user()->role == 2)
+                                            <a href="{{ url('/student') }}">Mon Compte</a>
+                                        @endif
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -75,3 +75,9 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
     });
 
 });
+
+Route::group(['prefix' => 'student', 'middleware' => 'student'], function () {
+    Route::get('/', 'StudentController@details')->name('studentDetails');
+    Route::get('edit', 'StudentController@edit')->name('studentEdit');
+    Route::post('edit', 'StudentController@update')->name('studentUpdate');
+});
