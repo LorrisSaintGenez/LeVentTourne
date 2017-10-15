@@ -18,4 +18,14 @@ class QuizStudent extends Model
     protected $fillable = [
         'student_id', 'quiz_id', 'isSuccess'
     ];
+
+    public function Student()
+    {
+        return $this->belongsTo('App\Student');
+    }
+
+    public function Quiz()
+    {
+        return $this->belongsTo('App\Quiz');
+    }
 }

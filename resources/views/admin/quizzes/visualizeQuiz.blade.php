@@ -74,7 +74,7 @@
 
                     <div class="form-group">
                         <div class="col-md-2">
-                            <a href="{{ route('ghostPageEdition', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                            <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                 Editer
                             </a>
                         </div>

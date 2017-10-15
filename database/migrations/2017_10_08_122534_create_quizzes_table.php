@@ -22,7 +22,7 @@ class CreateQuizzesTable extends Migration
             $table->string('answer_2');
             $table->string('answer_3')->nullable();
             $table->string('answer_4')->nullable();
-            $table->integer('solution');
+            $table->string('solution');
             $table->integer('point');
             $table->string('picture')->nullable();
             $table->string('sound')->nullable();

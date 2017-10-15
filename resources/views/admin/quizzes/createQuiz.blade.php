@@ -124,10 +124,10 @@
 
                             <div class="col-md-6">
                                 <select id="solution" name="solution" required autofocus>
-                                    <option value="1">Réponse 1</option>
-                                    <option value="2">Réponse 2</option>
-                                    <option value="3">Réponse 3</option>
-                                    <option value="4">Réponse 4</option>
+                                    <option value="answer_1">Réponse 1</option>
+                                    <option value="answer_2">Réponse 2</option>
+                                    <option value="answer_3">Réponse 3</option>
+                                    <option value="answer_4">Réponse 4</option>
                                 </select>
 
                                 @if ($errors->has('solution'))

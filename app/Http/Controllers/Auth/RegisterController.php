@@ -78,7 +78,7 @@ class RegisterController extends Controller
 
         if ($role == 2) {
             $student = Student::create([
-                'student_id' => $user->id,
+                'user_id' => $user->id,
                 'teacher_id' => null
             ]);
 

@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\ImageHandler;
 use App\Quiz;
+use App\QuizStudent;
+use App\Student;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,7 +59,7 @@ class QuizController extends Controller
             'answer_2' => $request->input('answer_2'),
             'answer_3' => $request->input('answer_3'),
             'answer_4' => $request->input('answer_4'),
-            'solution' => (int) $request->input('solution'),
+            'solution' => $request->input('solution'),
             'point' => $request->input('point'),
             'picture' => $locationPicture,
             'sound' => $locationSound,
@@ -90,14 +94,50 @@ class QuizController extends Controller
         return view('admin/quizzes/editQuiz', ['quiz' => $quiz]);
     }
 
-    public function getAllQuizzes() {
+    public function getAllQuizzes($view) {
 
         $quizzes_water = Quiz::where('theme', 'water')->get();
         $quizzes_nature = Quiz::where('theme', 'nature')->get();
         $quizzes_food = Quiz::where('theme', 'food')->get();
         $quizzes_waste = Quiz::where('theme', 'waste')->get();
 
-        return view('admin/quizzes/allQuizzes', ['quizzes_water' => $quizzes_water, 'quizzes_nature' => $quizzes_nature, 'quizzes_food' => $quizzes_food, 'quizzes_waste' => $quizzes_waste]);
+        return view($view, ['quizzes_water' => $quizzes_water, 'quizzes_nature' => $quizzes_nature, 'quizzes_food' => $quizzes_food, 'quizzes_waste' => $quizzes_waste]);
+    }
+
+    public function getAllQuizzesStudent() {
+
+        $quizzes = Quiz::all();
+
+        foreach ($quizzes as $quiz) {
+            $quiz_student = QuizStudent::where([['student_id', Student::where('user_id', Auth::user()->id)->pluck('id')->first()], ['quiz_id', $quiz->id]])->first();
+            if ($quiz_student != null) {
+                $quiz->exists = true;
+                $quiz->success = $quiz_student->isSuccess;
+            }
+            else
+                $quiz->exists = false;
+
+            switch ($quiz->theme) {
+                case "water":
+                    $quiz->theme = "Eau";
+                    break;
+                case "food":
+                    $quiz->theme = "Nutrition";
+                    break;
+                case "nature":
+                    $quiz->theme = "Nature";
+                    break;
+                case "waste":
+                    $quiz->theme = "Tri des déchets";
+                    break;
+            }
+        }
+
+        return view('quizzes/allQuizzes', ['quizzes' => $quizzes]);
+    }
+
+    public function getAllQuizzesAdmin() {
+        return $this->getAllQuizzes('admin/quizzes/allQuizzes');
     }
 
     public function update(Request $request) {
@@ -146,7 +186,15 @@ class QuizController extends Controller
         return redirect('backoffice/quiz')->with('successEdit', 'Quiz modifié avec succès !');
     }
 
+    public function getQuiz($id) {
+        return $this->getSpecificQuiz($id, 'quizzes/getQuiz');
+    }
+
     public function visualize($id) {
+        return $this->getSpecificQuiz($id, 'admin/quizzes/visualizeQuiz');
+    }
+
+    public function getSpecificQuiz($id, $view) {
         $quiz = Quiz::find($id);
 
         switch ($quiz->theme) {
@@ -169,7 +217,7 @@ class QuizController extends Controller
         if ($quiz->picture != null)
             $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
-        return view('admin/quizzes/visualizeQuiz', ['quiz' => $quiz]);
+        return view($view, ['quiz' => $quiz]);
     }
 
     public function delete($id) {
@@ -179,6 +227,28 @@ class QuizController extends Controller
         Quiz::destroy($id);
 
         return redirect('backoffice/quiz')->with('successDelete', 'Quiz '.$title.' supprimé avec succès');
+    }
+
+    public function answerQuiz(Request $request, $id) {
+        $quiz = Quiz::find($id);
+
+        if ($request->input($quiz->solution) != null) {
+            QuizStudent::create([
+                'student_id' => Student::where('user_id', Auth::user()->id)->pluck('id')->first(),
+                'quiz_id' => $id,
+                'isSuccess' => true
+            ])->push();
+
+            return redirect('/quiz')->with('successQuiz', "Bonne réponse ! :)");
+        }
+        else {
+            QuizStudent::create([
+                'student_id' => Student::where('user_id', Auth::user()->id)->pluck('id')->first(),
+                'quiz_id' => $id,
+                'isSuccess' => false
+            ])->push();
+            return redirect('/quiz')->with('failQuiz', "Mauvaise réponse ! :(");
+        }
     }
 
 }

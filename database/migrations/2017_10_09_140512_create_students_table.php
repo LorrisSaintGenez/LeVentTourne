@@ -19,7 +19,7 @@ class CreateStudentsTable extends Migration
             $table->integer('teacher_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unique(array('student_id', 'teacher_id'));
+            $table->unique(array('user_id', 'teacher_id'));
         });
     }
 

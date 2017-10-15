@@ -16,6 +16,11 @@ class Student extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'student_id', 'teacher_id'
+        'user_id', 'teacher_id'
     ];
+
+    public function articles()
+    {
+        return $this->hasMany('App\QuizStudent');
+    }
 }

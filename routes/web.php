@@ -29,7 +29,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
     Route::prefix('quiz')->group(function() {
 
-        Route::get('/', 'QuizController@getAllQuizzes')->name('getAllQuizzes');
+        Route::get('/', 'QuizController@getAllQuizzesAdmin')->name('getAllQuizzesAdmin');
 
         Route::get('create', function () {
             return view('admin/quizzes/createQuiz');
@@ -80,4 +80,10 @@ Route::group(['prefix' => 'student', 'middleware' => 'student'], function () {
     Route::get('/', 'StudentController@details')->name('studentDetails');
     Route::get('edit', 'StudentController@edit')->name('studentEdit');
     Route::post('edit', 'StudentController@update')->name('studentUpdate');
+});
+
+Route::group(['prefix' => 'quiz', 'middleware' => 'student'], function () {
+    Route::get('/', 'QuizController@getAllQuizzesStudent')->name('getAllQuizzesStudent');
+    Route::get('/answer/{id}', 'QuizController@getQuiz')->name('getQuiz');
+    Route::post('/answer/{id}', 'QuizController@answerQuiz')->name('answerQuiz');
 });

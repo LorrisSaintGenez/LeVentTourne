@@ -18,4 +18,9 @@ class Quiz extends Model
     protected $fillable = [
         'title', 'theme', 'question', 'answer_1', 'answer_2', 'answer_3', 'answer_4', 'solution', 'point', 'picture', 'sound', 'video'
     ];
+
+    public function articles()
+    {
+        return $this->hasMany('App\QuizStudent');
+    }
 }

@@ -76,6 +76,7 @@
                         @endif
                         @if (Auth::user()->role == 2)
                             <a href="{{ url('/student') }}">Mon Compte</a>
+                            <a href="{{ url('/quiz') }}">Quiz</a>
                         @endif
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();

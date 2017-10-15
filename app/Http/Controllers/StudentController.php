@@ -15,7 +15,7 @@ class StudentController extends Controller
         $users = User::where('role', '2')->get();
 
         foreach ($users as $user) {
-            $teacher_id = Student::where('student_id', $user->id)->pluck('teacher_id')->first();
+            $teacher_id = Student::where('user_id', $user->id)->pluck('teacher_id')->first();
             $user->teacher = User::where('id', $teacher_id)->pluck('name')->first();
         }
 
@@ -27,7 +27,7 @@ class StudentController extends Controller
     public function getCurrentStudent($id)
     {
         $student = User::find($id);
-        $student->teacher = User::find(Student::where("student_id", $id)->pluck('teacher_id'))->first();
+        $student->teacher = User::find(Student::where('user_id', $id)->pluck('teacher_id'))->first();
         return $student;
     }
 
@@ -43,7 +43,9 @@ class StudentController extends Controller
             $total_points += $quiz->point;
         }
 
-        $quizzes_done = QuizStudent::where([['student_id', $id], ['isSuccess', 1]])->get();
+        $student_id = Student::where('user_id', $id)->pluck('id')->first();
+
+        $quizzes_done = QuizStudent::where([['student_id', $student_id], ['isSuccess', 1]])->get();
 
         $quiz_points = 0;
 
@@ -65,15 +67,23 @@ class StudentController extends Controller
     public function edit() {
         $student = $this->getCurrentStudent(Auth::user()->id);
 
-        return view('student/studentEdit', ['student' => $student]);
+        $teachers = User::where('role', 1)->orderBy('name')->get();
+
+        return view('student/studentEdit', ['student' => $student, 'teachers' => $teachers]);
     }
 
     public function update(Request $request) {
-        $student = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->id);
 
-        $student->update([
+        $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email')
+        ]);
+
+        $student = Student::where('user_id', Auth::user()->id);
+
+        $student->update([
+            'teacher_id' => $request->input('teacher_id')
         ]);
 
         return redirect('student')->with('successEdit', 'Profil modifié avec succès !');
