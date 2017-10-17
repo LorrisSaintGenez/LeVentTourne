@@ -32,15 +32,24 @@
                                     <b>{{ $page->title }}</b>
                                 </h3>
                             </div>
-                            <div class="col-md-3 text-center" style="margin-top: 10px">
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
                                 <a href="{{ route('ghostPageEdition', $page->id) }}" type="submit" class="btn btn-lg btn-info">
                                     Editer
                                 </a>
                             </div>
-                            <div class="col-md-3 text-center" style="margin-top: 10px">
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
                                 <a href="{{ route('ghostPagevisualize', $page->id) }}" type="submit" class="btn btn-lg btn-info">
                                     Visualiser
                                 </a>
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 10px">
+                                <form method="POST" action="{{ route('ghostPageDelete', $page->id) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                    <button type="submit" class="btn btn-lg btn-danger">
+                                        Supprimer
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

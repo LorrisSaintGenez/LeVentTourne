@@ -3,18 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\GhostPage;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 
 class GhostPageController extends Controller
 {
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'title' => 'required|string|max:255|unique:ghostpages',
-            'description' => 'required|string|max:2000',
-        ]);
-    }
 
     public function index() {
         $pages = GhostPage::all();
@@ -26,7 +18,12 @@ class GhostPageController extends Controller
         return view('admin/ghostPages/createGhostPage');
     }
 
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255|unique:ghost_pages',
+            'description' => 'required|string|max:2000',
+        ]);
 
         GhostPage::create([
            'title' => $request->input('title'),
@@ -43,6 +40,12 @@ class GhostPageController extends Controller
     }
 
     public function update(Request $request) {
+
+        $request->validate([
+            'title' => 'required|string|max:255|unique:ghost_pages',
+            'description' => 'required|string|max:2000',
+        ]);
+
         $page = GhostPage::find($request->input('id'));
 
         $page->update([
@@ -59,13 +62,12 @@ class GhostPageController extends Controller
         return view('admin/ghostPages/visualizeGhostPage', ['page' => $page]);
     }
 
-
-
-    public function delete($id) {
-        $title = GhostPage::find($id)->pluck('title')->first();
+    public function delete($id)
+    {
+        $ghostpage = GhostPage::find($id);
 
         GhostPage::destroy($id);
 
-        return redirect('backoffice/pages')->with('successDelete', 'Page '.$title.' supprimée avec succès');
+        return redirect('backoffice/pages')->with('successDelete', 'Page '.$ghostpage->title.' supprimée avec succès');
     }
 }

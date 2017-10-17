@@ -15,13 +15,6 @@ use Illuminate\Support\Facades\Storage;
 
 class QuizController extends Controller
 {
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'sound' => 'mimes:mp3',
-            'title' => 'unique'
-        ]);
-    }
 
     public function uploadOnDisk($field, $storage, $isImage) {
         $location = null;
@@ -39,6 +32,16 @@ class QuizController extends Controller
 
     public function create(Request $request) {
 
+        $request->validate([
+            'title' => 'unique:quizzes|max:255|required',
+            'question' => 'required|max:255',
+            'theme' => 'required',
+            'answer_1' => 'required',
+            'answer_2' => 'required',
+            'solution' => 'required',
+            'point' => 'required',
+            'sound' => 'mimes:mp3',
+        ]);
         $locationPicture = null;
         $locationSound = null;
         $videoPath = null;
@@ -227,28 +230,6 @@ class QuizController extends Controller
         Quiz::destroy($id);
 
         return redirect('backoffice/quiz')->with('successDelete', 'Quiz '.$title.' supprimé avec succès');
-    }
-
-    public function answerQuiz(Request $request, $id) {
-        $quiz = Quiz::find($id);
-
-        if ($request->input($quiz->solution) != null) {
-            QuizStudent::create([
-                'student_id' => Student::where('user_id', Auth::user()->id)->pluck('id')->first(),
-                'quiz_id' => $id,
-                'isSuccess' => true
-            ])->push();
-
-            return redirect('/quiz')->with('successQuiz', "Bonne réponse ! :)");
-        }
-        else {
-            QuizStudent::create([
-                'student_id' => Student::where('user_id', Auth::user()->id)->pluck('id')->first(),
-                'quiz_id' => $id,
-                'isSuccess' => false
-            ])->push();
-            return redirect('/quiz')->with('failQuiz', "Mauvaise réponse ! :(");
-        }
     }
 
 }

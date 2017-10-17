@@ -53,7 +53,7 @@
                             <label for="question" class="col-md-4 control-label">Question <span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <textarea style="resize: vertical" id="question" class="form-control" name="question" value="{{ old('question') }}" required autofocus ></textarea>
+                                <textarea style="resize: vertical" id="question" class="form-control" name="question" required autofocus >{{old('question')}}</textarea>
 
                                 @if ($errors->has('question'))
                                 <span class="help-block">

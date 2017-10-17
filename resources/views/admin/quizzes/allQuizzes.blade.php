@@ -197,18 +197,18 @@
                     @endforeach
                     @endif
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form method="GET" action="{{ route('create') }}">
+                                <button type="submit" class="btn btn-primary">
+                                    Créer un quiz
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <form method="GET" action="{{ route('create') }}">
-                        <button type="submit" class="btn btn-primary">
-                            Créer un quiz
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -85,5 +85,5 @@ Route::group(['prefix' => 'student', 'middleware' => 'student'], function () {
 Route::group(['prefix' => 'quiz', 'middleware' => 'student'], function () {
     Route::get('/', 'QuizController@getAllQuizzesStudent')->name('getAllQuizzesStudent');
     Route::get('/answer/{id}', 'QuizController@getQuiz')->name('getQuiz');
-    Route::post('/answer/{id}', 'QuizController@answerQuiz')->name('answerQuiz');
+    Route::post('/answer/{id}', 'QuizStudentController@answerQuiz')->name('answerQuiz');
 });

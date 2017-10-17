@@ -16,7 +16,7 @@ class CreateGhostPagesTable extends Migration
         Schema::create('ghost_pages', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('title');
+            $table->string('title')->unique();
             $table->string('description', 2000);
         });
     }

@@ -48,6 +48,7 @@
                     </div>
                     <form name="answer_1" id="answer_1" class="form-horizontal" method="POST" action="{{ route('answerQuiz', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
+
                         <div class="col-md-6 text-center" onClick="document.forms['answer_1'].submit();">
                             <div class="panel panel-primary">
                                 <input id="answer_1" name="answer_1" type="hidden" value="{{ $quiz->answer_1 }}">
