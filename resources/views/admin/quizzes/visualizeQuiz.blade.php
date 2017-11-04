@@ -75,12 +75,12 @@
                     </div>
                     <div class="form-group col-md-12">
                         <div class="col-md-2">
-                            <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                            <a href="{{ route('quizEdit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
                                 Editer
                             </a>
                         </div>
                         <div class="col-md-2">
-                            <form method="POST" action="{{ route('deleteQuiz', $quiz->id) }}">
+                            <form method="POST" action="{{ route('quizDelete', $quiz->id) }}">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" name="_method" value="DELETE" />
                                 <button type="submit" class="btn btn-lg btn-danger">

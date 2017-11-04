@@ -31,18 +31,16 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
         Route::get('/', 'QuizController@getAllQuizzesAdmin')->name('getAllQuizzesAdmin');
 
-        Route::get('create', function () {
-            return view('admin/quizzes/createQuiz');
-        });
+        Route::get('create', 'QuizController@creation')->name('quizCreation');
 
-        Route::post('create', 'QuizController@create')->name('create');
+        Route::post('create', 'QuizController@create')->name('quizCreate');
 
-        Route::get('edit/{id}', 'QuizController@edit')->name('editQuiz');
-        Route::post('update', 'QuizController@update')->name('update');
+        Route::get('edit/{id}', 'QuizController@edit')->name('quizEdit');
+        Route::post('update', 'QuizController@update')->name('quizUpdate');
 
-        Route::delete('delete/{id}', 'QuizController@delete')->name('deleteQuiz');
+        Route::delete('delete/{id}', 'QuizController@delete')->name('quizDelete');
 
-        Route::get('visualize/{id}', 'QuizController@visualize')->name('visualizeQuiz');
+        Route::get('visualize/{id}', 'QuizController@visualize')->name('quizVisualize');
 
     });
 
@@ -74,16 +72,27 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
         Route::delete('delete/{id}', 'GhostPageController@delete')->name('ghostPageDelete');
     });
 
+    Route::prefix('themes')->group(function () {
+        Route::get('/', 'ThemeController@index')->name('themeIndex');
+        Route::get('create', function () {
+            return view('admin/themes/createTheme');
+        });
+        Route::post('create', 'ThemeController@create')->name('themeCreate');
+    });
+
 });
 
-Route::group(['prefix' => 'student', 'middleware' => 'student'], function () {
-    Route::get('/', 'StudentController@details')->name('studentDetails');
-    Route::get('edit', 'StudentController@edit')->name('studentEdit');
-    Route::post('edit', 'StudentController@update')->name('studentUpdate');
-});
+Route::group(['middleware' => 'student'], function () {
+    Route::prefix('student')->group(function () {
+        Route::get('/', 'StudentController@details')->name('studentDetails');
+        Route::get('edit', 'StudentController@edit')->name('studentEdit');
+        Route::post('edit', 'StudentController@update')->name('studentUpdate');
+        Route::get('/progression', 'StudentController@progression')->name('studentProgression');
+    });
 
-Route::group(['prefix' => 'quiz', 'middleware' => 'student'], function () {
-    Route::get('/', 'QuizController@getAllQuizzesStudent')->name('getAllQuizzesStudent');
-    Route::get('/answer/{id}', 'QuizController@getQuiz')->name('getQuiz');
-    Route::post('/answer/{id}', 'QuizStudentController@answerQuiz')->name('answerQuiz');
+    Route::prefix('quiz')->group(function () {
+        Route::get('/', 'QuizController@getAllQuizzesStudent')->name('getAllQuizzesStudent');
+        Route::get('/answer/{id}', 'QuizController@getQuiz')->name('quizGet');
+        Route::post('/answer/{id}', 'QuizStudentController@answerQuiz')->name('quizAnswer');
+    });
 });

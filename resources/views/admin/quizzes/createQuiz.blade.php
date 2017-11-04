@@ -13,7 +13,7 @@
                 <div class="panel-heading">Création de quiz</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('create') }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('quizCreate') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
@@ -35,10 +35,9 @@
 
                             <div class="col-md-6">
                                 <select id="theme" name="theme" required autofocus>
-                                    <option value="water">Eau</option>
-                                    <option value="nature">Nature</option>
-                                    <option value="food">Nutrition</option>
-                                    <option value="waste">Tri des déchets</option>
+                                    @foreach ($themes as $theme)
+                                        <option value={{$theme->title}}>{{ $theme->title }}</option>
+                                    @endforeach
                                 </select>
 
                                 @if ($errors->has('theme'))

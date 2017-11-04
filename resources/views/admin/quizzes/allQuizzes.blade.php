@@ -28,178 +28,51 @@
                 <div class="panel-heading">Quiz</div>
 
                 <div class="panel-body">
+                    @foreach ($quizzes_by_theme as $quiz_by_theme)
+                        <div class="title"><h2>{{ $quiz_by_theme['theme'] }}</h2></div>
 
-                    @if (count($quizzes_water) > 0)
-                    <div class="title"><h2>Quiz sur l'eau</h2></div>
-
-                    @foreach ($quizzes_water as $quiz)
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <b>{{ $quiz->title }}</b>
-                                </h3>
+                        @foreach ($quiz_by_theme['quiz'] as $quiz)
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2 text-center">
+                                        <h3>
+                                            <b>{{ $quiz->title }}</b>
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <h3>
+                                            <?php if ($quiz->picture) echo "Photo" ?>
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <h3>
+                                            <?php if ($quiz->sound) echo "Audio" ?>
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <h3>
+                                            <?php if ($quiz->video) echo "Vidéo" ?>
+                                        </h3>
+                                    </div>
+                                    <div class="col-md-2 text-center" style="margin-top: 10px">
+                                        <a href="{{ route('quizEdit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                            Editer
+                                        </a>
+                                    </div>
+                                    <div class="col-md-2 text-center" style="margin-top: 10px">
+                                        <a href="{{ route('quizVisualize', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
+                                            Visualiser
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->picture) echo "Photo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->sound) echo "Audio" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->video) echo "Vidéo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Editer
-                                </a>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Visualiser
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
+                            <hr/>
+                        @endforeach
                     @endforeach
-                    @endif
-
-                    @if (count($quizzes_nature) > 0)
-                    <div class="title"><h2>Quiz sur la nature</h2></div>
-
-                    @foreach ($quizzes_nature as $quiz)
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <b>{{ $quiz->title }}</b>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->picture) echo "Photo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->sound) echo "Audio" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->video) echo "Vidéo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Editer
-                                </a>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Visualiser
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
-                    @endforeach
-                    @endif
-
-                    @if (count($quizzes_food) > 0)
-                    <div class="title"><h2>Quiz sur la nutrition</h2></div>
-
-                    @foreach ($quizzes_food as $quiz)
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <b>{{ $quiz->title }}</b>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->picture) echo "Photo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->sound) echo "Audio" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->video) echo "Vidéo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Editer
-                                </a>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Visualiser
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
-                    @endforeach
-                    @endif
-
-                    @if (count($quizzes_waste) > 0)
-                    <div class="title"><h2>Quiz sur le tri des déchets</h2></div>
-
-                    @foreach ($quizzes_waste as $quiz)
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <b>{{ $quiz->title }}</b>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->picture) echo "Photo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->sound) echo "Audio" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center">
-                                <h3>
-                                    <?php if ($quiz->video) echo "Vidéo" ?>
-                                </h3>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('editQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Editer
-                                </a>
-                            </div>
-                            <div class="col-md-2 text-center" style="margin-top: 10px">
-                                <a href="{{ route('visualizeQuiz', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                    Visualiser
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr/>
-                    @endforeach
-                    @endif
 
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="GET" action="{{ route('create') }}">
+                            <form method="GET" action="{{ route('quizCreation') }}">
                                 <button type="submit" class="btn btn-primary">
                                     Créer un quiz
                                 </button>

@@ -13,7 +13,8 @@ class QuizStudentController extends Controller
     public function answerQuiz(Request $request, $id)
     {
         $student_id = Student::where('user_id', Auth::user()->id)->pluck('id')->first();
-        if (QuizStudent::where([['student_id', $student_id], ['quiz_id', $id]])->get() != null)
+        $quiz_student = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id]])->count();
+        if ($quiz_student > 0)
             return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
 
         $quiz = Quiz::find($id);

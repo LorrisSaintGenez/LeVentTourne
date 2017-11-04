@@ -46,7 +46,7 @@
                             <h4 style="white-space: pre-wrap;">{{ $quiz->question }}</h4>
                         </div>
                     </div>
-                    <form name="answer_1" id="answer_1" class="form-horizontal" method="POST" action="{{ route('answerQuiz', $quiz->id) }}" enctype="multipart/form-data">
+                    <form name="answer_1" id="answer_1" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="col-md-6 text-center" onClick="document.forms['answer_1'].submit();">
@@ -57,7 +57,7 @@
                         </div>
                     </form>
 
-                    <form name="answer_2" id="answer_2" class="form-horizontal" method="POST" action="{{ route('answerQuiz', $quiz->id) }}" enctype="multipart/form-data">
+                    <form name="answer_2" id="answer_2" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="col-md-6 text-center" onClick="document.forms['answer_2'].submit();">
                             <div class="panel panel-primary">
@@ -67,7 +67,7 @@
                         </div>
                     </form>
 
-                    <form name="answer_3" id="answer_3" class="form-horizontal" method="POST" action="{{ route('answerQuiz', $quiz->id) }}" enctype="multipart/form-data">
+                    <form name="answer_3" id="answer_3" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         @if ($quiz->answer_3 != null)
                         <div class="col-md-6 text-center" onClick="document.forms['answer_3'].submit();">
@@ -79,7 +79,7 @@
                         @endif
                     </form>
 
-                    <form name="answer_4" id="answer_4" class="form-horizontal" method="POST" action="{{ route('answerQuiz', $quiz->id) }}" enctype="multipart/form-data">
+                    <form name="answer_4" id="answer_4" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         @if ($quiz->answer_4 != null)
                         <div class="col-md-6 text-center" onClick="document.forms['answer_4'].submit();">

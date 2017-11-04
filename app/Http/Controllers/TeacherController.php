@@ -22,7 +22,7 @@ class TeacherController extends Controller
     }
 
     public function studentByTeacher($id) {
-        $students_id = Student::where('teacher_id', $id)->pluck('student_id');
+        $students_id = Student::where('teacher_id', $id)->pluck('user_id');
 
         $students = array();
         foreach ($students_id as $student_id) {

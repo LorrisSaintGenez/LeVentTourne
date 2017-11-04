@@ -15,7 +15,7 @@
                 <div class="panel-heading">Edition du quiz <b>{{ $quiz->title }}</b></div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('update') }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('quizUpdate') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="hidden">
@@ -41,26 +41,13 @@
 
                             <div class="col-md-6">
                                 <select id="theme" name="theme" required autofocus>
-                                    @if ($quiz->theme == "water")
-                                    <option selected value="water">Eau</option>
-                                    @else
-                                    <option value="water">Eau</option>
-                                    @endif
-                                    @if ($quiz->theme == "nature")
-                                    <option selected value="nature">Nature</option>
-                                    @else
-                                    <option value="nature">Nature</option>
-                                    @endif
-                                    @if ($quiz->theme == "food")
-                                    <option selected value="food">Food</option>
-                                    @else
-                                    <option value="food">Food</option>
-                                    @endif
-                                    @if ($quiz->theme == "waste")
-                                    <option selected value="waste">Waste</option>
-                                    @else
-                                    <option value="waste">Waste</option>
-                                    @endif
+                                    @foreach ($themes as $theme)
+                                        @if ($quiz->theme == $theme->id)
+                                            <option selected value={{$theme->title}}>{{ $theme->title }}</option>
+                                        @else
+                                            <option value={{$theme->title}}>{{ $theme->title }}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
 
                                 @if ($errors->has('theme'))
@@ -146,25 +133,25 @@
 
                             <div class="col-md-6">
                                 <select id="solution" name="solution" required autofocus>
-                                    @if ($quiz->solution == "1")
-                                        <option selected value="1">Réponse 1</option>
+                                    @if ($quiz->solution == "answer_1")
+                                        <option selected value="answer_1">Réponse 1</option>
                                     @else
-                                        <option value="1">Réponse 1</option>
+                                        <option value="answer_1">Réponse 1</option>
                                     @endif
-                                    @if ($quiz->solution == "2")
-                                        <option selected value="2">Réponse 2</option>
+                                    @if ($quiz->solution == "answer_2")
+                                        <option selected value="answer_2">Réponse 2</option>
                                     @else
-                                        <option value="2">Réponse 2</option>
+                                        <option value="answer_2">Réponse 2</option>
                                     @endif
-                                    @if ($quiz->solution == "3")
-                                        <option selected value="3">Réponse 3</option>
+                                    @if ($quiz->solution == "answer_3")
+                                        <option selected value="answer_3">Réponse 3</option>
                                     @else
-                                        <option value="3">Réponse 3</option>
+                                        <option value="answer_3">Réponse 3</option>
                                     @endif
-                                    @if ($quiz->solution == "4")
-                                        <option selected value="4">Réponse 4</option>
+                                    @if ($quiz->solution == "answer_4")
+                                        <option selected value="answer_4">Réponse 4</option>
                                     @else
-                                        <option value="4">Réponse 4</option>
+                                        <option value="answer_4">Réponse 4</option>
                                     @endif
                                 </select>
 

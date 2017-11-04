@@ -3,31 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\ImageHandler;
+use App\Http\Misc;
 use App\Quiz;
 use App\QuizStudent;
 use App\Student;
-use Illuminate\Contracts\Validation\Validator;
+use App\Theme;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 class QuizController extends Controller
 {
+    public function creation() {
+        $themes = Theme::all();
 
-    public function uploadOnDisk($field, $storage, $isImage) {
-        $location = null;
-        if ($isImage) {
-            $item = $_FILES[$field];
-            $imageHandler = new ImageHandler();
-            $location = $imageHandler->uploadImageOnDisk($item);
-        } else {
-                $item = Input::file($field);
-                $location = $item->getClientOriginalName();
-                Storage::disk($storage)->put($location, file_get_contents($item->getRealPath()));
-            }
-        return $location;
+        return view('admin/quizzes/createQuiz', ['themes' => $themes]);
     }
 
     public function create(Request $request) {
@@ -35,28 +27,29 @@ class QuizController extends Controller
         $request->validate([
             'title' => 'unique:quizzes|max:255|required',
             'question' => 'required|max:255',
-            'theme' => 'required',
             'answer_1' => 'required',
             'answer_2' => 'required',
             'solution' => 'required',
             'point' => 'required',
-            'sound' => 'mimes:mp3',
+            'sound' => 'mimes:mpga',
         ]);
         $locationPicture = null;
         $locationSound = null;
         $videoPath = null;
 
         if (Input::file('picture') != null)
-            $locationPicture = $this->uploadOnDisk('picture', 'images', true);
+            $locationPicture = Misc::uploadOnDisk('picture', 'images', true);
         if (Input::file('sound') != null)
-            $locationSound = $this->uploadOnDisk('sound', 'sounds', false);
+            $locationSound = Misc::uploadOnDisk('sound', 'sounds', false);
 
         if ($request->input('video') != "")
             $videoPath = $this->YoutubeID($request->input('video'));
 
+        $theme = Theme::where('title', $request->input('theme'))->first();
+
         Quiz::create([
             'title' => $request->input('title'),
-            'theme' => $request->input('theme'),
+            'theme_id' => $theme->id,
             'question' => $request->input('question'),
             'answer_1' => $request->input('answer_1'),
             'answer_2' => $request->input('answer_2'),
@@ -68,6 +61,10 @@ class QuizController extends Controller
             'sound' => $locationSound,
             'video' => $videoPath,
         ])->push();
+
+        $theme->update([
+            'max_point' => $theme->max_point + $request->input('point')
+        ]);
 
         return redirect('backoffice/quiz')->with('successQuiz', 'Quiz crée avec succès !');
     }
@@ -94,49 +91,42 @@ class QuizController extends Controller
         if ($quiz->picture != null)
             $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
-        return view('admin/quizzes/editQuiz', ['quiz' => $quiz]);
+        $themes = Theme::all();
+
+        return view('admin/quizzes/editQuiz', ['quiz' => $quiz, 'themes' => $themes]);
     }
 
     public function getAllQuizzes($view) {
 
-        $quizzes_water = Quiz::where('theme', 'water')->get();
-        $quizzes_nature = Quiz::where('theme', 'nature')->get();
-        $quizzes_food = Quiz::where('theme', 'food')->get();
-        $quizzes_waste = Quiz::where('theme', 'waste')->get();
+        $quizzes_by_theme = Misc::getQuizByTheme(Quiz::all(), null);
 
-        return view($view, ['quizzes_water' => $quizzes_water, 'quizzes_nature' => $quizzes_nature, 'quizzes_food' => $quizzes_food, 'quizzes_waste' => $quizzes_waste]);
+        return view($view, ['quizzes_by_theme' => $quizzes_by_theme]);
     }
 
     public function getAllQuizzesStudent() {
 
+        $user = User::find(Auth::user()->id);
+        $student = Student::where('user_id', $user->id)->first();
+
+        $quizzes_done = QuizStudent::where([['student_id', $student->id], ['isSuccess', 1]])->get();
         $quizzes = Quiz::all();
 
-        foreach ($quizzes as $quiz) {
-            $quiz_student = QuizStudent::where([['student_id', Student::where('user_id', Auth::user()->id)->pluck('id')->first()], ['quiz_id', $quiz->id]])->first();
-            if ($quiz_student != null) {
-                $quiz->exists = true;
-                $quiz->success = $quiz_student->isSuccess;
-            }
-            else
-                $quiz->exists = false;
+        $quizzes_by_theme = Misc::getQuizByTheme($quizzes, $quizzes_done);
 
-            switch ($quiz->theme) {
-                case "water":
-                    $quiz->theme = "Eau";
-                    break;
-                case "food":
-                    $quiz->theme = "Nutrition";
-                    break;
-                case "nature":
-                    $quiz->theme = "Nature";
-                    break;
-                case "waste":
-                    $quiz->theme = "Tri des déchets";
-                    break;
+        foreach ($quizzes_by_theme as $quiz_by_theme) {
+            foreach ($quiz_by_theme['quiz'] as $quiz){
+                $quiz_student = QuizStudent::where([['student_id', Student::where('user_id', Auth::user()->id)->pluck('id')->first()], ['quiz_id', $quiz->id]])->first();
+                if ($quiz_student != null) {
+                    $quiz->exists = true;
+                    $quiz->success = $quiz_student->isSuccess;
+                }
+                else
+                    $quiz->exists = false;
             }
         }
 
-        return view('quizzes/allQuizzes', ['quizzes' => $quizzes]);
+        //return view('quizzes/allQuizzesTest', ['quizzes' => $quizzes]);
+        return view('quizzes/allQuizzes', ['quizzes_by_theme' => $quizzes_by_theme]);
     }
 
     public function getAllQuizzesAdmin() {
@@ -146,6 +136,16 @@ class QuizController extends Controller
     public function update(Request $request) {
 
         $quiz = Quiz::find($request->input('id'));
+
+        $request->validate([
+            'title' => '|max:255|required|unique:quizzes,title,'.$quiz->id,
+            'question' => 'required|max:255',
+            'answer_1' => 'required',
+            'answer_2' => 'required',
+            'solution' => 'required',
+            'point' => 'required',
+            'sound' => 'mimes:mpga',
+        ]);
 
         $locationPicture = $quiz->picture;
         $locationSound = $quiz->sound;
@@ -171,15 +171,27 @@ class QuizController extends Controller
         if ($request->input('video') != "")
             $videoPath = $this->YoutubeID($request->input('video'));
 
+        $new_theme = Theme::where('title', $request->input('theme'))->first();
+        $previous_theme = Theme::find($quiz->theme_id);
+        if ($new_theme->id != $previous_theme->id) {
+            $new_theme->update([
+                'max_point' => $new_theme->max_point + $request->input('point')
+            ]);
+
+            $previous_theme->update([
+                'max_point' => $previous_theme->max_point - $request->input('point')
+            ]);
+        }
+
         $quiz->update([
             'title' => $request->input('title'),
-            'theme' => $request->input('theme'),
+            'theme_id' => $new_theme->id,
             'question' => $request->input('question'),
             'answer_1' => $request->input('answer_1'),
             'answer_2' => $request->input('answer_2'),
             'answer_3' => $request->input('answer_3'),
             'answer_4' => $request->input('answer_4'),
-            'solution' => (int) $request->input('solution'),
+            'solution' => $request->input('solution'),
             'point' => $request->input('point'),
             'picture' => $locationPicture,
             'sound' => $locationSound,
@@ -199,21 +211,9 @@ class QuizController extends Controller
 
     public function getSpecificQuiz($id, $view) {
         $quiz = Quiz::find($id);
+        $theme = Theme::find($quiz->theme_id);
 
-        switch ($quiz->theme) {
-            case "water":
-                $quiz->theme = "Eau";
-                break;
-            case "food":
-                $quiz->theme = "Nutrition";
-                break;
-            case "nature":
-                $quiz->theme = "Nature";
-                break;
-            case "waste":
-                $quiz->theme = "Tri des déchets";
-                break;
-        }
+        $quiz->theme = $theme->title;
 
         if ($quiz->sound != null)
             $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
@@ -225,11 +225,17 @@ class QuizController extends Controller
 
     public function delete($id) {
 
-        $title = Quiz::find($id)->pluck('title')->first();
+        $quiz = Quiz::find($id);
+
+        $theme = Theme::where('id', $quiz->theme_id)->first();
+
+        $theme->update([
+            'max_point' => $theme->max_point - $quiz->point
+        ]);
 
         Quiz::destroy($id);
 
-        return redirect('backoffice/quiz')->with('successDelete', 'Quiz '.$title.' supprimé avec succès');
+        return redirect('backoffice/quiz')->with('successDelete', 'Quiz '.$quiz->title.' supprimé avec succès');
     }
 
 }

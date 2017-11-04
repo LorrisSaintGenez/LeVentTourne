@@ -27,9 +27,11 @@
                                 Pas de professeur
                             </h4>
                             @else
-                            <h4>
-                                {{ $user->teacher }}
-                            </h4>
+                            <a href="{{ route('studentByTeacher', $user->teacher->id) }}" type="submit">
+                                <h4>
+                                    {{ $user->teacher->name }}
+                                </h4>
+                            </a>
                             @endif
                         </div>
                         <div class="col-md-3">

@@ -41,7 +41,7 @@
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                Nombre de points : <b>{{ $quiz_points }} / <b>{{ $total_points }}</b></b>
+                                Nombre de points : <b>{{ $quiz_points }}</b> / <b>{{ $total_points }}</b>
                             </h4>
                         </div>
 
