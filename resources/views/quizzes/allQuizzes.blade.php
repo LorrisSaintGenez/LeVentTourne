@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+<?php
+header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+?>
 @section('content')
 <div class="container">
     <div class="row">

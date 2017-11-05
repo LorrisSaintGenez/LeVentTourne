@@ -62,16 +62,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('answer_1') ? ' has-error' : '' }}">
-                            <label for="answer_1" class="col-md-4 control-label">Réponse 1 <span style="color: red">*</span></label>
+                        <div class="form-group{{ $errors->has('good_answer') ? ' has-error' : '' }}">
+                            <label for="good_answer" class="col-md-4 control-label">Bonne réponse <span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="answer_1" type="text" class="form-control" name="answer_1" value="{{ old('answer_1') }}" required autofocus>
+                                <input id="good_answer" type="text" class="form-control" name="good_answer" value="{{ old('good_answer') }}" required autofocus>
 
-                                @if ($errors->has('answer_1'))
+                                @if ($errors->has('good_answer'))
                                 <span class="help-block">
-                                        <strong>{{ $errors->first('answer_1') }}</strong>
-                                    </span>
+                                    <strong>{{ $errors->first('good_answer') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -113,25 +113,6 @@
                                 @if ($errors->has('answer_4'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('answer_4') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('solution') ? ' has-error' : '' }}">
-                            <label for="solution" class="col-md-4 control-label">Solution <span style="color: red">*</span></label>
-
-                            <div class="col-md-6">
-                                <select id="solution" name="solution" required autofocus>
-                                    <option value="answer_1">Réponse 1</option>
-                                    <option value="answer_2">Réponse 2</option>
-                                    <option value="answer_3">Réponse 3</option>
-                                    <option value="answer_4">Réponse 4</option>
-                                </select>
-
-                                @if ($errors->has('solution'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('solution') }}</strong>
                                     </span>
                                 @endif
                             </div>

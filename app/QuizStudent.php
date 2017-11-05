@@ -16,7 +16,7 @@ class QuizStudent extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'student_id', 'quiz_id', 'isSuccess'
+        'student_id', 'quiz_id', 'isSuccess', 'hasAnswered'
     ];
 
     public function Student()

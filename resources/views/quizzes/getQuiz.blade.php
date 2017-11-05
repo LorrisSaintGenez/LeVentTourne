@@ -1,7 +1,8 @@
 @extends('layouts.app')
-
-<link rel="stylesheet" href="{{ URL::asset('css/style.css') }}">
-
+<?php
+header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+?>
 @section('content')
 <div class="container">   <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -46,50 +47,18 @@
                             <h4 style="white-space: pre-wrap;">{{ $quiz->question }}</h4>
                         </div>
                     </div>
-                    <form name="answer_1" id="answer_1" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
+                    @foreach ($quiz->answers as $answer)
+                    <form name="{{ $answer }}" id="{{ $answer }}" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
-                        <div class="col-md-6 text-center" onClick="document.forms['answer_1'].submit();">
+                        <div class="col-md-6 text-center" onClick="document.forms['{{ $answer }}'].submit();">
                             <div class="panel panel-primary">
-                                <input id="answer_1" name="answer_1" type="hidden" value="{{ $quiz->answer_1 }}">
-                                <h4>{{ $quiz->answer_1 }}</h4>
+                                <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
+                                <h4>{{ $answer }}</h4>
                             </div>
                         </div>
                     </form>
-
-                    <form name="answer_2" id="answer_2" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        <div class="col-md-6 text-center" onClick="document.forms['answer_2'].submit();">
-                            <div class="panel panel-primary">
-                                <input id="answer_2" name="answer_2" type="hidden" value="{{ $quiz->answer_2 }}">
-                                <h4>{{ $quiz->answer_2 }}</h4>
-                            </div>
-                        </div>
-                    </form>
-
-                    <form name="answer_3" id="answer_3" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        @if ($quiz->answer_3 != null)
-                        <div class="col-md-6 text-center" onClick="document.forms['answer_3'].submit();">
-                            <div class="panel panel-primary">
-                                <input id="answer_3" name="answer_3" type="hidden" value="{{ $quiz->answer_3 }}">
-                                <h4>{{ $quiz->answer_3 }}</h4>
-                            </div>
-                        </div>
-                        @endif
-                    </form>
-
-                    <form name="answer_4" id="answer_4" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                        @if ($quiz->answer_4 != null)
-                        <div class="col-md-6 text-center" onClick="document.forms['answer_4'].submit();">
-                            <div class="panel panel-primary">
-                                <input id="answer_4" name="answer_4" type="hidden" value="{{ $quiz->answer_4 }}">
-                                <h4>{{ $quiz->answer_4 }}</h4>
-                            </div>
-                        </div>
-                        @endif
-                    </form>
+                    @endforeach
                 </div>
             </div>
         </div>

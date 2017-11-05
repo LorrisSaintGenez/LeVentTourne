@@ -27,12 +27,12 @@ class QuizController extends Controller
         $request->validate([
             'title' => 'unique:quizzes|max:255|required',
             'question' => 'required|max:255',
-            'answer_1' => 'required',
+            'good_answer' => 'required',
             'answer_2' => 'required',
-            'solution' => 'required',
             'point' => 'required',
             'sound' => 'mimes:mpga',
         ]);
+
         $locationPicture = null;
         $locationSound = null;
         $videoPath = null;
@@ -47,15 +47,21 @@ class QuizController extends Controller
 
         $theme = Theme::where('title', $request->input('theme'))->first();
 
+        $answers = array();
+        array_push($answers, $request->input('good_answer'));
+        array_push($answers, $request->input('answer_2'));
+
+        if ($request->input('answer_3') != "")
+            array_push($answers, $request->input('answer_3'));
+        if ($request->input('answer_4') != "")
+            array_push($answers, $request->input('answer_4'));
+
         Quiz::create([
             'title' => $request->input('title'),
             'theme_id' => $theme->id,
             'question' => $request->input('question'),
-            'answer_1' => $request->input('answer_1'),
-            'answer_2' => $request->input('answer_2'),
-            'answer_3' => $request->input('answer_3'),
-            'answer_4' => $request->input('answer_4'),
-            'solution' => $request->input('solution'),
+            'good_answer' => $request->input('good_answer'),
+            'answers' => $answers,
             'point' => $request->input('point'),
             'picture' => $locationPicture,
             'sound' => $locationSound,
@@ -140,9 +146,8 @@ class QuizController extends Controller
         $request->validate([
             'title' => '|max:255|required|unique:quizzes,title,'.$quiz->id,
             'question' => 'required|max:255',
-            'answer_1' => 'required',
+            'good_answer' => 'required',
             'answer_2' => 'required',
-            'solution' => 'required',
             'point' => 'required',
             'sound' => 'mimes:mpga',
         ]);
@@ -183,15 +188,21 @@ class QuizController extends Controller
             ]);
         }
 
+        $answers = array();
+        array_push($answers, $request->input('good_answer'));
+        array_push($answers, $request->input('answer_2'));
+
+        if ($request->input('answer_3') != "")
+            array_push($answers, $request->input('answer_3'));
+        if ($request->input('answer_4') != "")
+            array_push($answers, $request->input('answer_4'));
+
         $quiz->update([
             'title' => $request->input('title'),
             'theme_id' => $new_theme->id,
             'question' => $request->input('question'),
-            'answer_1' => $request->input('answer_1'),
-            'answer_2' => $request->input('answer_2'),
-            'answer_3' => $request->input('answer_3'),
-            'answer_4' => $request->input('answer_4'),
-            'solution' => $request->input('solution'),
+            'good_answer' => $request->input('good_answer'),
+            'answers' => $answers,
             'point' => $request->input('point'),
             'picture' => $locationPicture,
             'sound' => $locationSound,
@@ -202,18 +213,47 @@ class QuizController extends Controller
     }
 
     public function getQuiz($id) {
-        return $this->getSpecificQuiz($id, 'quizzes/getQuiz');
+        return $this->getSpecificQuiz($id, 'quizzes/getQuiz', true);
     }
 
     public function visualize($id) {
         return $this->getSpecificQuiz($id, 'admin/quizzes/visualizeQuiz');
     }
 
-    public function getSpecificQuiz($id, $view) {
+    public function getSpecificQuiz($id, $view, $isStudent = false) {
         $quiz = Quiz::find($id);
         $theme = Theme::find($quiz->theme_id);
 
         $quiz->theme = $theme->title;
+
+        if ($isStudent) {
+            $student_id = Student::where('user_id', Auth::user()->id)->pluck('id')->first();
+
+            $quiz_student = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id]])->first();
+            if ($quiz_student) {
+                if (!$quiz_student->hasAnswered) {
+                    $quiz_student->update([
+                        'student_id' => $student_id,
+                        'quiz_id' => $id,
+                        'isSuccess' => $quiz_student->isSuccess,
+                        'hasAnswered' => true
+                    ]);
+                }
+                return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
+            }
+
+            $answers = $quiz->answers;
+            shuffle($answers);
+            $quiz->answers = $answers;
+
+            QuizStudent::create([
+                'student_id' => $student_id,
+                'quiz_id' => $id,
+                'isSuccess' => false,
+                'hasAnswered' => false
+            ])->push();
+
+        }
 
         if ($quiz->sound != null)
             $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));

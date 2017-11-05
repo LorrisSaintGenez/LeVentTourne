@@ -18,6 +18,7 @@ class CreateQuizStudentsTable extends Migration
             $table->integer('student_id')->unsigned();
             $table->integer('quiz_id')->unsigned();
             $table->boolean('isSuccess');
+            $table->boolean('hasAnswered');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->unique(array('student_id', 'quiz_id'));

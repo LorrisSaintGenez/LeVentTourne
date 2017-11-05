@@ -72,16 +72,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('answer_1') ? ' has-error' : '' }}">
-                            <label for="answer_1" class="col-md-4 control-label">Réponse 1 <span style="color: red">*</span></label>
+                        <div class="form-group{{ $errors->has('good_answer') ? ' has-error' : '' }}">
+                            <label for="good_answer" class="col-md-4 control-label">Bonne réponse <span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="answer_1" type="text" class="form-control" name="answer_1" value="{{ $quiz->answer_1 }}" required autofocus>
+                                <input id="good_answer" type="text" class="form-control" name="good_answer" value="{{ $quiz->good_answer }}" required autofocus>
 
-                                @if ($errors->has('answer_1'))
+                                @if ($errors->has('good_answer'))
                                 <span class="help-block">
-                                        <strong>{{ $errors->first('answer_1') }}</strong>
-                                    </span>
+                                    <strong>{{ $errors->first('good_answer') }}</strong>
+                                </span>
                                 @endif
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                             <label for="answer_2" class="col-md-4 control-label">Réponse 2 <span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="answer_2" type="text" class="form-control" name="answer_2" value="{{ $quiz->answer_2 }}" required autofocus>
+                                <input id="answer_2" type="text" class="form-control" name="answer_2" value="{{ $quiz->answers[1] }}" required autofocus>
 
                                 @if ($errors->has('answer_2'))
                                 <span class="help-block">
@@ -104,7 +104,7 @@
                             <label for="answer_3" class="col-md-4 control-label">Réponse 3</label>
 
                             <div class="col-md-6">
-                                <input id="answer_3" type="text" class="form-control" name="answer_3" value="{{ $quiz->answer_3 }}" autofocus>
+                                <input id="answer_3" type="text" class="form-control" name="answer_3" value="<?php if (array_count_values($quiz->answers) > 2) echo $quiz->answers[2];?>" autofocus>
 
                                 @if ($errors->has('answer_3'))
                                 <span class="help-block">
@@ -118,46 +118,11 @@
                             <label for="answer_4" class="col-md-4 control-label">Réponse 4</label>
 
                             <div class="col-md-6">
-                                <input id="answer_4" type="text" class="form-control" name="answer_4" value="{{ $quiz->answer_4 }}" autofocus>
+                                <input id="answer_4" type="text" class="form-control" name="answer_4" value="<?php if (array_count_values($quiz->answers) == 4) echo $quiz->answers[3];?>" autofocus>
 
                                 @if ($errors->has('answer_4'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('answer_4') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('solution') ? ' has-error' : '' }}">
-                            <label for="solution" class="col-md-4 control-label">Solution <span style="color: red">*</span></label>
-
-                            <div class="col-md-6">
-                                <select id="solution" name="solution" required autofocus>
-                                    @if ($quiz->solution == "answer_1")
-                                        <option selected value="answer_1">Réponse 1</option>
-                                    @else
-                                        <option value="answer_1">Réponse 1</option>
-                                    @endif
-                                    @if ($quiz->solution == "answer_2")
-                                        <option selected value="answer_2">Réponse 2</option>
-                                    @else
-                                        <option value="answer_2">Réponse 2</option>
-                                    @endif
-                                    @if ($quiz->solution == "answer_3")
-                                        <option selected value="answer_3">Réponse 3</option>
-                                    @else
-                                        <option value="answer_3">Réponse 3</option>
-                                    @endif
-                                    @if ($quiz->solution == "answer_4")
-                                        <option selected value="answer_4">Réponse 4</option>
-                                    @else
-                                        <option value="answer_4">Réponse 4</option>
-                                    @endif
-                                </select>
-
-                                @if ($errors->has('solution'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('solution') }}</strong>
                                     </span>
                                 @endif
                             </div>

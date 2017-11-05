@@ -15,8 +15,12 @@ class Quiz extends Model
 {
     public $timestamps = false;
 
+    protected $casts = [
+        'answers' => 'array'
+    ];
+
     protected $fillable = [
-        'title', 'theme_id', 'question', 'answer_1', 'answer_2', 'answer_3', 'answer_4', 'solution', 'point', 'picture', 'sound', 'video'
+        'title', 'theme_id', 'question', 'good_answer', 'answers', 'point', 'picture', 'sound', 'video'
     ];
 
     public function articles()

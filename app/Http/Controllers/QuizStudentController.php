@@ -13,27 +13,30 @@ class QuizStudentController extends Controller
     public function answerQuiz(Request $request, $id)
     {
         $student_id = Student::where('user_id', Auth::user()->id)->pluck('id')->first();
-        $quiz_student = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id]])->count();
-        if ($quiz_student > 0)
+        $quiz_student = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id], ['hasAnswered', true]])->first();
+        if ($quiz_student != null)
             return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
 
         $quiz = Quiz::find($id);
 
+        $quiz_student_update = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id]])->first();
+
         if ($request->input($quiz->solution) != null) {
-            QuizStudent::create([
+            $quiz_student_update->update([
                 'student_id' => $student_id,
                 'quiz_id' => $id,
-                'isSuccess' => true
-            ])->push();
-
+                'isSuccess' => true,
+                'hasAnswered' => true
+            ]);
             return redirect('/quiz')->with('successQuiz', 'Bonne réponse ! :)');
         }
         else {
-            QuizStudent::create([
-                'student_id' => Student::where('user_id', Auth::user()->id)->pluck('id')->first(),
+            $quiz_student_update->update([
+                'student_id' => $student_id,
                 'quiz_id' => $id,
-                'isSuccess' => false
-            ])->push();
+                'isSuccess' => false,
+                'hasAnswered' => true
+            ]);
             return redirect('/quiz')->with('failQuiz', 'Mauvaise réponse ! :(');
         }
     }

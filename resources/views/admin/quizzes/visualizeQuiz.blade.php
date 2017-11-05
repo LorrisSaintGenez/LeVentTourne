@@ -46,32 +46,19 @@
                                 <h4 style="white-space: pre-wrap;">{{ $quiz->question }}</h4>
                             </div>
                         </div>
-
+                        @foreach ($quiz->answers as $answer)
                         <div class="col-md-6 text-center">
-                            <div class="panel panel-primary">
-                                <h4>{{ $quiz->answer_1 }}</h4>
+                            @if ($answer == $quiz->good_answer)
+                            <div class="panel panel-success">
+                                <h4>{{ $answer }}</h4>
                             </div>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <div class="panel panel-primary">
-                                <h4>{{ $quiz->answer_2 }}</h4>
+                            @else
+                            <div class="panel panel-danger">
+                                <h4>{{ $answer }}</h4>
                             </div>
+                            @endif
                         </div>
-
-                        @if ($quiz->answer_3 != null)
-                        <div class="col-md-6 text-center">
-                            <div class="panel panel-primary">
-                                <h4>{{ $quiz->answer_3 }}</h4>
-                            </div>
-                        </div>
-                        @endif
-                        @if ($quiz->answer_4 != null)
-                        <div class="col-md-6 text-center">
-                            <div class="panel panel-primary">
-                                <h4>{{ $quiz->answer_4 }}</h4>
-                            </div>
-                        </div>
-                        @endif
+                        @endforeach
                     </div>
                     <div class="form-group col-md-12">
                         <div class="col-md-2">
