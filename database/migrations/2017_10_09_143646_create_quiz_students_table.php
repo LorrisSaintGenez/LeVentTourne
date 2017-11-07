@@ -16,7 +16,7 @@ class CreateQuizStudentsTable extends Migration
         Schema::create('quiz_students', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('student_id')->unsigned();
-            $table->integer('quiz_id')->unsigned();
+            $table->uuid('quiz_id');
             $table->boolean('isSuccess');
             $table->boolean('hasAnswered');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
