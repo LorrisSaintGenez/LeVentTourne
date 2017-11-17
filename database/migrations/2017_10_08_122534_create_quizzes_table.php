@@ -19,7 +19,7 @@ class CreateQuizzesTable extends Migration
             $table->string('title')->unique();
             $table->string('question', 2000);
             $table->string('good_answer');
-            $table->json('answers');
+            $table->text('answers');
             $table->integer('point');
             $table->string('picture')->nullable();
             $table->string('sound')->nullable();
