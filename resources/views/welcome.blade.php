@@ -82,15 +82,15 @@
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
-                            Logout
+                            Déconnexion
                         </a>
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{ csrf_field() }}
                         </form>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
+                        <a href="{{ route('login') }}">Connexion</a>
+                        <a href="{{ route('register') }}">Inscription</a>
                     @endauth
                 </div>
             @endif
