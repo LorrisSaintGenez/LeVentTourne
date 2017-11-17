@@ -16,6 +16,11 @@ class UpdateQuizzesTable extends Migration
         Schema::table('quizzes', function (Blueprint $table) {
             $table->integer('theme_id')->unsigned()->nullable();
             $table->foreign('theme_id')->references('id')->on('themes')->onDelete('cascade');
+            $table->text('explanation');
+            $table->integer('timer');
+            $table->string('victory_sound')->nullable();
+            $table->string('defeat_sound')->nullable();
+
         });
     }
 
@@ -28,6 +33,11 @@ class UpdateQuizzesTable extends Migration
     {
         Schema::table('quizzes', function (Blueprint $table) {
             $table->dropForeign('quizzes_theme_id_foreign');
+            $table->dropColumn('theme_id');
+            $table->dropColumn('explanation');
+            $table->dropColumn('timer');
+            $table->dropColumn('victory_sound');
+            $table->dropColumn('defeat_sound');
         });
     }
 }

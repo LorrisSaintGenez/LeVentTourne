@@ -17,12 +17,8 @@ class Quiz extends Model
 
     use Uuids;
 
-    protected $casts = [
-        'answers' => 'array'
-    ];
-
     protected $fillable = [
-        'title', 'theme_id', 'question', 'good_answer', 'answers', 'point', 'picture', 'sound', 'video'
+        'title', 'theme_id', 'question', 'good_answer', 'answers', 'point', 'picture', 'sound', 'video', 'explanation', 'timer', 'victory_sound', 'defeat_sound'
     ];
 
     public function articles()

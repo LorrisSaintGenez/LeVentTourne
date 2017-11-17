@@ -62,11 +62,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('explanation') ? ' has-error' : '' }}">
+                            <label for="explanation" class="col-md-4 control-label">Explications <span style="color: red">*</span></label>
+
+                            <div class="col-md-6">
+                                <textarea style="resize: vertical" id="explanation" class="form-control" name="explanation" required autofocus >{{old('explanation')}}</textarea>
+
+                                @if ($errors->has('explanation'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('explanation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('good_answer') ? ' has-error' : '' }}">
                             <label for="good_answer" class="col-md-4 control-label">Bonne réponse <span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="good_answer" type="text" class="form-control" name="good_answer" value="{{ old('good_answer') }}" required autofocus>
+                                <input id="good_answer" class="form-control" name="good_answer" value="{{ old('good_answer') }}" required autofocus>
 
                                 @if ($errors->has('good_answer'))
                                 <span class="help-block">
@@ -80,7 +94,7 @@
                             <label for="answer_2" class="col-md-4 control-label">Réponse 2 <span style="color: red">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="answer_2" type="text" class="form-control" name="answer_2" value="{{ old('answer_2') }}" required autofocus>
+                                <input id="answer_2" class="form-control" name="answer_2" value="{{ old('answer_2') }}" required autofocus>
 
                                 @if ($errors->has('answer_2'))
                                 <span class="help-block">
@@ -94,7 +108,7 @@
                             <label for="answer_3" class="col-md-4 control-label">Réponse 3</label>
 
                             <div class="col-md-6">
-                                <input id="answer_3" type="text" class="form-control" name="answer_3" value="{{ old('answer_3') }}" autofocus>
+                                <input id="answer_3" class="form-control" name="answer_3" value="{{ old('answer_3') }}" autofocus>
 
                                 @if ($errors->has('answer_3'))
                                 <span class="help-block">
@@ -108,7 +122,7 @@
                             <label for="answer_4" class="col-md-4 control-label">Réponse 4</label>
 
                             <div class="col-md-6">
-                                <input id="answer_4" type="text" class="form-control" name="answer_4" value="{{ old('answer_4') }}" autofocus>
+                                <input id="answer_4" class="form-control" name="answer_4" value="{{ old('answer_4') }}" autofocus>
 
                                 @if ($errors->has('answer_4'))
                                 <span class="help-block">
@@ -127,6 +141,20 @@
                                 @if ($errors->has('point'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('point') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('timer') ? ' has-error' : '' }}">
+                            <label for="timer" class="col-md-4 control-label">Temps de réponse (sec) <span style="color: red">*</span></label>
+
+                            <div class="col-md-6">
+                                <input id="timer" min="1" type="number" class="form-control" name="timer" value="{{ old('timer') }}" required autofocus>
+
+                                @if ($errors->has('timer'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('timer') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -164,11 +192,39 @@
                             <label for="video" class="col-md-4 control-label">Vidéo</label>
 
                             <div class="col-md-6">
-                                <input type="text" id="video" class="form-control" name="video" value="{{ old('video') }}" autofocus>
+                                <input id="video" class="form-control" name="video" value="{{ old('video') }}" autofocus>
 
                                 @if ($errors->has('video'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('video') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('victory_sound') ? ' has-error' : '' }}">
+                            <label for="victory_sound" class="col-md-4 control-label">Son de bonne réponse</label>
+
+                            <div class="col-md-6">
+                                <input type="file" id="victory_sound" class="form-control" name="victory_sound" value="{{ old('victory_sound') }}" autofocus>
+
+                                @if ($errors->has('victory_sound'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('victory_sound') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('defeat_sound') ? ' has-error' : '' }}">
+                            <label for="defeat_sound" class="col-md-4 control-label">Son de mauvaise réponse</label>
+
+                            <div class="col-md-6">
+                                <input type="file" id="defeat_sound" class="form-control" name="defeat_sound" value="{{ old('defeat_sound') }}" autofocus>
+
+                                @if ($errors->has('defeat_sound'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('defeat_sound') }}</strong>
                                     </span>
                                 @endif
                             </div>

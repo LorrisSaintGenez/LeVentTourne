@@ -34,10 +34,16 @@ class QuizController extends Controller
             'answer_2' => 'required',
             'point' => 'required',
             'sound' => 'mimes:mpga',
+            'victory_sound' => 'mimes:mpga',
+            'defeat_sound' => 'mimes:mpga',
+            'explanation' => 'required',
+            'timer' => 'required'
         ]);
 
         $locationPicture = null;
         $locationSound = null;
+        $locationVictorySound = null;
+        $locationDefeatSound = null;
         $videoPath = null;
 
         if (Input::file('picture') != null)
@@ -45,19 +51,26 @@ class QuizController extends Controller
         if (Input::file('sound') != null)
             $locationSound = Misc::uploadOnDisk('sound', 'sounds', false);
 
+        if (Input::file('victory_sound') != null)
+            $locationVictorySound = Misc::uploadOnDisk('victory_sound', 'sounds', false);
+        if (Input::file('defeat_sound') != null)
+            $locationDefeatSound = Misc::uploadOnDisk('defeat_sound', 'sounds', false);
+
         if ($request->input('video') != "")
             $videoPath = $this->YoutubeID($request->input('video'));
 
         $theme = Theme::where('title', $request->input('theme'))->first();
 
-        $answers = array();
-        array_push($answers, $request->input('good_answer'));
-        array_push($answers, $request->input('answer_2'));
+        $answers_array = array();
+        array_push($answers_array, $request->input('good_answer'));
+        array_push($answers_array, $request->input('answer_2'));
 
         if ($request->input('answer_3') != "")
-            array_push($answers, $request->input('answer_3'));
+            array_push($answers_array, $request->input('answer_3'));
         if ($request->input('answer_4') != "")
-            array_push($answers, $request->input('answer_4'));
+            array_push($answers_array, $request->input('answer_4'));
+
+        $answers = serialize($answers_array);
 
         Quiz::create([
             'title' => $request->input('title'),
@@ -69,6 +82,10 @@ class QuizController extends Controller
             'picture' => $locationPicture,
             'sound' => $locationSound,
             'video' => $videoPath,
+            'explanation' => $request->input('explanation'),
+            'victory_sound' => $locationVictorySound,
+            'defeat_sound' => $locationDefeatSound,
+            'timer' => $request->input('timer')
         ])->push();
 
         $theme->update([
@@ -101,6 +118,8 @@ class QuizController extends Controller
             $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
         $themes = Theme::all();
+
+        $quiz->answers = unserialize($quiz->answers);
 
         return view('admin/quizzes/editQuiz', ['quiz' => $quiz, 'themes' => $themes]);
     }
@@ -172,7 +191,7 @@ class QuizController extends Controller
             $item = Input::file('sound');
             $locationSound = $item->getClientOriginalName();
             if ($quiz->sound != null)
-                Storage::disk('images')->delete($quiz->sound);
+                Storage::disk('sounds')->delete($quiz->sound);
             Storage::disk('sounds')->put($locationSound, file_get_contents($item->getRealPath()));
         }
 
@@ -191,14 +210,16 @@ class QuizController extends Controller
             ]);
         }
 
-        $answers = array();
-        array_push($answers, $request->input('good_answer'));
-        array_push($answers, $request->input('answer_2'));
+        $answers_array = array();
+        array_push($answers_array, $request->input('good_answer'));
+        array_push($answers_array, $request->input('answer_2'));
 
         if ($request->input('answer_3') != "")
-            array_push($answers, $request->input('answer_3'));
+            array_push($answers_array, $request->input('answer_3'));
         if ($request->input('answer_4') != "")
-            array_push($answers, $request->input('answer_4'));
+            array_push($answers_array, $request->input('answer_4'));
+
+        $answers = serialize($answers_array);
 
         $quiz->update([
             'title' => $request->input('title'),
@@ -228,6 +249,7 @@ class QuizController extends Controller
         $theme = Theme::find($quiz->theme_id);
 
         $quiz->theme = $theme->title;
+        $quiz->answers = unserialize($quiz->answers);
 
         if ($isStudent) {
             $student_id = Student::where('user_id', Auth::user()->id)->pluck('id')->first();

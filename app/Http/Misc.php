@@ -67,7 +67,7 @@ class Misc
         } else {
             $item = Input::file($field);
             $location = $item->getClientOriginalName();
-            Storage::disk($storage)->put($location, file_get_contents($item->getRealPath()));
+            Storage::disk($storage)->put(uniqid() . $location, file_get_contents($item->getRealPath()));
         }
         return $location;
     }
