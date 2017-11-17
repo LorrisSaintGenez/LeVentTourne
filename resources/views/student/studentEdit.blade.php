@@ -48,12 +48,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('teacher_id') ? ' has-error' : '' }}">
                             <label for="teacher_id" class="col-md-4 control-label">Professeur <span style="color: red">*</span></label>
                             <div class="col-md-6">
                                 <select id="teacher_id" class="form-control" name="teacher_id">
                                     @foreach($teachers as $teacher)
-                                    @if ($student->teacher->id == $teacher->id)
+                                    @if ($student->teacher_id == $teacher->id)
                                         <option selected value="{{$teacher->id}}">{{$teacher->name}} - {{$teacher->email}}</option>
                                     @else
                                         <option value="{{$teacher->id}}">{{$teacher->name}} - {{$teacher->email}}</option>
