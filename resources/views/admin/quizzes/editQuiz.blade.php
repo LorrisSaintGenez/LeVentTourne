@@ -72,6 +72,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('explanation') ? ' has-error' : '' }}">
+                            <label for="explanation" class="col-md-4 control-label">Explications <span style="color: red">*</span></label>
+
+                            <div class="col-md-6">
+                                <textarea style="resize: vertical" id="explanation" class="form-control" name="explanation" required autofocus >{{ $quiz->explanation }}</textarea>
+
+                                @if ($errors->has('explanation'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('explanation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('good_answer') ? ' has-error' : '' }}">
                             <label for="good_answer" class="col-md-4 control-label">Bonne réponse <span style="color: red">*</span></label>
 
@@ -142,6 +156,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('timer') ? ' has-error' : '' }}">
+                            <label for="timer" class="col-md-4 control-label">Temps de réponse (sec) <span style="color: red">*</span></label>
+
+                            <div class="col-md-6">
+                                <input id="timer" min="1" type="number" class="form-control" name="timer" value="{{ $quiz->timer }}" required autofocus>
+
+                                @if ($errors->has('timer'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('timer') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
                             <label for="picture" class="col-md-4 control-label">Photo</label>
 
@@ -197,6 +225,45 @@
                                 @if ($errors->has('video'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('video') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('victory_sound') ? ' has-error' : '' }}">
+                            <label for="victory_sound" class="col-md-4 control-label">Son de bonne réponse</label>
+
+                            <div class="col-md-6">
+                                @if ($quiz->victory_sound != null)
+                                <audio controls preload="metadata">
+                                    <source src="data:audio/mp3;base64, {{ $quiz->victory_sound }}">
+                                </audio>
+                                @endif
+
+                                <input type="file" id="victory_sound" class="form-control" name="victory_sound" autofocus>
+
+                                @if ($errors->has('victory_sound'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('victory_sound') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('defeat_sound') ? ' has-error' : '' }}">
+                            <label for="defeat_sound" class="col-md-4 control-label">Son de mauvaise réponse</label>
+
+                            <div class="col-md-6">
+                                @if ($quiz->defeat_sound != null)
+                                <audio controls preload="metadata">
+                                    <source src="data:audio/mp3;base64, {{ $quiz->defeat_sound }}">
+                                </audio>
+                                @endif
+                                <input type="file" id="defeat_sound" class="form-control" name="defeat_sound" autofocus>
+
+                                @if ($errors->has('defeat_sound'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('defeat_sound') }}</strong>
                                     </span>
                                 @endif
                             </div>

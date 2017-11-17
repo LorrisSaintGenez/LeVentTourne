@@ -37,7 +37,7 @@ class QuizController extends Controller
             'victory_sound' => 'mimes:mpga',
             'defeat_sound' => 'mimes:mpga',
             'explanation' => 'required',
-            'timer' => 'required'
+            'timer' => 'required',
         ]);
 
         $locationPicture = null;
@@ -114,6 +114,10 @@ class QuizController extends Controller
         $quiz = Quiz::find($id);
         if ($quiz->sound != null)
             $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
+        if ($quiz->victory_sound != null)
+            $quiz->victory_sound = base64_encode(Storage::disk('sounds')->get($quiz->victory_sound));
+        if ($quiz->defeat_sound != null)
+            $quiz->defeat_sound = base64_encode(Storage::disk('sounds')->get($quiz->defeat_sound));
         if ($quiz->picture != null)
             $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
@@ -172,11 +176,18 @@ class QuizController extends Controller
             'answer_2' => 'required',
             'point' => 'required',
             'sound' => 'mimes:mpga',
+            'victory_sound' => 'mimes:mpga',
+            'defeat_sound' => 'mimes:mpga',
+            'explanation' => 'required',
+            'timer' => 'required',
         ]);
 
         $locationPicture = $quiz->picture;
         $locationSound = $quiz->sound;
+        $locationVictorySound = $quiz->victory_sound;
+        $locationDefeatSound = $quiz->defeat_sound;
         $videoPath = $quiz->video;
+
 
         if (Input::file('picture') != null) {
             $item = $_FILES['picture'];
@@ -189,10 +200,26 @@ class QuizController extends Controller
 
         if (Input::file('sound') != null) {
             $item = Input::file('sound');
-            $locationSound = $item->getClientOriginalName();
+            $locationSound = uniqid() . $item->getClientOriginalName();
             if ($quiz->sound != null)
                 Storage::disk('sounds')->delete($quiz->sound);
             Storage::disk('sounds')->put($locationSound, file_get_contents($item->getRealPath()));
+        }
+
+        if (Input::file('victory_sound') != null) {
+            $item = Input::file('victory_sound');
+            $locationVictorySound = uniqid() . $item->getClientOriginalName();
+            if ($quiz->victory_sound != null)
+                Storage::disk('sounds')->delete($quiz->victory_sound);
+            Storage::disk('sounds')->put($locationVictorySound, file_get_contents($item->getRealPath()));
+        }
+
+        if (Input::file('defeat_sound') != null) {
+            $item = Input::file('defeat_sound');
+            $locationDefeatSound = uniqid() . $item->getClientOriginalName();
+            if ($quiz->defeat_sound != null)
+                Storage::disk('sounds')->delete($quiz->defeat_sound);
+            Storage::disk('sounds')->put($locationDefeatSound, file_get_contents($item->getRealPath()));
         }
 
         if ($request->input('video') != "")
@@ -231,6 +258,10 @@ class QuizController extends Controller
             'picture' => $locationPicture,
             'sound' => $locationSound,
             'video' => $videoPath,
+            'explanation' => $request->input('explanation'),
+            'victory_sound' => $locationVictorySound,
+            'defeat_sound' => $locationDefeatSound,
+            'timer' => $request->input('timer')
         ]);
 
         return redirect('backoffice/quiz')->with('successEdit', 'Quiz modifié avec succès !');
