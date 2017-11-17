@@ -19,6 +19,9 @@ class QuizController extends Controller
     public function creation() {
         $themes = Theme::all();
 
+        if ($themes->count() == 0)
+            return redirect('backoffice/themes/create')->with('noTheme', 'Créez un thème avant de créer un quiz.');
+
         return view('admin/quizzes/createQuiz', ['themes' => $themes]);
     }
 
