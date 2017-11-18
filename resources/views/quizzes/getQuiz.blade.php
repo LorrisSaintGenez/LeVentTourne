@@ -60,10 +60,10 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                     </form>
                     @endforeach
 
-                    <audio id="victory" hidden preload="auto" onended="onAudioEnded()" autoplay>
+                    <audio id="victory" hidden preload="auto" onended="onAudioEnded()" autoplay loop>
                         <source src="data:audio/mp3;base64, {{ $quiz->victory_sound }}">
                     </audio>
-                    <audio id="defeat" hidden preload="auto" onended="onAudioEnded()" autoplay>
+                    <audio id="defeat" hidden preload="auto" onended="onAudioEnded()" autoplay loop>
                         <source src="data:audio/mp3;base64, {{ $quiz->defeat_sound }}">
                     </audio>
                 </div>
@@ -73,19 +73,28 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 </div>
 <script>
     var response = null;
+    var victory = document.getElementById('victory');
+    var defeat = document.getElementById('defeat');
 
-    document.getElementById('victory').defaultMuted = true;
-    document.getElementById('defeat').defaultMuted = true;
+    victory.defaultMuted = true;
+    defeat.defaultMuted = true;
 
     function answerQuiz(answer) {
       if (answer === '{{ $quiz->good_answer }}') {
-        document.getElementById('victory').muted = false;
-        document.getElementById('victory').play();
+        victory.pause();
+        victory.currentTime = 0;
+        victory.loop = false;
+        victory.muted = false;
+        victory.play();
       }
       else {
-        document.getElementById('defeat').muted = false;
-        document.getElementById('defeat').play();
+        defeat.pause();
+        defeat.currentTime = 0;
+        defeat.loop = false;
+        defeat.muted = false;
+        defeat.play();
       }
+      $("[onClick]").removeAttr("onClick");
       response = answer;
     }
 
