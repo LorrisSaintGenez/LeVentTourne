@@ -79,20 +79,30 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
     victory.defaultMuted = true;
     defeat.defaultMuted = true;
 
+    console.log('{{ $quiz->victory_sound }}');
+
     function answerQuiz(answer) {
       if (answer === '{{ $quiz->good_answer }}') {
-        victory.pause();
-        victory.currentTime = 0;
-        victory.loop = false;
-        victory.muted = false;
-        victory.play();
+        if ('{{ $quiz->victory_sound }}') {
+          victory.pause();
+          victory.currentTime = 0;
+          victory.loop = false;
+          victory.muted = false;
+          victory.play();
+        }
+        else
+          document.forms[answer].submit();
       }
       else {
-        defeat.pause();
-        defeat.currentTime = 0;
-        defeat.loop = false;
-        defeat.muted = false;
-        defeat.play();
+        if ('{{ $quiz->defeat_sound }}') {
+          defeat.pause();
+          defeat.currentTime = 0;
+          defeat.loop = false;
+          defeat.muted = false;
+          defeat.play();
+        }
+        else
+          document.forms[answer].submit();
       }
       $("[onClick]").removeAttr("onClick");
       response = answer;
