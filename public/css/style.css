@@ -1,5 +1,6 @@
 div .panel .panel-primary:hover {
-    background-color: #3097D1;
+    background-color: #3cd155;
+    border-color: #3cd155;
     color: white;
     cursor: pointer;
 }

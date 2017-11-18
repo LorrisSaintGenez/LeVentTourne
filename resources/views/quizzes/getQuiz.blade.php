@@ -51,7 +51,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                     <form name="{{ $answer }}" id="{{ $answer }}" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
-                        <div class="col-md-6 text-center" onClick="document.forms['{{ $answer }}'].submit();">
+                        <div class="col-md-6 text-center" onClick="answerQuiz('{{ $answer }}')">
                             <div class="panel panel-primary">
                                 <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
                                 <h4>{{ $answer }}</h4>
@@ -59,9 +59,39 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                         </div>
                     </form>
                     @endforeach
+
+                    <audio id="victory" hidden preload="auto" onended="onAudioEnded()" autoplay>
+                        <source src="data:audio/mp3;base64, {{ $quiz->victory_sound }}">
+                    </audio>
+                    <audio id="defeat" hidden preload="auto" onended="onAudioEnded()" autoplay>
+                        <source src="data:audio/mp3;base64, {{ $quiz->defeat_sound }}">
+                    </audio>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var response = null;
+
+    document.getElementById('victory').defaultMuted = true;
+    document.getElementById('defeat').defaultMuted = true;
+
+    function answerQuiz(answer) {
+      if (answer === '{{ $quiz->good_answer }}') {
+        document.getElementById('victory').muted = false;
+        document.getElementById('victory').play();
+      }
+      else {
+        document.getElementById('defeat').muted = false;
+        document.getElementById('defeat').play();
+      }
+      response = answer;
+    }
+
+    function onAudioEnded() {
+      if (response !== null)
+        document.forms[response].submit();
+    }
+</script>
 @endsection

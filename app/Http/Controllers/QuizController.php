@@ -309,6 +309,11 @@ class QuizController extends Controller
                 'hasAnswered' => false
             ])->push();
 
+            if ($quiz->defeat_sound != null)
+                $quiz->defeat_sound = base64_encode(Storage::disk('sounds')->get($quiz->defeat_sound));
+            if ($quiz->victory_sound != null)
+                $quiz->victory_sound = base64_encode(Storage::disk('sounds')->get($quiz->victory_sound));
+
         }
 
         if ($quiz->sound != null)

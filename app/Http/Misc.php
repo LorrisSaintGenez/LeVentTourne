@@ -63,11 +63,11 @@ class Misc
         if ($isImage) {
             $item = $_FILES[$field];
             $imageHandler = new ImageHandler();
-            $location = $imageHandler->uploadImageOnDisk($item);
+            $location = uniqid() . $imageHandler->uploadImageOnDisk($item);
         } else {
             $item = Input::file($field);
-            $location = $item->getClientOriginalName();
-            Storage::disk($storage)->put(uniqid() . $location, file_get_contents($item->getRealPath()));
+            $location = uniqid() . $item->getClientOriginalName();
+            Storage::disk($storage)->put($location, file_get_contents($item->getRealPath()));
         }
         return $location;
     }
