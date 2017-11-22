@@ -20,7 +20,7 @@ class Misc
 
         foreach ($quizzes as $quiz) {
             $theme = Theme::find($quiz->theme_id);
-            if (!Misc::array_key_exists_r($theme->id, $quizzes_by_theme)) {
+            if (!Misc::depthSearchIsInArray($theme->id, $quizzes_by_theme)) {
                 $item = array(
                     "id" => $theme->id,
                     "theme" => $theme->title,
@@ -43,19 +43,25 @@ class Misc
         return $quizzes_by_theme;
     }
 
+    public static function depthSearchIsInArray($id, $array) {
+        foreach ($array as $key => $val) {
+            if ($val['id'] == $id)
+                return true;
+        }
+        return false;
+    }
+
     public static function array_key_exists_r($needle, $haystack)
     {
-        $result = array_key_exists($needle, $haystack);
-        if ($result)
-            return $result;
+        if (array_key_exists($needle, $haystack))
+            return true;
         foreach ($haystack as $v) {
             if (is_array($v)) {
-                $result = Misc::array_key_exists_r($needle, $v);
-                if ($result)
-                    return $result;
+                if (Misc::array_key_exists_r($needle, $v))
+                    return true;
             }
         }
-        return $result;
+        return false;
     }
 
     public static function uploadOnDisk($field, $storage, $isImage) {
