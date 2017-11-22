@@ -15,6 +15,7 @@ class QuizStudentController extends Controller
     {
         $student_id = Student::where('user_id', Auth::user()->id)->pluck('id')->first();
         $quiz_student = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id], ['hasAnswered', true]])->first();
+
         if ($quiz_student != null)
            return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
 

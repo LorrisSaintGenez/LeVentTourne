@@ -4,7 +4,8 @@ header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 ?>
 @section('content')
-<div class="container">   <div class="row">
+<div class="container">
+    <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="row">
                 <div class="col-md-6">
@@ -14,6 +15,9 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
             <div class="panel panel-default">
                 <div class="panel-heading">Visualisation du quiz <b>{{ $quiz->title }}</b></div>
                 <div class="panel-body">
+                    <div class="timer">
+                        <span id="timer">Temps restant : {{ $quiz->timer }}</span>
+                    </div>
                     <div class="col-md-12 text-center">
                         <h3>{{ $quiz->title }}</h3>
                     </div>
@@ -60,6 +64,10 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                     </form>
                     @endforeach
 
+                    <form name="timer_ended" id="timer_ended" hidden method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                    </form>
+
                     <audio id="victory" hidden preload="auto" onended="onAudioEnded()" autoplay loop>
                         <source src="data:audio/mp3;base64, {{ $quiz->victory_sound }}">
                     </audio>
@@ -79,7 +87,19 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
     victory.defaultMuted = true;
     defeat.defaultMuted = true;
 
-    console.log('{{ $quiz->victory_sound }}');
+    var timerLimit = '{{ $quiz->timer }}';
+
+    function setTimer() {
+      if (timerLimit > 0) {
+        timerLimit--;
+        document.getElementById('timer').innerHTML = "Temps restant : " + timerLimit;
+      }
+      else {
+        answerQuiz("timer_ended");
+      }
+    }
+
+    setInterval(setTimer, 1000);
 
     function answerQuiz(answer) {
       if (answer === '{{ $quiz->good_answer }}') {

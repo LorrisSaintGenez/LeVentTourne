@@ -295,6 +295,7 @@ class QuizController extends Controller
                         'hasAnswered' => true
                     ]);
                 }
+
                 return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
             }
 

@@ -4,3 +4,8 @@ div .panel .panel-primary:hover {
     color: white;
     cursor: pointer;
 }
+
+div .timer {
+    position: relative;
+    text-align: right;
+}
