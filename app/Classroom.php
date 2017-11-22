@@ -2,8 +2,8 @@
 /**
  * Created by IntelliJ IDEA.
  * User: Lorris
- * Date: 09/10/2017
- * Time: 16:41
+ * Date: 22/11/2017
+ * Time: 16:14
  */
 
 namespace App;
@@ -11,18 +11,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class Classroom extends Model
 {
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id', 'teacher_id'
+        'teacher_id', 'school_id', 'name'
     ];
-
-    public function articles()
-    {
-        return $this->hasMany('App\QuizStudent');
-    }
 
     public function ClassStudent()
     {

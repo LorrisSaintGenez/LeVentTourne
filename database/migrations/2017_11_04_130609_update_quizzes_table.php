@@ -20,7 +20,6 @@ class UpdateQuizzesTable extends Migration
             $table->integer('timer');
             $table->string('victory_sound')->nullable();
             $table->string('defeat_sound')->nullable();
-
         });
     }
 
