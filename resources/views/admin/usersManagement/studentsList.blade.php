@@ -22,16 +22,14 @@
                             </h4>
                         </div>
                         <div class="col-md-3">
-                            @if ($user->teacher == null)
-                            <h4 style="color: red;">
-                                Pas de professeur
+                            @if ($user->classroom != null)
+                            <h4>
+                                {{ $user->classroom->name }}
                             </h4>
                             @else
-                            <a href="{{ route('studentByTeacher', $user->teacher->id) }}" type="submit">
-                                <h4>
-                                    {{ $user->teacher->name }}
-                                </h4>
-                            </a>
+                            <h4 style="color: red;">
+                                Pas de classe
+                            </h4>
                             @endif
                         </div>
                         <div class="col-md-3">

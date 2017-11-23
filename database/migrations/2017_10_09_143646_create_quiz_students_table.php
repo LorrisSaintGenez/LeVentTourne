@@ -19,7 +19,7 @@ class CreateQuizStudentsTable extends Migration
             $table->uuid('quiz_id');
             $table->boolean('isSuccess');
             $table->boolean('hasAnswered');
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->unique(array('student_id', 'quiz_id'));
             $table->timestamps();

@@ -16,6 +16,6 @@ class School extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'address', 'zipcode', 'city', 'country'
+        'name', 'address', 'zipcode', 'city', 'country', 'created_by_teacher_id'
     ];
 }

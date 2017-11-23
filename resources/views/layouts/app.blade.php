@@ -57,10 +57,14 @@
                                             <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
                                             <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
                                         @endif
+                                        @if (Auth::user()->role == 1)
+                                        <a href="{{ url('/teacher/createSchool') }}">Création d'école</a>
+                                        <a href="{{ url('/teacher/createClassroom') }}">Création de classe</a>
+                                        @endif
                                         @if (Auth::user()->role == 2)
-                                            <a href="{{ url('/student') }}">Mon Compte</a>
-                                            <a href="{{ url('/student/progression') }}">Ma progression</a>
-                                            <a href="{{ url('/quiz') }}">Quiz</a>
+                                        <a href="{{ url('/student') }}">Mon Compte</a>
+                                        <a href="{{ url('/student/progression') }}">Ma progression</a>
+                                        <a href="{{ url('/quiz') }}">Quiz</a>
                                         @endif
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

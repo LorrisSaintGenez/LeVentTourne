@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Classroom;
+use App\ClassStudent;
 use App\Quiz;
 use App\QuizStudent;
-use App\Student;
+use App\School;
+use App\Teacher;
 use App\User;
 use App\Http\Misc;
 use Illuminate\Http\Request;
@@ -16,8 +19,8 @@ class StudentController extends Controller
         $users = User::where('role', '2')->get();
 
         foreach ($users as $user) {
-            $teacher_id = Student::where('user_id', $user->id)->pluck('teacher_id')->first();
-            $user->teacher = User::where('id', $teacher_id)->first();
+            $classroom_id = ClassStudent::where('student_id', $user->id)->pluck('classroom_id')->first();
+            $user->classroom = Classroom::where('id', $classroom_id)->first();
         }
 
         $users = $users->sortBy('teacher');
@@ -28,13 +31,34 @@ class StudentController extends Controller
     public function getCurrentStudent($id)
     {
         $student = User::find($id);
-        $student->teacher = User::find(Student::where('user_id', $id)->pluck('teacher_id'))->first();
+
+        $classStudent = ClassStudent::where('student_id', $id)->first();
+
+        if ($classStudent) {
+            $classroom = Classroom::find($classStudent->classroom_id);
+            $classroom->school = School::find($classroom->school_id);
+            $classroom->teacher = User::find(Teacher::find($classroom->teacher_id));
+            $classStudents = ClassStudent::where('classroom_id', $id)->get();
+            $classroom->classStudents = $classStudents;
+            $student->classroom = $classroom;
+        }
+
+
         return $student;
     }
 
     public function getStudentInformation($id, $view)
     {
         $student = $this->getCurrentStudent($id);
+        $classStudent = ClassStudent::where('student_id', $id)->first();
+        if ($classStudent) {
+            $classroom = Classroom::find($classStudent->classroom_id);
+            $classroom->school = School::find($classroom->school_id);
+            $classroom->teacher = User::find(Teacher::find($classroom->teacher_id));
+            $classStudents = ClassStudent::where('classroom_id', $id)->get();
+            $classroom->classStudents = $classStudents;
+            $student->classroom = $classroom;
+        }
 
         $quizzes = Quiz::all();
 
@@ -44,9 +68,7 @@ class StudentController extends Controller
             $total_points += $quiz->point;
         }
 
-        $student_id = Student::where('user_id', $id)->pluck('id')->first();
-
-        $quizzes_done = QuizStudent::where([['student_id', $student_id], ['isSuccess', 1]])->get();
+        $quizzes_done = QuizStudent::where([['student_id', $id], ['isSuccess', 1]])->get();
 
         $quiz_points = 0;
 
@@ -68,9 +90,18 @@ class StudentController extends Controller
     public function edit() {
         $student = $this->getCurrentStudent(Auth::user()->id);
 
-        $teachers = User::where('role', 1)->orderBy('name')->get();
+        $classrooms = Classroom::all();
 
-        return view('student/studentEdit', ['student' => $student, 'teachers' => $teachers]);
+        foreach ($classrooms as $classroom) {
+            $classroom->school = School::find($classroom->school_id);
+            $teacher = Teacher::find($classroom->teacher_id);
+            if ($teacher)
+                $classroom->teacher = User::find($teacher->user_id);
+            $classroom->classStudents = ClassStudent::where('classroom_id', $classroom->id)->get();
+        }
+
+
+        return view('student/studentEdit', ['student' => $student, 'classrooms' => $classrooms]);
     }
 
     public function update(Request $request) {
@@ -81,20 +112,29 @@ class StudentController extends Controller
             'email' => $request->input('email')
         ]);
 
-        $student = Student::where('user_id', $user->id);
+        $classStudent = ClassStudent::where('student_id', $user->id)->get();
 
-        $student->update([
-            'teacher_id' => $request->input('teacher_id')
-        ]);
+        if ($classStudent->count() > 0) {
+
+
+            $classStudent->first()->update([
+                'classroom_id' => $request->input('classroom_id')
+            ]);
+        }
+        else {
+            ClassStudent::create([
+                'classroom_id' => $request->input('classroom_id'),
+                'student_id' => $user->id
+            ])->push();
+        }
 
         return redirect('student')->with('successEdit', 'Profil modifié avec succès !');
     }
 
     public function progression() {
         $user = User::find(Auth::user()->id);
-        $student = Student::where('user_id', $user->id)->first();
 
-        $quizzes_done = QuizStudent::where([['student_id', $student->id], ['isSuccess', 1]])->get();
+        $quizzes_done = QuizStudent::where([['student_id', $user->id], ['isSuccess', 1]])->get();
         $quizzes = Quiz::all();
 
         $quizzes_by_theme = Misc::getQuizByTheme($quizzes, $quizzes_done);

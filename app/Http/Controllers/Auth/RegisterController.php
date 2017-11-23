@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Student;
+use App\Teacher;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -76,13 +77,13 @@ class RegisterController extends Controller
             'role' => $role
         ]);
 
-        if ($role == 2) {
-            $student = Student::create([
+        if ($role == 1) {
+            $teacher = Teacher::create([
                 'user_id' => $user->id,
-                'teacher_id' => null
+                'school_id' => null
             ]);
 
-            $student->push();
+            $teacher->push();
         }
 
         return $user;

@@ -6,7 +6,6 @@ use App\Http\ImageHandler;
 use App\Http\Misc;
 use App\Quiz;
 use App\QuizStudent;
-use App\Student;
 use App\Theme;
 use App\User;
 use Illuminate\Http\Request;
@@ -138,16 +137,15 @@ class QuizController extends Controller
     public function getAllQuizzesStudent() {
 
         $user = User::find(Auth::user()->id);
-        $student = Student::where('user_id', $user->id)->first();
 
-        $quizzes_done = QuizStudent::where([['student_id', $student->id], ['isSuccess', 1]])->get();
+        $quizzes_done = QuizStudent::where([['student_id', $user->id], ['isSuccess', 1]])->get();
         $quizzes = Quiz::all();
 
         $quizzes_by_theme = Misc::getQuizByTheme($quizzes, $quizzes_done);
 
         foreach ($quizzes_by_theme as $quiz_by_theme) {
             foreach ($quiz_by_theme['quiz'] as $quiz){
-                $quiz_student = QuizStudent::where([['student_id', Student::where('user_id', Auth::user()->id)->pluck('id')->first()], ['quiz_id', $quiz->id]])->first();
+                $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $quiz->id]])->first();
                 if ($quiz_student != null) {
                     $quiz->exists = true;
                     $quiz->success = $quiz_student->isSuccess;
@@ -283,13 +281,13 @@ class QuizController extends Controller
         $quiz->answers = unserialize($quiz->answers);
 
         if ($isStudent) {
-            $student_id = Student::where('user_id', Auth::user()->id)->pluck('id')->first();
+            $user = User::find(Auth::user()->id);
 
-            $quiz_student = QuizStudent::where([['student_id', $student_id], ['quiz_id', $id]])->first();
+            $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $id]])->first();
             if ($quiz_student) {
                 if (!$quiz_student->hasAnswered) {
                     $quiz_student->update([
-                        'student_id' => $student_id,
+                        'student_id' => $user->id,
                         'quiz_id' => $id,
                         'isSuccess' => $quiz_student->isSuccess,
                         'hasAnswered' => true
@@ -304,7 +302,7 @@ class QuizController extends Controller
             $quiz->answers = $answers;
 
             QuizStudent::create([
-                'student_id' => $student_id,
+                'student_id' => $user->id,
                 'quiz_id' => $id,
                 'isSuccess' => false,
                 'hasAnswered' => false

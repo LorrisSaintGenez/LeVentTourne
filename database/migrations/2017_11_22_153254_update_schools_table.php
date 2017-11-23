@@ -15,7 +15,7 @@ class UpdateSchoolsTable extends Migration
     {
         Schema::table('schools', function (Blueprint $table) {
             $table->integer('created_by_teacher_id')->unsigned()->nullable();
-            $table->foreign('created_by_teacher_id')->references('id')->on('teachers')->onDelete('cascade');
+            $table->foreign('created_by_teacher_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

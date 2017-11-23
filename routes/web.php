@@ -54,7 +54,12 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
         Route::prefix('teachers')->group(function () {
             Route::get('/', 'TeacherController@index')->name('teachersIndex');
-            Route::get('students/{id}', 'TeacherController@studentByTeacher')->name('studentByTeacher');
+            Route::get('classes/{id}', 'TeacherController@classesByTeacher')->name('classesByTeacher');
+        });
+
+        Route::prefix('classroom')->group(function () {
+            Route::get('/', 'ClassroomController@index')->name('classroomsIndex');
+            Route::get('visualize/{id}', 'ClassroomController@visualize')->name('visualizeClassroom');
         });
     });
 
@@ -92,5 +97,19 @@ Route::group(['middleware' => 'student'], function () {
         Route::get('/', 'QuizController@getAllQuizzesStudent')->name('getAllQuizzesStudent');
         Route::get('/answer/{id}', 'QuizController@getQuiz')->name('quizGet');
         Route::post('/answer/{id}', 'QuizStudentController@answerQuiz')->name('quizAnswer');
+    });
+});
+
+Route::group(['middleware' => 'teacher'], function () {
+    Route::prefix('teacher')->group(function () {
+        Route::get('/', 'TeacherController@details')->name('teacherDetails');
+        Route::get('edit', 'TeacherController@edit')->name('teacherEdit');
+        Route::post('edit', 'TeacherController@update')->name('teacherUpdate');
+        Route::get('createSchool', function () {
+            return view('school/schoolCreation');
+        })->name('schoolCreation');
+        Route::post('createSchool', 'SchoolController@create')->name('schoolCreate');
+        Route::get('createClassroom', 'ClassroomController@creation')->name('classroomCreation');
+        Route::post('createClassroom', 'ClassroomController@create')->name('classroomCreate');
     });
 });

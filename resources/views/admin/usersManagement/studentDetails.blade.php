@@ -27,10 +27,10 @@
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                @if ($student->teacher != null)
-                                Professeur : <b>{{ $student->teacher->name }}</b>
+                                @if ($student->classroom)
+                                Classe : <b>{{ $student->classroom->name }}</b>
                                 @else
-                                Rattaché à aucun professeur
+                                Rattaché à aucune classe
                                 @endif
                             </h4>
                         </div>

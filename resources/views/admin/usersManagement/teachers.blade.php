@@ -24,11 +24,19 @@
                                 {{ $teacher->created_at }}
                             </h4>
                         </div>
+                        @if ($teacher->classrooms->isEmpty())
                         <div class="col-md-4">
-                            <a href="{{ route('studentByTeacher', $teacher->id) }}" type="submit">
-                                <h4>Voir élèves</h4>
+                            <h4>
+                                Rattaché à aucune classe.
+                            </h4>
+                        </div>
+                        @else
+                        <div class="col-md-4">
+                            <a href="{{ route('classesByTeacher', $teacher->id) }}" type="submit">
+                                <h4>Voir classes</h4>
                             </a>
                         </div>
+                        @endif
                     </div>
                     @endforeach
                 </div>

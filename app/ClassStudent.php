@@ -13,15 +13,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassStudent extends Model
 {
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
-        'student_id', 'class_id'
+        'student_id', 'classroom_id'
     ];
 
     public function Student()
     {
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo('App\Users');
     }
 
     public function Classroom()

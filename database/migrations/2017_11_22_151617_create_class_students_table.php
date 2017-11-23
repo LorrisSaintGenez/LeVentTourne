@@ -16,10 +16,10 @@ class CreateClassStudentsTable extends Migration
         Schema::create('class_students', function (Blueprint $table) {
             $table->increments('id');;
             $table->integer('student_id')->unsigned();
-            $table->integer('class_id')->unsigned();
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('class_id')->references('id')->on('classrooms')->onDelete('cascade');
-            $table->unique(array('student_id', 'class_id'));
+            $table->integer('classroom_id')->unsigned();
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
+            $table->unique(array('student_id', 'classroom_id'));
         });
     }
 
