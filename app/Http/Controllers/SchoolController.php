@@ -23,6 +23,6 @@ class SchoolController extends Controller
             'created_by_teacher_id' => $teacher->id
         ])->push();
 
-        return redirect('/')->with('successSchool', "Ecole créée avec succès !");
+        return redirect('teacher')->with('successSchool', "Ecole créée avec succès !");
     }
 }

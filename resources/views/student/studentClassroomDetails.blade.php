@@ -3,7 +3,13 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12" style="max-height: 100vh;">
+        <div class="col-md-12">
+
+            @if (session('successEdit'))
+            <div class="alert alert-success">
+                {{ session('successEdit') }}
+            </div>
+            @endif
 
             <div class="row">
                 <div class="col-md-6">
@@ -27,11 +33,7 @@
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                @if ($student->classroom)
                                 Classe : <b>{{ $student->classroom->name }} - {{ $student->classroom->school->name }} ({{ $student->classroom->school->city }})</b>
-                                @else
-                                Rattaché à aucune classe
-                                @endif
                             </h4>
                         </div>
                         <div class="col-md-12">
@@ -42,12 +44,6 @@
                         <div class="col-md-12">
                             <h4>
                                 Nombre de points : <b>{{ $quiz_points }}</b> / <b>{{ $total_points }}</b>
-                            </h4>
-                        </div>
-
-                        <div class="col-md-12">
-                            <h4>
-                                Création (aaaa/mm/jj hh:mm:ss) : <b>{{ $student->created_at }}</b>
                             </h4>
                         </div>
                     </div>

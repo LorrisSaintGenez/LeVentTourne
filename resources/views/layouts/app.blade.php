@@ -58,8 +58,9 @@
                                             <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
                                         @endif
                                         @if (Auth::user()->role == 1)
-                                        <a href="{{ url('/teacher/createSchool') }}">Création d'école</a>
-                                        <a href="{{ url('/teacher/createClassroom') }}">Création de classe</a>
+                                        <a href="{{ url('/teacher') }}">Mon Compte</a>
+                                        <a href="{{ url('/teacher/school/createSchool') }}">Création d'école</a>
+                                        <a href="{{ url('/teacher/classroom/createClassroom') }}">Création de classe</a>
                                         @endif
                                         @if (Auth::user()->role == 2)
                                         <a href="{{ url('/student') }}">Mon Compte</a>

@@ -15,7 +15,7 @@ class CreateClassroomsTable extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('teacher_id')->unsigned()->nullable()->unique();
+            $table->integer('teacher_id')->unsigned()->nullable();
             $table->integer('school_id')->unsigned();
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');

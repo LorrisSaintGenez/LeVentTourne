@@ -19,16 +19,20 @@ class StudentController extends Controller
         $users = User::where('role', '2')->get();
 
         foreach ($users as $user) {
-            $classroom_id = ClassStudent::where('student_id', $user->id)->pluck('classroom_id')->first();
-            $user->classroom = Classroom::where('id', $classroom_id)->first();
+            $classStudent = ClassStudent::where('student_id', $user->id)->first();
+            if ($classStudent) {
+                $classroom = Classroom::where('id', $classStudent->classroom_id)->first();
+                $classroom->school = School::find($classroom->school_id);
+                $user->classroom = $classroom;
+            }
         }
 
-        $users = $users->sortBy('teacher');
+        $users = $users->sortBy('id');
 
         return view('admin/usersManagement/studentsList', ['users' => $users]);
     }
 
-    public function getCurrentStudent($id)
+    public static function getCurrentStudent($id)
     {
         $student = User::find($id);
 
@@ -42,7 +46,6 @@ class StudentController extends Controller
             $classroom->classStudents = $classStudents;
             $student->classroom = $classroom;
         }
-
 
         return $student;
     }
@@ -76,7 +79,9 @@ class StudentController extends Controller
             $quiz_points += (int) Quiz::find($quiz_done->quiz_id)->pluck('point')->first();
         }
 
-        return view($view, ['student' => $student, 'quizzes' => $quizzes, 'quizzes_done' => $quizzes_done, 'quiz_points' => $quiz_points, 'total_points' => $total_points]);
+        $user = User::find(Auth::user()->id);
+
+        return view($view, ['user' => $user, 'student' => $student, 'quizzes' => $quizzes, 'quizzes_done' => $quizzes_done, 'quiz_points' => $quiz_points, 'total_points' => $total_points]);
     }
 
     public function visualize($id) {
@@ -100,6 +105,9 @@ class StudentController extends Controller
             $classroom->classStudents = ClassStudent::where('classroom_id', $classroom->id)->get();
         }
 
+        $classStudent = ClassStudent::where('student_id', $student->id)->first();
+        if ($classStudent)
+            $student->classroom_id = $classStudent->classroom_id;
 
         return view('student/studentEdit', ['student' => $student, 'classrooms' => $classrooms]);
     }

@@ -7,7 +7,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <a href="javascript:history.back()">Retour</a>
+                    <a href="{{ url('/teacher') }}">Retour</a>
                 </div>
             </div>
 
@@ -31,6 +31,9 @@
                             </h4>
                         </div>
                     </div>
+                    @if (!$classrooms)
+                    <h2 class="text-center text-danger">Vous n'êtes professeur d'aucune classe.</h2>
+                    @endif
                     @foreach ($classrooms as $classroom)
                     <div class="row text-center">
                         <div class="col-md-4">
@@ -45,11 +48,11 @@
                         </div>
                         <div class="col-md-4">
                             @if ($classroom->classStudents->count() > 0)
-                            <a href="{{ route('visualizeClassroom', $classroom->id) }}" type="submit">
+                            <a href="{{ route('visualizeMyClassroom', $classroom->id) }}" type="submit">
                                 <h4>Liste des élèves de la classe ({{$classroom->classStudents->count()}})</h4>
                             </a>
                             @else
-                            <h4 style="color: red;">Aucune élève dans cette classe</h4>
+                                <h4 style="color: red;">Aucune élève dans cette classe</h4>
                             @endif
                         </div>
                     </div>

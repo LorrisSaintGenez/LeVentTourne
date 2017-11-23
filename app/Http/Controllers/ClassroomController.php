@@ -12,28 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ClassroomController extends Controller
 {
-    public static function getClassDetails($id) {
-        $classroom = Classroom::find($id);
-
-        if ($classroom) {
-
-            $classroom = $classroom->first();
-
-            $classroom->school = School::find($classroom->school_id);
-            $classroom->teacher = User::find(Teacher::find($classroom->teacher_id));
-            $classStudents = ClassStudent::where('classroom_id', $id)->get();
-
-            $classroom->classStudents = $classStudents;
-
-            return $classroom;
-        }
-        return null;
-    }
-
     public function creation() {
         $schools = School::all();
-
-        //dd($schools);
 
         if ($schools->count() == 0)
             return redirect('teacher/createSchool')->with('noSchool', 'Créez une école avant de créer une classe.');
@@ -49,6 +29,37 @@ class ClassroomController extends Controller
             'teacher_id' => null
         ])->push();
 
-        return redirect('/')->with('successClassroom', "Classe créée avec succès !");
+        return redirect('teacher')->with('successClassroom', "Classe créée avec succès !");
+    }
+
+    public function visualizeClassroom($id) {
+        return $this->getClassroomVisualization('admin/usersManagement/studentsList', $id);
+    }
+
+    public function visualizeMyClassroom($id) {
+        $user = User::find(Auth::user()->id);
+        $teacher = Teacher::where('user_id', $user->id)->first();
+
+        $classroom = Classroom::find($id);
+
+        if (!$classroom || $teacher->id != $classroom->teacher_id)
+            return back();
+
+        return $this->getClassroomVisualization('student/studentsList', $id);
+    }
+
+    public function getClassroomVisualization($view, $id) {
+        $classroom = Classroom::find($id);
+        $classStudents = ClassStudent::where('classroom_id', $classroom->id)->get();
+        $students = array();
+
+        foreach ($classStudents as $classStudent) {
+            $student = User::where('id', $classStudent->student_id)->first();
+            $classroom->school = School::find($classroom->school_id);
+            $student->classroom = $classroom;
+            array_push($students, $student);
+        }
+
+        return view($view, ['users' => $students]);
     }
 }

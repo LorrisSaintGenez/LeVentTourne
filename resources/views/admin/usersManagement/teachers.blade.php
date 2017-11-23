@@ -24,7 +24,7 @@
                                 {{ $teacher->created_at }}
                             </h4>
                         </div>
-                        @if ($teacher->classrooms->isEmpty())
+                        @if (count($teacher->classrooms) == 0)
                         <div class="col-md-4">
                             <h4>
                                 Rattaché à aucune classe.
@@ -32,7 +32,7 @@
                         </div>
                         @else
                         <div class="col-md-4">
-                            <a href="{{ route('classesByTeacher', $teacher->id) }}" type="submit">
+                            <a href="{{ route('classesByTeacher', $teacher->teacher_id) }}" type="submit">
                                 <h4>Voir classes</h4>
                             </a>
                         </div>

@@ -32,14 +32,33 @@
                             </h4>
                         </div>
                         <div class="col-md-12">
+                            @if (count($teacher->classrooms) > 0)
                             <h4>
-                                Voir vos classes
+                                <a href="{{ url('teacher/classes')}}" type="submit">
+                                    Voir vos classes
+                                </a>
                             </h4>
+                            @else
+                            <h4 style="color: red;">
+                                Vous n'êtes professeur d'aucune classe.
+                            </h4>
+                            @endif
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                {{ $school->name }}
+                            @if ($school)
+                                Ecole : <b>{{ $school->name }}</b>
+                                <a href="{{ url('teacher/editTeacherSchool') }}" type="submit">
+                                    (Changer d'école ?)
+                                </a>
+                            @else
+                                Rattaché à aucune école.
+                                <a href="{{ url('teacher/editTeacherSchool') }}" type="submit">
+                                    (Choisir une d'école ?)
+                                </a>
+                            @endif
                             </h4>
+
                         </div>
                     </div>
                     <div class="col-md-2">

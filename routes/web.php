@@ -59,7 +59,7 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
         Route::prefix('classroom')->group(function () {
             Route::get('/', 'ClassroomController@index')->name('classroomsIndex');
-            Route::get('visualize/{id}', 'ClassroomController@visualize')->name('visualizeClassroom');
+            Route::get('visualize/{id}', 'ClassroomController@visualizeClassroom')->name('visualizeClassroom');
         });
     });
 
@@ -105,11 +105,22 @@ Route::group(['middleware' => 'teacher'], function () {
         Route::get('/', 'TeacherController@details')->name('teacherDetails');
         Route::get('edit', 'TeacherController@edit')->name('teacherEdit');
         Route::post('edit', 'TeacherController@update')->name('teacherUpdate');
-        Route::get('createSchool', function () {
-            return view('school/schoolCreation');
-        })->name('schoolCreation');
-        Route::post('createSchool', 'SchoolController@create')->name('schoolCreate');
-        Route::get('createClassroom', 'ClassroomController@creation')->name('classroomCreation');
-        Route::post('createClassroom', 'ClassroomController@create')->name('classroomCreate');
+        Route::get('editTeacherSchool', 'TeacherController@editTeacherSchool')->name('teacherEditSchool');
+        Route::post('editTeacherSchool', 'TeacherController@updateTeacherSchool')->name('teacherUpdateSchool');
+        Route::get('classes', 'TeacherController@getMyClasses')->name('getMyClasses');
+
+        Route::prefix('school')->group(function () {
+            Route::get('createSchool', function () {
+                return view('school/schoolCreation');
+            })->name('schoolCreation');
+            Route::post('createSchool', 'SchoolController@create')->name('schoolCreate');
+        });
+        Route::prefix('classroom')->group(function () {
+            Route::get('createClassroom', 'ClassroomController@creation')->name('classroomCreation');
+            Route::post('createClassroom', 'ClassroomController@create')->name('classroomCreate');
+            Route::get('class/{id}', 'ClassroomController@visualizeMyClassroom')->name('visualizeMyClassroom');
+            Route::get('student/{id}', 'ClassStudentController@visualizeClassStudent')->name('visualizeClassStudent');
+
+        });
     });
 });

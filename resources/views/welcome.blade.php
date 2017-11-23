@@ -70,9 +70,14 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
                         @if (Auth::user()->role == 0)
                             <a href="{{ url('/backoffice') }}">Backoffice</a>
+                        @endif
+                        @if (Auth::user()->role == 1)
+                        <a href="{{ url('/teacher') }}">Mon Compte</a>
+                        <a href="{{ url('/teacher/classes') }}">Mes classes</a>
+                        <a href="{{ url('/teacher/school/createSchool') }}">Création d'école</a>
+                        <a href="{{ url('/teacher/classroom/createClassroom') }}">Création de classe</a>
                         @endif
                         @if (Auth::user()->role == 2)
                             <a href="{{ url('/student') }}">Mon Compte</a>
@@ -101,11 +106,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <a href="https://les-voisins.net">Découvrez notre projet</a>
                 </div>
             </div>
         </div>

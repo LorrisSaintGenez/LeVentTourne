@@ -76,6 +76,7 @@
         <a href="{{ url('/') }}">< Accueil</a>
     </div>
     <div class="top-right links">
+        <a href="{{ url('/backoffice/themes/create') }}">Themes</a>
         <a href="{{ url('/backoffice/quiz') }}">Quiz</a>
         <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
         <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
