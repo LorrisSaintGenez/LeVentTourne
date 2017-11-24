@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('classroom_id') ? ' has-error' : '' }}">
-                            <label for="classroom_id" class="col-md-4 control-label">Classe <span style="color: red">*</span></label>
+                            <label for="classroom_id" class="col-md-4 control-label">Classe</label>
                             <div class="col-md-6">
                                 <select multiple id="classroom_id" class="form-control" name="classroom_id[]">
                                     @foreach($classrooms as $classroom)

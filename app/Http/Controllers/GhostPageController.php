@@ -40,13 +40,12 @@ class GhostPageController extends Controller
     }
 
     public function update(Request $request) {
+        $page = GhostPage::find($request->input('id'));
 
         $request->validate([
-            'title' => 'required|string|max:255|unique:ghost_pages',
+            'title' => 'required|string|max:255|unique:ghost_pages,title,'.$page->id,
             'description' => 'required|string|max:2000',
         ]);
-
-        $page = GhostPage::find($request->input('id'));
 
         $page->update([
            'title' => $request->input('title'),
