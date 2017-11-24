@@ -47,7 +47,7 @@
                         <div class="col-md-12">
                             <h4>
                             @if ($school)
-                                Ecole : <b>{{ $school->name }}</b>
+                                Ecole : <b>{{ $school->name }}</b> - <b>{{ $school->city }}</b>
                                 <a href="{{ url('teacher/editTeacherSchool') }}" type="submit">
                                     (Changer d'école ?)
                                 </a>

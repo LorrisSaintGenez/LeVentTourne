@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Auth;
 class SchoolController extends Controller
 {
     public function create(Request $request) {
+
+        $request->validate([
+            'name' => 'unique_with:schools,name,address,city|max:255|required',
+            'address' => 'required',
+            'city' => 'required',
+            'zipcode' => 'required',
+            'country' => 'required'
+        ]);
+
         $user = User::find(Auth::user()->id);
         $teacher = Teacher::where('user_id', $user->id)->first();
 
