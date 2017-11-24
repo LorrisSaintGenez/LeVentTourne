@@ -12,6 +12,23 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Liste des professeurs</div>
                 <div class="panel-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <h4>
+                                <b>Nom</b>
+                            </h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>
+                                <b>Date de création</b>
+                            </h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h4>
+                                <b>Action</b>
+                            </h4>
+                        </div>
+                    </div>
                     @foreach ($teachers as $teacher)
                     <div class="row text-center">
                         <div class="col-md-4">

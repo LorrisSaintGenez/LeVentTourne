@@ -99,28 +99,19 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
       }
     }
 
-    setInterval(setTimer, 1000);
+    var refreshIntervalId = setInterval(setTimer, 1000);
 
     function answerQuiz(answer) {
+      clearInterval(refreshIntervalId);
       if (answer === '{{ $quiz->good_answer }}') {
-        if ('{{ $quiz->victory_sound }}') {
-          victory.pause();
-          victory.currentTime = 0;
-          victory.loop = false;
-          victory.muted = false;
-          victory.play();
-        }
+        if ('{{ $quiz->victory_sound }}')
+          triggerAudio(victory);
         else
           document.forms[answer].submit();
       }
       else {
-        if ('{{ $quiz->defeat_sound }}') {
-          defeat.pause();
-          defeat.currentTime = 0;
-          defeat.loop = false;
-          defeat.muted = false;
-          defeat.play();
-        }
+        if ('{{ $quiz->defeat_sound }}')
+          triggerAudio(defeat);
         else
           document.forms[answer].submit();
       }
@@ -131,6 +122,14 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
     function onAudioEnded() {
       if (response !== null)
         document.forms[response].submit();
+    }
+
+    function triggerAudio(audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.loop = false;
+      audio.muted = false;
+      audio.play();
     }
 </script>
 @endsection
