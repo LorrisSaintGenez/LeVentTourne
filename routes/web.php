@@ -23,10 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
 
-    Route::get('/', function () {
-        return view('admin/backoffice');
-    })->name('backoffice');
-
     Route::prefix('quiz')->group(function() {
 
         Route::get('/', 'QuizController@getAllQuizzesAdmin')->name('getAllQuizzesAdmin');

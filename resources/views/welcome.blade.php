@@ -71,7 +71,10 @@
                 <div class="top-right links">
                     @auth
                         @if (Auth::user()->role == 0)
-                            <a href="{{ url('/backoffice') }}">Backoffice</a>
+                        <a href="{{ url('/backoffice/themes/create') }}">Themes</a>
+                        <a href="{{ url('/backoffice/quiz') }}">Quiz</a>
+                        <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
+                        <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
                         @endif
                         @if (Auth::user()->role == 1)
                         <a href="{{ url('/teacher') }}">Mon Compte</a>
@@ -102,10 +105,6 @@
             <div class="content">
                 <div class="title m-b-md">
                     {{ config('app.name', 'Laravel') }}
-                </div>
-
-                <div class="links">
-                    <a href="https://les-voisins.net">Découvrez notre projet</a>
                 </div>
             </div>
         </div>

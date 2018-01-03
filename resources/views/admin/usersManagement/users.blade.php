@@ -4,11 +4,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12" style="max-height: 100vh;">
-            <div class="row">
-                <div class="col-md-6">
-                    <a href="{{ url('/backoffice') }}">Retour</a>
-                </div>
-            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Utilisateurs</div>
                 <div class="panel-body">

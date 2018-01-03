@@ -10,13 +10,6 @@
                 {{ session('successEdit') }}
             </div>
             @endif
-
-            <div class="row">
-                <div class="col-md-6">
-                    <a href="{{ url('/') }}">Retour à l'accueil</a>
-                </div>
-            </div>
-
             <div class="panel panel-default">
                 <div class="panel-heading">Détail de l'élève {{ $student->name }}</b></div>
                 <div class="panel-body">
@@ -47,7 +40,7 @@
                         </div>
                         <div class="col-md-12">
                             <h4>
-                                Nombre de points : <b>{{ $quiz_points }}</b> / <b>{{ $total_points }}</b>
+                                Nombre de points : <b>{{ $data['score'] }}</b> / <b>{{ $data['max_score'] }}</b>
                             </h4>
                         </div>
                     </div>

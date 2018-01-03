@@ -13,74 +13,164 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+
+    <style>
+        html, body {
+            background-color: #fff;
+            color: #636b6f;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 100;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .flex-center {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .position-ref {
+            position: inherit;
+        }
+
+        .top-left {
+            position: absolute;
+            left: 10px;
+            top: 18px;
+        }
+
+        .top-right {
+            position: absolute;
+            right: 10px;
+            top: 18px;
+        }
+
+        .links > a {
+            color: #636b6f;
+            padding: 0 25px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .1rem;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+    </style>
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
+                <div class="flex-center position-ref">
+                    <div class="top-left links">
+                        <a class="navbar-brand" href="{{ url('/') }}">
+                            {{ config('app.name', 'Le Vent Tourne') }}
+                        </a>
+                    </div>
+                    @if (Route::has('login'))
+                    <div class="top-right links">
+                        @auth
+                            @if (Auth::user()->role == 0)
+                            <a href="{{ url('/backoffice/themes/create') }}">Themes</a>
+                            <a href="{{ url('/backoffice/quiz') }}">Quiz</a>
+                            <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
+                            <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
+                            @endif
+                            @if (Auth::user()->role == 1)
+                            <a href="{{ url('/teacher') }}">Mon Compte</a>
+                            <a href="{{ url('/teacher/classes') }}">Mes classes</a>
+                            <a href="{{ url('/teacher/school/createSchool') }}">Création d'école</a>
+                            <a href="{{ url('/teacher/classroom/createClassroom') }}">Création de classe</a>
+                            @endif
+                            @if (Auth::user()->role == 2)
+                            <a>Score :
+                                @if ($data['score'] > $data['max_score'] / 2)
+                                <span style="color: green;">
+                                    {{ $data['score'] }} / {{ $data['max_score'] }}
+                                </span>
+                                @endif
+                                @if ($data['score'] == $data['max_score'] / 2)
+                                <span style="color: orange;">
+                                    {{ $data['score'] }} / {{ $data['max_score'] }}
+                                </span>
+                                @endif
+                                @if ($data['score'] < $data['max_score'] / 2)
+                                <span style="color: red;">
+                                    {{ $data['score'] }} / {{ $data['max_score'] }}
+                                </span>
+                                @endif
 
-                <div class="navbar-header">
+                            </a>
+                            <a href="{{ url('/quiz/map') }}">Ma Map</a>
+                            <a href="{{ url('/student') }}">Mon Compte</a>
+                            @endif
+                            <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                Déconnexion
+                            </a>
 
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Le Vent Tourne') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        @guest
-                            <li><a href="{{ route('login') }}">Connexion</a></li>
-                            <li><a href="{{ route('register') }}">Inscription</a></li>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        @if (Auth::user()->role == 0)
-                                            <a href="{{ url('/backoffice') }}">Backoffice</a>
-                                            <a href="{{ url('/backoffice/themes/create') }}">Themes</a>
-                                            <a href="{{ url('/backoffice/quiz') }}">Quiz</a>
-                                            <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>
-                                            <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>
-                                        @endif
-                                        @if (Auth::user()->role == 1)
-                                        <a href="{{ url('/teacher') }}">Mon Compte</a>
-                                        <a href="{{ url('/teacher/school/createSchool') }}">Création d'école</a>
-                                        <a href="{{ url('/teacher/classroom/createClassroom') }}">Création de classe</a>
-                                        @endif
-                                        @if (Auth::user()->role == 2)
-                                        <a href="{{ url('/quiz/map') }}">Ma Map</a>
-                                        <a href="{{ url('/student') }}">Mon Compte</a>
-                                        @endif
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Déconnexion
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
+                            <a href="{{ route('login') }}">Connexion</a>
+                            <a href="{{ route('register') }}">Inscription</a>
+                        @endauth
+                    </div>
+                    @endif
                 </div>
+
+<!--                <div class="collapse navbar-collapse" id="app-navbar-collapse">-->
+<!--                    <ul class="nav navbar-nav">-->
+<!--                        &nbsp;-->
+<!--                    </ul>-->
+<!---->
+<!--                    <ul class="nav navbar-nav navbar-right">-->
+<!--                        @guest-->
+<!--                            <li><a href="{{ route('login') }}">Connexion</a></li>-->
+<!--                            <li><a href="{{ route('register') }}">Inscription</a></li>-->
+<!--                        @else-->
+<!--                            <li class="dropdown">-->
+<!--                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">-->
+<!--                                    {{ Auth::user()->name }} <span class="caret"></span>-->
+<!--                                </a>-->
+<!---->
+<!--                                <ul class="dropdown-menu" role="menu">-->
+<!--                                    <li>-->
+<!--                                        @if (Auth::user()->role == 0)-->
+<!--                                            <a href="{{ url('/backoffice') }}">Backoffice</a>-->
+<!--                                            <a href="{{ url('/backoffice/themes/create') }}">Themes</a>-->
+<!--                                            <a href="{{ url('/backoffice/quiz') }}">Quiz</a>-->
+<!--                                            <a href="{{ url('/backoffice/users') }}">Utilisateurs</a>-->
+<!--                                            <a href="{{ url('/backoffice/pages') }}">Pages fantômes</a>-->
+<!--                                        @endif-->
+<!--                                        @if (Auth::user()->role == 1)-->
+<!--                                        <a href="{{ url('/teacher') }}">Mon Compte</a>-->
+<!--                                        <a href="{{ url('/teacher/school/createSchool') }}">Création d'école</a>-->
+<!--                                        <a href="{{ url('/teacher/classroom/createClassroom') }}">Création de classe</a>-->
+<!--                                        @endif-->
+<!--                                        @if (Auth::user()->role == 2)-->
+<!--                                        <a href="{{ url('/quiz/map') }}">Ma Map</a>-->
+<!--                                        <a href="{{ url('/student') }}">Mon Compte</a>-->
+<!--                                        @endif-->
+<!--                                        <a href="{{ route('logout') }}"-->
+<!--                                            onclick="event.preventDefault();-->
+<!--                                                     document.getElementById('logout-form').submit();">-->
+<!--                                            Déconnexion-->
+<!--                                        </a>-->
+<!---->
+<!--                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">-->
+<!--                                            {{ csrf_field() }}-->
+<!--                                        </form>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
+<!--                        @endguest-->
+<!--                    </ul>-->
+<!--                </div>-->
             </div>
         </nav>
 

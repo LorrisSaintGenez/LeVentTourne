@@ -48,7 +48,8 @@ class ClassStudentController extends Controller
         $quiz_points = 0;
 
         foreach ($quizzes_done as $quiz_done) {
-            $quiz_points += (int) Quiz::find($quiz_done->quiz_id)->pluck('point')->first();
+            $quiz = Quiz::find($quiz_done->quiz_id);
+            $quiz_points += (int) $quiz->point;
         }
 
         $user = User::find(Auth::user()->id);

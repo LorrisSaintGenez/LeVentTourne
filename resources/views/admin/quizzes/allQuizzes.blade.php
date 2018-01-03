@@ -19,11 +19,7 @@
                     {{ session('successDelete') }}
                 </div>
             @endif
-            <div class="row">
-                <div class="col-md-6">
-                    <a href="{{ url('/backoffice') }}">Retour</a>
-                </div>
-            </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading">Quiz</div>
 
