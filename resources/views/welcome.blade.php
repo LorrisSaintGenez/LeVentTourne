@@ -80,9 +80,8 @@
                         <a href="{{ url('/teacher/classroom/createClassroom') }}">Création de classe</a>
                         @endif
                         @if (Auth::user()->role == 2)
-                            <a href="{{ url('/student') }}">Mon Compte</a>
-                            <a href="{{ url('/student/progression') }}">Ma progression</a>
-                            <a href="{{ url('/quiz') }}">Quiz</a>
+                        <a href="{{ url('/quiz/map') }}">Ma Map</a>
+                        <a href="{{ url('/student') }}">Mon Compte</a>
                         @endif
                         <a href="{{ route('logout') }}"
                            onclick="event.preventDefault();

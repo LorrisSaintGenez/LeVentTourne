@@ -145,7 +145,7 @@ class StudentController extends Controller
         $quizzes_done = QuizStudent::where([['student_id', $user->id], ['isSuccess', 1]])->get();
         $quizzes = Quiz::all();
 
-        $quizzes_by_theme = Misc::getQuizByTheme($quizzes, $quizzes_done);
+        $quizzes_by_theme = Misc::getThemesWithQuizzes($quizzes, $quizzes_done);
 
         return view('student/studentProgression', ['quizzes_by_theme' => $quizzes_by_theme]);
     }

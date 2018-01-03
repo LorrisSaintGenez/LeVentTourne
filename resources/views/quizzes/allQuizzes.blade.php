@@ -17,53 +17,62 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                 {{ session('failQuiz') }}
             </div>
             @endif
-            <div class="row">
-                <div class="col-md-6">
-                    <a href="{{ url('/') }}">Retour à l'accueil</a>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">Quiz disponibles</div>
-
-                <div class="panel-body">
-
-                    @foreach ($quizzes_by_theme as $quiz_by_theme)
-                        @if ($quiz_by_theme['max_point'] > 0)
-                            <div class="title"><h2>{{ $quiz_by_theme['theme'] }}</h2></div>
-
-                            @foreach ($quiz_by_theme['quiz'] as $quiz)
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="col-md-6 text-center">
-                                            <h3>
-                                                <b>{{ $quiz->title }}</b>
-                                            </h3>
-                                        </div>
-                                        @if (!$quiz->exists)
-                                            <div class="col-md-6 text-center" style="margin-top: 10px">
-                                                <a href="{{ route('quizGet', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                                    Répondre >
-                                                </a>
-                                            </div>
-                                        @else
-                                            <div class="col-md-6 text-center">
-                                                @if ($quiz->success)
-                                                <h3 style="color: green;">Réussi</h3>
-                                                @else
-                                                <h3 style="color: red;">Echoué</h3>
-                                                @endif
-                                            </div>
-                                        @endif
-
-                                    </div>
+            @foreach ($themes_with_quizzes as $theme_with_quizzes)
+            <div class="col-lg-4 col-md-6">
+                @if ($theme_with_quizzes['max_point'] > 0)
+                    @if (count($theme_with_quizzes['quiz']) > 0)
+                        <form id="form" class="form-horizontal" method="GET" action="{{ route('quizGet', $theme_with_quizzes['id']) }}" enctype="multipart/form-data">
+                            <div class="quiz quiz_with_question" onclick=this.parentNode.submit();>
+                                <div class="title">
+                                    <h2>{{ $theme_with_quizzes['theme'] }}</h2>
                                 </div>
-                                <hr/>
-                            @endforeach
-                        @endif
-                    @endforeach
-
+                                <h3>Score :
+                                    @if ($theme_with_quizzes['score'] > $theme_with_quizzes['max_point'] / 2)
+                                        <span style="color: green">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
+                                    @endif
+                                    @if ($theme_with_quizzes['score'] == $theme_with_quizzes['max_point'] / 2)
+                                        <span style="color: orange">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
+                                    @endif
+                                    @if ($theme_with_quizzes['score'] < $theme_with_quizzes['max_point'] / 2)
+                                        <span style="color: red"><b>{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</b></span>
+                                    @endif
+                                </h3>
+                                @if (count($theme_with_quizzes['quiz']) == 1)
+                                <h4><b>{{ count($theme_with_quizzes['quiz']) }} question est disponible !</b></h4>
+                                @else
+                                <h4><b>{{ count($theme_with_quizzes['quiz']) }} questions sont disponibles !</b></h4>
+                                @endif
+                            </div>
+                        </form>
+                    @else
+                        <div class="quiz">
+                            <div class="title">
+                                <h2>{{ $theme_with_quizzes['theme'] }}</h2>
+                            </div>
+                            <h3>Score :
+                                @if ($theme_with_quizzes['score'] > $theme_with_quizzes['max_point'] / 2)
+                                <span style="color: green">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
+                                @endif
+                                @if ($theme_with_quizzes['score'] == $theme_with_quizzes['max_point'] / 2)
+                                <span style="color: orange">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
+                                @endif
+                                @if ($theme_with_quizzes['score'] < $theme_with_quizzes['max_point'] / 2)
+                                <span style="color: red"><b>{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</b></span>
+                                @endif
+                            </h3>
+                            <h4>Vous avez répondu à toutes les questions !</h4>
+                        </div>
+                    @endif
+                @else
+                <div class="quiz">
+                    <div class="title">
+                        <h2>{{ $theme_with_quizzes['theme'] }}</h2>
+                    </div>
+                    <h4>Pas de question pour l'instant !</h4>
                 </div>
+            @endif
             </div>
+            @endforeach
         </div>
     </div>
 </div>

@@ -9,3 +9,20 @@ div .timer {
     position: relative;
     text-align: right;
 }
+
+.quiz {
+    text-align: center;
+    border: 1px solid;
+    margin: 15px 0;
+    padding: 0 25px;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.quiz_with_question:hover {
+    cursor: pointer;
+    border: 2px solid;
+}

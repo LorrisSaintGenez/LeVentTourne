@@ -129,7 +129,7 @@ class QuizController extends Controller
 
     public function getAllQuizzes($view) {
 
-        $quizzes_by_theme = Misc::getQuizByTheme(Quiz::all(), null);
+        $quizzes_by_theme = Misc::getThemesWithQuizzes(Quiz::all(), null);
 
         return view($view, ['quizzes_by_theme' => $quizzes_by_theme]);
     }
@@ -141,22 +141,9 @@ class QuizController extends Controller
         $quizzes_done = QuizStudent::where([['student_id', $user->id], ['isSuccess', 1]])->get();
         $quizzes = Quiz::all();
 
-        $quizzes_by_theme = Misc::getQuizByTheme($quizzes, $quizzes_done);
+        $themes_with_quizzes = Misc::getThemesWithQuizzes($quizzes, $quizzes_done);
 
-        foreach ($quizzes_by_theme as $quiz_by_theme) {
-            foreach ($quiz_by_theme['quiz'] as $quiz){
-                $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $quiz->id]])->first();
-                if ($quiz_student != null) {
-                    $quiz->exists = true;
-                    $quiz->success = $quiz_student->isSuccess;
-                }
-                else
-                    $quiz->exists = false;
-            }
-        }
-
-        //return view('quizzes/allQuizzesTest', ['quizzes' => $quizzes]);
-        return view('quizzes/allQuizzes', ['quizzes_by_theme' => $quizzes_by_theme]);
+        return view('quizzes/allQuizzes', ['themes_with_quizzes' => $themes_with_quizzes]);
     }
 
     public function getAllQuizzesAdmin() {
@@ -273,17 +260,17 @@ class QuizController extends Controller
         return $this->getSpecificQuiz($id, 'admin/quizzes/visualizeQuiz');
     }
 
-    public function getSpecificQuiz($id, $view, $isStudent = false) {
-        $quiz = Quiz::find($id);
-        $theme = Theme::find($quiz->theme_id);
-
-        $quiz->theme = $theme->title;
-        $quiz->answers = unserialize($quiz->answers);
-
+    public function getSpecificQuiz($id, $view, $isStudent = false)
+    {
         if ($isStudent) {
+            $quiz = Misc::getUndoneQuizzesByThemeId($id);
+
+            if (!$quiz)
+                return redirect('/quiz/map')->with('successQuiz', 'Vous n\'avez plus de question disponible pour ce thème !');
+
             $user = User::find(Auth::user()->id);
 
-            $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $id]])->first();
+            $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $quiz->id]])->first();
             if ($quiz_student) {
                 if (!$quiz_student->hasAnswered) {
                     $quiz_student->update([
@@ -294,16 +281,19 @@ class QuizController extends Controller
                     ]);
                 }
 
-                return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
+                return redirect('/quiz/map')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
             }
 
-            $answers = $quiz->answers;
+            $answers = unserialize($quiz->answers);
             shuffle($answers);
             $quiz->answers = $answers;
 
+            $theme = Theme::find($id);
+            $quiz->theme = $theme->title;
+
             QuizStudent::create([
                 'student_id' => $user->id,
-                'quiz_id' => $id,
+                'quiz_id' => $quiz->id,
                 'isSuccess' => false,
                 'hasAnswered' => false
             ])->push();
@@ -312,13 +302,25 @@ class QuizController extends Controller
                 $quiz->defeat_sound = base64_encode(Storage::disk('sounds')->get($quiz->defeat_sound));
             if ($quiz->victory_sound != null)
                 $quiz->victory_sound = base64_encode(Storage::disk('sounds')->get($quiz->victory_sound));
+            if ($quiz->sound != null)
+                $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
+            if ($quiz->picture != null)
+                $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
+            return view($view, ['quiz' => $quiz]);
 
+        } else {
+
+            $quiz = Quiz::find($id);
+            $theme = Theme::find($quiz->theme_id);
+
+            $quiz->theme = $theme->title;
+            $quiz->answers = unserialize($quiz->answers);
+
+            if ($quiz->sound != null)
+                $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
+            if ($quiz->picture != null)
+                $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
         }
-
-        if ($quiz->sound != null)
-            $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
-        if ($quiz->picture != null)
-            $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
 
         return view($view, ['quiz' => $quiz]);
     }
