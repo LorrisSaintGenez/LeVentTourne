@@ -23,9 +23,10 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                     @if (count($theme_with_quizzes['quiz']) > 0)
                         <form id="form" class="form-horizontal" method="GET" action="{{ route('quizGet', $theme_with_quizzes['id']) }}" enctype="multipart/form-data">
                             <div class="quiz quiz_with_question" onclick=this.parentNode.submit();>
-                                <div class="title">
-                                    <h2>{{ $theme_with_quizzes['theme'] }}</h2>
-                                </div>
+                                <h2 style="margin-top: 0 !important;">{{ $theme_with_quizzes['theme'] }}</h2>
+                                @if ($theme_with_quizzes['picture'])
+                                <img src="data:image/jpeg;base64,{{ $theme_with_quizzes['picture'] }}" class="image_theme">
+                                @endif
                                 <h3>Score :
                                     @if ($theme_with_quizzes['score'] > $theme_with_quizzes['max_point'] / 2)
                                         <span style="color: green">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
@@ -46,9 +47,10 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                         </form>
                     @else
                         <div class="quiz">
-                            <div class="title">
-                                <h2>{{ $theme_with_quizzes['theme'] }}</h2>
-                            </div>
+                            <h2 style="margin-top: 0 !important;">{{ $theme_with_quizzes['theme'] }}</h2>
+                            @if ($theme_with_quizzes['picture'])
+                            <img src="data:image/jpeg;base64,{{ $theme_with_quizzes['picture'] }}" class="image_theme">
+                            @endif
                             <h3>Score :
                                 @if ($theme_with_quizzes['score'] > $theme_with_quizzes['max_point'] / 2)
                                 <span style="color: green">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
@@ -65,10 +67,11 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                     @endif
                 @else
                 <div class="quiz">
-                    <div class="title">
-                        <h2>{{ $theme_with_quizzes['theme'] }}</h2>
-                    </div>
-                    <h4>Pas de question pour l'instant !</h4>
+                    <h2 style="margin-top: 0 !important;">{{ $theme_with_quizzes['theme'] }}</h2>
+                    @if ($theme_with_quizzes['picture'])
+                    <img src="data:image/jpeg;base64,{{ $theme_with_quizzes['picture'] }}" class="image_theme">
+                    @endif
+                    <h4 style="margin-top: 30px;">Pas de question pour l'instant !</h4>
                 </div>
             @endif
             </div>

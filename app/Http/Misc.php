@@ -28,7 +28,8 @@ class Misc
                 "theme" => $theme->title,
                 "quiz" => array(),
                 "score" => 0,
-                "max_point" => $theme->max_point
+                "max_point" => $theme->max_point,
+                "picture" => $theme->picture ? base64_encode(Storage::disk('images')->get($theme->picture)) : null
             );
             array_push($themes, $item);
         }
@@ -103,7 +104,7 @@ class Misc
         if ($isImage) {
             $item = $_FILES[$field];
             $imageHandler = new ImageHandler();
-            $location = uniqid() . $imageHandler->uploadImageOnDisk($item);
+            $location = $imageHandler->uploadImageOnDisk($item);
         } else {
             $item = Input::file($field);
             $location = uniqid() . $item->getClientOriginalName();

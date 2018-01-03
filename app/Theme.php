@@ -16,6 +16,6 @@ class Theme extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'title', 'max_point'
+        'title', 'max_point', 'picture'
     ];
 }

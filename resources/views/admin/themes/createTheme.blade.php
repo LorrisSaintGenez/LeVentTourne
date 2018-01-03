@@ -15,7 +15,7 @@
             </div>
             @endif
 
-            <div class="col-md-4 col-md-push-8">
+            <div class="col-md-5 col-md-push-7">
                 <div class="panel panel-default">
                     <div class="panel-heading">Création d'un thème</div>
 
@@ -35,6 +35,19 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
+                                    <label for="picture" class="col-md-4 control-label">Image</label>
+
+                                    <div class="col-md-6">
+                                        <input type="file" id="picture" class="form-control" name="picture" value="{{ old('picture') }}" autofocus>
+
+                                        @if ($errors->has('picture'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('picture') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
                                         <button type="submit" class="btn btn-primary">
@@ -51,20 +64,23 @@
                 </div>
             </div>
 
-            <div class="col-md-8 col-md-pull-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Thèmes disponibles</div>
-                    <div class="panel-body">
-                        @if ($themes->count() > 0)
-                        @foreach ($themes as $theme)
-                        <h2>{{ $theme->title }}</h2>
-                        <hr>
-                        @endforeach
-                        @else
-                        <h2 class="text-center text-danger">Aucun thème disponible</h2>
-                        @endif
+            <div class="col-md-7 col-md-pull-5">
+            @if ($themes->count() > 0)
+                @foreach ($themes as $theme)
+                    <div class="col-md-6">
+                        <div class="admin_theme">
+                            <h2>
+                                {{ $theme->title }}
+                            </h2>
+                            @if ($theme->picture)
+                            <img src="data:image/jpeg;base64,{{ $theme->picture }}" class="image_theme">
+                            @endif
+                        </div>
                     </div>
-                </div>
+                @endforeach
+            @else
+            <h2 class="text-center text-danger">Aucun thème disponible</h2>
+            @endif
             </div>
         </div>
     </div>
