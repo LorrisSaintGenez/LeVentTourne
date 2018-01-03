@@ -7,20 +7,22 @@
  */
 namespace App\Http;
 
-use App\Http\ImageHandler;
 use App\Quiz;
+use App\QuizStudent;
 use App\Theme;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 
 class Misc
 {
-    public static function getQuizByTheme($quizzes, $quizzes_done) {
-        $quizzes_by_theme = array();
+    public static function getThemesWithQuizzes($quizzes, $quizzes_done) {
+        $themes = array();
 
-        $themes = Theme::all();
+        $all_themes = Theme::all();
 
-        foreach ($themes as $theme) {
+        foreach ($all_themes as $theme) {
             $item = array(
                 "id" => $theme->id,
                 "theme" => $theme->title,
@@ -28,35 +30,51 @@ class Misc
                 "score" => 0,
                 "max_point" => $theme->max_point
             );
-            array_push($quizzes_by_theme, $item);
+            array_push($themes, $item);
         }
 
         foreach ($quizzes as $quiz) {
             $theme = Theme::find($quiz->theme_id);
-            // Cherche si le thème n'est PAS présent afin de l'intégrer au tableau, afin d'éviter les doublons.
-            /*if (!Misc::depthSearchIsInArray($theme->id, $quizzes_by_theme)) {
-                $item = array(
-                    "id" => $theme->id,
-                    "theme" => $theme->title,
-                    "quiz" => array(),
-                    "score" => 0,
-                    "max_point" => $theme->max_point
-                );
-                array_push($quizzes_by_theme, $item);
-            }*/
 
-            // Push à l'index correspondant à son thème le quiz, dans l'array "quiz"
-            array_push($quizzes_by_theme[array_search($theme->id, array_column($quizzes_by_theme, "id"))]["quiz"], $quiz);
-
-            if ($quizzes_done != null) {
-                foreach ($quizzes_done as $quiz_done) {
-                    // Calcul le nombre du point de l'élève.
-                    $quizzes_by_theme[array_search($theme->id, array_column($quizzes_by_theme, "id"))]["score"] += (int) Quiz::find($quiz_done->quiz_id)->pluck('point')->first();
-                }
+            if (Auth::user()->role == 2) {
+                // Cherche la non-existance d'un quiz afin de le proposer à l'élèvre
+                $user = User::find(Auth::user()->id);
+                $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $quiz->id]])->first();
+                if (!$quiz_student)
+                    array_push($themes[array_search($theme->id, array_column($themes, "id"))]["quiz"], $quiz);
+            } else {
+                // Push à l'index correspondant à son thème le quiz, dans l'array "quiz"
+                array_push($themes[array_search($theme->id, array_column($themes, "id"))]["quiz"], $quiz);
             }
         }
 
-        return $quizzes_by_theme;
+
+        if ($quizzes_done != null) {
+            foreach ($quizzes_done as $quiz_done) {
+                $quiz = Quiz::find($quiz_done->quiz_id);
+                $theme = Theme::find($quiz->theme_id);
+                // Calcul le nombre du point de l'élève.
+                $themes[array_search($theme->id, array_column($themes, "id"))]["score"] += (int) $quiz->point;
+            }
+        }
+
+        return $themes;
+    }
+
+    public static function getUndoneQuizzesByThemeId($theme_id) {
+        $quizzes = Quiz::all();
+
+        foreach ($quizzes as $quiz) {
+            if ($quiz->theme_id == $theme_id) {
+                $user = User::find(Auth::user()->id);
+                $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $quiz->id]])->first();
+                if (!$quiz_student)
+                    return $quiz;
+            }
+        }
+
+        return null;
+
     }
 
     public static function depthSearchIsInArray($id, $array) {

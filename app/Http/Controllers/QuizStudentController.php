@@ -18,13 +18,13 @@ class QuizStudentController extends Controller
         $quiz_student = QuizStudent::where([['student_id', $user->id], ['quiz_id', $id], ['hasAnswered', true]])->first();
 
         if ($quiz_student != null)
-           return redirect('/quiz')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
+           return redirect('/quiz/map')->with('failQuiz', 'Vous avez déjà répondu à ce quiz !');
 
         $quiz = Quiz::find($id);
 
         $quiz_student_update = QuizStudent::where([['student_id', $user->id], ['quiz_id', $id]])->first();
 
-        if ($request->input($quiz->good_answer) != null) {
+        if ($request->input(str_replace(' ', '_', $quiz->good_answer)) != null) {
             $quiz_student_update->update([
                 'student_id' => $user->id,
                 'quiz_id' => $id,

@@ -7,11 +7,6 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="row">
-                <div class="col-md-6">
-                    <a href="{{ url('/quiz') }}">Retour aux quiz</a>
-                </div>
-            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Visualisation du quiz <b>{{ $quiz->title }}</b></div>
                 <div class="panel-body">

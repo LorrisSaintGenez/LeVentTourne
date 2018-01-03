@@ -12,15 +12,22 @@
                             <h1>{{ $quiz->title }}</h1>
                             <h2>{{ $quiz->question }}</h2>
                         </div>
+                        <div class="col-md-12 text-center">
+                        @if ($isSuccess)
+                            <h3 style="color:green;">Bonne réponse !</h3>
+                        @else
+                            <h3 style="color:red;"><b>Mauvaise réponse !</b></h3>
+                        @endif
+                        </div>
                         <div class="col-md-12">
-                            <h3>Explication : <h4>{{ $quiz->explanation }}</h4></h3>
+                            <h3><b>Explication</b> : {{ $quiz->explanation }}</h3>
                         </div>
                     </div>
-                    <form class="form-horizontal" method="GET" action="{{ route('getAllQuizzesStudent') }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="GET" action="{{ route('quizGet', $quiz->theme_id) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="col-md-12 text-center">
                             <button type="submit" class="btn btn-primary">
-                                Ok, j'ai compris !
+                                Question suivante !
                             </button>
                         </div>
                     </form>

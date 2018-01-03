@@ -22,7 +22,7 @@ div .timer {
     flex-direction: column;
 }
 
-.quiz:hover {
+.quiz_with_question:hover {
     cursor: pointer;
     border: 2px solid;
 }
