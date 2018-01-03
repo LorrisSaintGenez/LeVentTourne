@@ -18,9 +18,23 @@ class Misc
     public static function getQuizByTheme($quizzes, $quizzes_done) {
         $quizzes_by_theme = array();
 
+        $themes = Theme::all();
+
+        foreach ($themes as $theme) {
+            $item = array(
+                "id" => $theme->id,
+                "theme" => $theme->title,
+                "quiz" => array(),
+                "score" => 0,
+                "max_point" => $theme->max_point
+            );
+            array_push($quizzes_by_theme, $item);
+        }
+
         foreach ($quizzes as $quiz) {
             $theme = Theme::find($quiz->theme_id);
-            if (!Misc::depthSearchIsInArray($theme->id, $quizzes_by_theme)) {
+            // Cherche si le thème n'est PAS présent afin de l'intégrer au tableau, afin d'éviter les doublons.
+            /*if (!Misc::depthSearchIsInArray($theme->id, $quizzes_by_theme)) {
                 $item = array(
                     "id" => $theme->id,
                     "theme" => $theme->title,
@@ -29,12 +43,14 @@ class Misc
                     "max_point" => $theme->max_point
                 );
                 array_push($quizzes_by_theme, $item);
-            }
+            }*/
 
+            // Push à l'index correspondant à son thème le quiz, dans l'array "quiz"
             array_push($quizzes_by_theme[array_search($theme->id, array_column($quizzes_by_theme, "id"))]["quiz"], $quiz);
 
             if ($quizzes_done != null) {
                 foreach ($quizzes_done as $quiz_done) {
+                    // Calcul le nombre du point de l'élève.
                     $quizzes_by_theme[array_search($theme->id, array_column($quizzes_by_theme, "id"))]["score"] += (int) Quiz::find($quiz_done->quiz_id)->pluck('point')->first();
                 }
             }
