@@ -62,7 +62,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                                 <span style="color: red"><b>{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</b></span>
                                 @endif
                             </h3>
-                            <h4>Vous avez répondu à toutes les questions !</h4>
+                            <h4 style="padding: 0 10px;">Vous avez répondu à toutes les questions !</h4>
                         </div>
                     @endif
                 @else
