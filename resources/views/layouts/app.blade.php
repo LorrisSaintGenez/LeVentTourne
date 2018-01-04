@@ -17,6 +17,7 @@
 
     <style>
         html, body {
+            background-image: url("/images/paper_texture.jpg");
             background-color: #fff;
             color: #636b6f;
             font-family: 'Raleway', sans-serif;
