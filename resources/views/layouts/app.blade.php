@@ -27,8 +27,8 @@
 
         .top-left {
             position: absolute;
-            left: 10px;
-            top: 18px;
+            left: 0px;
+            top: 0px;
         }
 
         .links > a {
@@ -50,7 +50,8 @@
                 <div class="row">
                     <div class="top-left links">
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            {{ config('app.name', 'Le Vent Tourne') }}
+                            <img src="/images/LogoLesVoisins.png" width="90" height="50"/>
+                            <!--{{ config('app.name', 'Le Vent Tourne') }}-->
                         </a>
                     </div>
                     <div class="navbar-header">
