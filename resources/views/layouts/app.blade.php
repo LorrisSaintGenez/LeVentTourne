@@ -29,17 +29,22 @@
         .top-left {
             position: absolute;
             left: 0px;
-            top: 0px;
+            top: -10px;
         }
 
         .links > a {
             color: #636b6f;
-            padding: 0 25px;
+            top: 10px;
             font-size: 12px;
             font-weight: 600;
             letter-spacing: .1rem;
             text-decoration: none;
             text-transform: uppercase;
+
+        }
+
+        .navbar {
+            min-height: 70px;
         }
 
     </style>
@@ -49,15 +54,17 @@
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container custom-footer">
                 <div class="row">
-                    <div class="top-left links">
+                    <div class="top-left">
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="/images/LogoLesVoisins.png" width="90" height="50"/>
+                            <img src="/images/LogoLesVoisins.png" width="110" height="60"/>
                             <!--{{ config('app.name', 'Le Vent Tourne') }}-->
                         </a>
                     </div>
-                    <div class="navbar-header">
+                    <div class="navbar-header center-navbar">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
                             <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
