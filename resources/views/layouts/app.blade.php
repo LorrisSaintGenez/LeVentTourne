@@ -17,8 +17,7 @@
 
     <style>
         html, body {
-            background-image: url("/images/paper_texture.jpg");
-            background-color: #fff;
+            background: #fff url("/images/paper_texture.jpg");
             color: #636b6f;
             font-family: 'Raleway', sans-serif;
             font-weight: 100;
@@ -45,6 +44,11 @@
 
         .navbar {
             min-height: 70px;
+            background: #fff url("/images/paper_texture.jpg");
+        }
+
+        .navbar-default {
+            box-shadow: 1px 2px darkgrey;
         }
 
     </style>
