@@ -77,6 +77,8 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
         Route::get('/', 'ThemeController@index')->name('themeIndex');
         Route::get('create', 'ThemeController@creation')->name('themeCreation');
         Route::post('create', 'ThemeController@create')->name('themeCreate');
+        Route::post('edit', 'ThemeController@edit')->name('themeEdit');
+        Route::post('delete', 'ThemeController@delete')->name('themeDelete');
     });
 
 });

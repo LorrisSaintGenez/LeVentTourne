@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\ImageHandler;
 use App\Http\Misc;
 use App\Theme;
 use Illuminate\Http\Request;
@@ -40,5 +41,30 @@ class ThemeController extends Controller
         ])->push();
 
         return redirect('backoffice/themes/create')->with('successTheme', 'Thème crée !');
+    }
+
+    public function edit(Request $request) {
+
+        $theme = Theme::find($request->input('id'));
+
+        $request->validate([
+            'title' => '|max:255|required|unique:themes,title,'.$theme->id,
+        ]);
+        
+        $locationPicture = $theme->picture;
+
+        if (Input::file('picture') != null) {
+            $item = $_FILES['picture'];
+            $imageHandler = new ImageHandler();
+            Storage::disk('images')->delete($theme->sound);
+            $locationPicture = $imageHandler->updateImageOnDisk($item, $theme->picture);
+        }
+
+        $theme->update([
+           "title" => $request->input('title'),
+           "picture" => $locationPicture
+        ]);
+
+        return redirect()->back();
     }
 }

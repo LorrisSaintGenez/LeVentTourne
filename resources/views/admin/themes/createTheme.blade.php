@@ -15,7 +15,7 @@
             </div>
             @endif
 
-            <div class="col-md-5 col-md-push-7">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Création d'un thème</div>
 
@@ -64,17 +64,96 @@
                 </div>
             </div>
 
-            <div class="col-md-7 col-md-pull-5">
+            <div class="col-md-12">
             @if ($themes->count() > 0)
                 @foreach ($themes as $theme)
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-sm-6">
                         <div class="admin_theme">
+                            <img data-toggle="modal" data-target="#<?php echo str_replace(" ", "_", $theme->title); ?>-edit" src="/images/edit.svg" width="25" class="svg-icon svg-edit" alt="Editer le thème"/>
+                            <img data-toggle="modal" data-target="#<?php echo str_replace(" ", "_", $theme->title); ?>-delete" src="/images/delete-button.svg" width="25" class="svg-icon svg-delete" alt="Supprimer le thème" />
                             <h2>
                                 {{ $theme->title }}
                             </h2>
                             @if ($theme->picture)
                             <img src="data:image/jpeg;base64,{{ $theme->picture }}" class="image_theme">
                             @endif
+                        </div>
+                    </div>
+                    <div id="<?php echo str_replace(" ", "_", $theme->title); ?>-edit" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <form class="form-horizontal" id="<?php echo str_replace(" ", "_", $theme->title); ?>-edit" method="POST" action="{{ route('themeEdit') }}" enctype="multipart/form-data">
+                                    <input id="id" name="id" value="{{ $theme->id }}" hidden>
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Modification du thème {{ $theme->title }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                            {{ csrf_field() }}
+                                            <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+                                                <label for="title" class="col-md-4 control-label">Titre <span style="color: red">*</span></label>
+
+                                                <div class="col-md-6">
+                                                    <input id="title" type="text" class="form-control" name="title" value="{{ $theme->title }}" required autofocus>
+
+                                                    @if ($errors->has('title'))
+                                                    <span class="help-block">
+                                                        <strong>{{ $errors->first('title') }}</strong>
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
+                                                <label for="picture" class="col-md-4 control-label">Image</label>
+
+                                                <div class="col-md-6">
+                                                    <input type="file" id="picture" class="form-control" name="picture" autofocus>
+
+                                                    @if ($theme->picture)
+                                                    <br>
+                                                    <img src="data:image/jpeg;base64,{{ $theme->picture }}" class="image_theme">
+                                                    @endif
+
+                                                    @if ($errors->has('picture'))
+                                                    <span class="help-block">
+                                                        <strong>{{ $errors->first('picture') }}</strong>
+                                                    </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo str_replace(" ", "_", $theme->title); ?>-edit')">Appliquer</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                <div id="<?php echo str_replace(" ", "_", $theme->title); ?>-delete" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Suppression du thème {{ $theme->title }}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Êtes-vous certain de vouloir supprimer ce thème ? L'action est irréversible.</p>
+                                    <p>Tous les quiz liés à ce thème seront supprimés.</p>
+                                </div>
+                                <form id="<?php echo str_replace(" ", "_", $theme->title); ?>-delete" class="form-horizontal" method="POST" action="{{ route('themeDelete') }}" enctype="multipart/form-data">
+                                    <div class="modal-footer">
+                                        <button type="submit" class="confirm-delete-button btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo str_replace(" ", "_", $theme->title); ?>-delete')">Oui</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 @endforeach
@@ -85,4 +164,9 @@
         </div>
     </div>
 </div>
+<script>
+  function form_submit(form_id) {
+    document.forms[form_id].submit();
+  }
+</script>
 @endsection

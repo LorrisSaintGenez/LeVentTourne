@@ -29,6 +29,7 @@ div .timer {
 }
 
 .admin_theme {
+    position: relative;
     text-align: center;
     border: 1px solid;
     margin: 15px 0;
@@ -37,6 +38,26 @@ div .timer {
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
+}
+
+.svg-icon {
+    position: absolute;
+    top: 5px;
+    cursor: pointer;
+}
+
+.svg-edit {
+    right: 40px;
+}
+
+.svg-delete {
+    right: 5px;
+}
+
+.confirm-delete-button, .confirm-delete-button:hover {
+    color: white;
+    background-color: red;
+    border-color: red;
 }
 
 .image_theme {
