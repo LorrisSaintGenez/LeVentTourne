@@ -101,9 +101,7 @@
 
             <div class="content">
                 <div>
-                    <a href="http://les-voisins.net">
-                        <img src="/images/LogoLesVoisins.png"/>
-                    </a>
+                    <img src="/images/LogoLesVoisins.png"/>
                 </div>
             </div>
         </div>
