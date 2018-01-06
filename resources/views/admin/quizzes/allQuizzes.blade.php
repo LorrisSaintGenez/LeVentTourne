@@ -28,6 +28,7 @@
                     @foreach ($quizzes_by_theme as $quiz_by_theme)
                     <div class="title text-center"><h2>{{ $quiz_by_theme['theme'] }}</h2></div>
                     <div class="row">
+                        @if (count($quiz_by_theme['quiz']) > 0)
                         @foreach ($quiz_by_theme['quiz'] as $quiz)
                             <div class="col-md-6" style="position: relative; margin-bottom: 20px;">
                                 <h3 style="margin: 0; padding: 4px 0 0;">
@@ -50,6 +51,9 @@
                                 </a>
                             </div>
                         @endforeach
+                        @else
+                        <h3 class="text-center"><i>Pas de quiz crée pour ce thème</i></h3>
+                        @endif
                     </div>
                     <hr>
                     @endforeach
