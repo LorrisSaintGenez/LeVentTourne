@@ -160,7 +160,6 @@ function string_sanitize($s) {
     var refreshIntervalId = setInterval(setTimer, 1000);
 
     function answerQuiz(answer) {
-      console.log(answer);
       clearInterval(refreshIntervalId);
       if (answer === '{{ $quiz->good_answer }}') {
         if ('{{ $quiz->victory_sound }}')
