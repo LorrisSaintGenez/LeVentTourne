@@ -104,9 +104,13 @@
             @endif
 
             <div class="content">
+                <div>
+                    <a href="http://les-voisins.net">
+                        <img src="/images/LogoLesVoisins.png"/>
+                    </a>
+                </div>
                 <div class="title m-b-md">
-                    <img src="/images/LogoLesVoisins.png"/>
-                    <!--{{ config('app.name', 'Laravel') }}-->
+                    <a href="http://les-voisins.net">Découvrir nos projets</a>
                 </div>
             </div>
         </div>
