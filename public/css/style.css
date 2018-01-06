@@ -58,6 +58,33 @@ div .timer {
     right: 75px;
 }
 
+.svg-icon-quiz {
+    position: absolute;
+    top: 22px;
+}
+
+.svg-photo {
+    right: 110px;
+}
+
+.svg-sound {
+    right: 145px;
+}
+
+.svg-video {
+    right: 180px;
+}
+
+.svg-edit-quiz {
+    right: 40px;
+    cursor: pointer;
+}
+
+.svg-eye {
+    right: 5px;
+    cursor: pointer;
+}
+
 .confirm-delete-button, .confirm-delete-button:hover {
     color: white;
     background-color: red;

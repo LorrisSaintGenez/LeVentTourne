@@ -24,46 +24,34 @@
                 <div class="panel-heading">Quiz</div>
 
                 <div class="panel-body">
-                    @foreach ($quizzes_by_theme as $quiz_by_theme)
-                        <div class="title"><h2>{{ $quiz_by_theme['theme'] }}</h2></div>
 
+                    @foreach ($quizzes_by_theme as $quiz_by_theme)
+                    <div class="title text-center"><h2>{{ $quiz_by_theme['theme'] }}</h2></div>
+                    <div class="row">
                         @foreach ($quiz_by_theme['quiz'] as $quiz)
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-2 text-center">
-                                        <h3>
-                                            <b>{{ $quiz->title }}</b>
-                                        </h3>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <h3>
-                                            <?php if ($quiz->picture) echo "Photo" ?>
-                                        </h3>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <h3>
-                                            <?php if ($quiz->sound) echo "Audio" ?>
-                                        </h3>
-                                    </div>
-                                    <div class="col-md-2 text-center">
-                                        <h3>
-                                            <?php if ($quiz->video) echo "Vidéo" ?>
-                                        </h3>
-                                    </div>
-                                    <div class="col-md-2 text-center" style="margin-top: 10px">
-                                        <a href="{{ route('quizEdit', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                            Editer
-                                        </a>
-                                    </div>
-                                    <div class="col-md-2 text-center" style="margin-top: 10px">
-                                        <a href="{{ route('quizVisualize', $quiz->id) }}" type="submit" class="btn btn-lg btn-info">
-                                            Visualiser
-                                        </a>
-                                    </div>
-                                </div>
+                            <div class="col-md-6" style="position: relative; margin-bottom: 20px;">
+                                <h3 style="margin: 0; padding: 4px 0 0;">
+                                    <b>{{ $quiz->title }}</b>
+                                </h3>
+                                @if ($quiz->picture)
+                                <img src="/images/picture.svg" width="25" class="svg-icon svg-photo">
+                                @endif
+                                @if ($quiz->sound)
+                                <img src="/images/sound.svg" width="25" class="svg-icon svg-sound">
+                                @endif
+                                @if ($quiz->video)
+                                <img src="/images/video.svg" width="25" class="svg-icon svg-video">
+                                @endif
+                                <a href="{{ route('quizEdit', $quiz->id) }}" type="submit">
+                                    <img src="/images/edit.svg" width="25" class="svg-icon svg-edit">
+                                </a>
+                                <a href="{{ route('quizVisualize', $quiz->id) }}" type="submit">
+                                    <img src="/images/eye.svg" width="25" class="svg-icon svg-eye">
+                                </a>
                             </div>
-                            <hr/>
                         @endforeach
+                    </div>
+                    <hr>
                     @endforeach
 
                     <div class="row">
