@@ -24,7 +24,7 @@ class QuizStudentController extends Controller
 
         $quiz_student_update = QuizStudent::where([['student_id', $user->id], ['quiz_id', $id]])->first();
 
-        if ($request->input(str_replace(' ', '_', $quiz->good_answer)) != null) {
+        if ($request->input(htmlentities($quiz->good_answer)) != null) {
             $quiz_student_update->update([
                 'student_id' => $user->id,
                 'quiz_id' => $id,

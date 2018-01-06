@@ -4,6 +4,12 @@ header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 ?>
 @section('content')
+<?php
+function string_sanitize($s) {
+    $result = preg_replace("/[^a-zA-Z0-9]+/", "", html_entity_decode($s, ENT_QUOTES));
+    return $result;
+}
+?>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -48,16 +54,16 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                         </div>
                     </div>
                     @foreach ($quiz->answers as $answer)
-                        <div class="col-md-6 text-center" onClick="answerQuiz('{{ $answer }}');" data-toggle="modal" data-target="#<?php echo str_replace(" ", "_", $answer); ?>-modal">
+                        <div class="col-md-6 text-center" onclick="answerQuiz('<?php echo string_sanitize($answer); ?>')" data-toggle="modal" data-target="#<?php echo string_sanitize($answer); ?>-modal">
                             {{ csrf_field() }}
                             <div class="panel panel-primary">
                                 <h4>{{ $answer }}</h4>
                             </div>
                         </div>
 
-                        <div id="<?php echo str_replace(" ", "_", $answer); ?>-modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div id="<?php echo string_sanitize($answer); ?>-modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
                             <div class="modal-dialog">
-                                <form id="<?php echo str_replace(" ", "_", $answer); ?>-form" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
+                                <form id="<?php echo string_sanitize($answer); ?>-form" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
                                     <input id="theme_id" name="theme_id" type="hidden" value="{{ $quiz->theme_id }}">
@@ -77,7 +83,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                                             <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo str_replace(" ", "_", $answer); ?>-form')">J'ai compris !</button>
+                                            <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo string_sanitize($answer); ?>-form')">J'ai compris !</button>
                                         </div>
                                      </div>
                                 </form>
@@ -111,10 +117,10 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                         </div>
                     </div>
 
-                    <audio id="victory" hidden preload="auto" onended="onAudioEnded()" autoplay loop>
+                    <audio id="victory" hidden preload="auto" autoplay loop>
                         <source src="data:audio/mp3;base64, {{ $quiz->victory_sound }}">
                     </audio>
-                    <audio id="defeat" hidden preload="auto" onended="onAudioEnded()" autoplay loop>
+                    <audio id="defeat" hidden preload="auto" autoplay loop>
                         <source src="data:audio/mp3;base64, {{ $quiz->defeat_sound }}">
                     </audio>
                 </div>
@@ -154,6 +160,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
     var refreshIntervalId = setInterval(setTimer, 1000);
 
     function answerQuiz(answer) {
+      console.log(answer);
       clearInterval(refreshIntervalId);
       if (answer === '{{ $quiz->good_answer }}') {
         if ('{{ $quiz->victory_sound }}')
