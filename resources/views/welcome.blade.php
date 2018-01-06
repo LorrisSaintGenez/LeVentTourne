@@ -60,10 +60,6 @@
                 text-transform: uppercase;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-
         </style>
     </head>
     <body>
@@ -108,9 +104,6 @@
                     <a href="http://les-voisins.net">
                         <img src="/images/LogoLesVoisins.png"/>
                     </a>
-                </div>
-                <div class="title m-b-md">
-                    <a href="http://les-voisins.net">Découvrir nos projets</a>
                 </div>
             </div>
         </div>

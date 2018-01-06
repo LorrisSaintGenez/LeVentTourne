@@ -27,7 +27,8 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                                 @if ($theme_with_quizzes['picture'])
                                 <img src="data:image/jpeg;base64,{{ $theme_with_quizzes['picture'] }}" class="image_theme">
                                 @endif
-                                <h3>Score :
+                                <h3>
+                                    <img src="/images/Picto_Score.png" width="30">
                                     @if ($theme_with_quizzes['score'] > $theme_with_quizzes['max_point'] / 2)
                                         <span style="color: green">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
                                     @endif
@@ -51,7 +52,8 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                             @if ($theme_with_quizzes['picture'])
                             <img src="data:image/jpeg;base64,{{ $theme_with_quizzes['picture'] }}" class="image_theme">
                             @endif
-                            <h3>Score :
+                            <h3>
+                                <img src="/images/Picto_Score.png" width="30">
                                 @if ($theme_with_quizzes['score'] > $theme_with_quizzes['max_point'] / 2)
                                 <span style="color: green">{{ $theme_with_quizzes['score'] }} / {{ $theme_with_quizzes['max_point'] }}</span>
                                 @endif

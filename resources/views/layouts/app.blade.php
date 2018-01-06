@@ -61,15 +61,13 @@
                 <div class="row">
                     <div class="top-left">
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="/images/LogoLesVoisins.png" width="110" height="60"/>
+                            <img src="/images/LogoLesVoisins.png" width="110" height="60" />
                             <!--{{ config('app.name', 'Le Vent Tourne') }}-->
                         </a>
                     </div>
                     <div class="navbar-header center-navbar">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
                             <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -109,19 +107,20 @@
                             @endif
                             @if (Auth::user()->role == 2)
                             <li class="links">
-                                <a>Score :
+                                <a>
+                                    <img src="/images/Picto_Score.png" width="20">
                                     @if ($data['score'] > $data['max_score'] / 2)
-                                    <span style="color: green;">
+                                    <span style="color: green; font-size: larger;">
                                         {{ $data['score'] }} / {{ $data['max_score'] }}
                                     </span>
                                     @endif
                                     @if ($data['score'] == $data['max_score'] / 2)
-                                    <span style="color: orange;">
+                                    <span style="color: orange; font-size: larger;">
                                         {{ $data['score'] }} / {{ $data['max_score'] }}
                                     </span>
                                     @endif
                                     @if ($data['score'] < $data['max_score'] / 2)
-                                    <span style="color: red;">
+                                    <span style="color: red; font-size: larger;">
                                         {{ $data['score'] }} / {{ $data['max_score'] }}
                                     </span>
                                     @endif

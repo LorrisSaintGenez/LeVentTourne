@@ -69,9 +69,9 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                                         </div>
                                         <div class="modal-body">
                                             @if ($answer == $quiz->good_answer)
-                                            <h3 class="text-center" style="color:green;">Bonne réponse ! :D</h3>
+                                            <h3 class="text-center" style="color:green;">Bonne réponse !</h3>
                                             @else
-                                            <h3 class="text-center" style="color:red;"><b>Mauvaise réponse ! :(</b></h3>
+                                            <h3 class="text-center" style="color:red;"><b>Mauvaise réponse !</b></h3>
                                             @endif
                                             <br>
                                             <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
@@ -98,7 +98,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                                         <h4 class="modal-title">{{ $quiz->question }}</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <h3 class="text-center" style="color:red;"><b>Temps dépassé ! :(</b></h3>
+                                        <h3 class="text-center" style="color:red;"><b>Temps dépassé !</b></h3>
                                         <br>
                                         <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
                                     </div>
