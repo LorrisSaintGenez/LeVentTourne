@@ -69,7 +69,20 @@ class StudentController extends Controller
 
         $user = User::find(Auth::user()->id);
 
-        return view($view, ['user' => $user, 'student' => $student, 'quizzes' => $quizzes, 'quizzes_done' => $quizzes_done]);
+        $quiz_points = 0;
+
+        foreach ($quizzes_done as $quiz_done) {
+            $quiz = Quiz::find($quiz_done->quiz_id);
+            $quiz_points += (int)$quiz->point;
+        }
+
+        $total_points = 0;
+
+        foreach ($quizzes as $quiz) {
+            $total_points += (int) $quiz->point;
+        }
+
+        return view($view, ['user' => $user, 'student' => $student, 'quizzes' => $quizzes, 'quizzes_done' => $quizzes_done, 'total_points' => $total_points, 'quiz_points' => $quiz_points]);
     }
 
     public function visualize($id) {

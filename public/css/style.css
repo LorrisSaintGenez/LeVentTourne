@@ -54,6 +54,10 @@ div .timer {
     right: 5px;
 }
 
+.svg-remove-image {
+    right: 75px;
+}
+
 .confirm-delete-button, .confirm-delete-button:hover {
     color: white;
     background-color: red;

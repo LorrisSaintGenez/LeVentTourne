@@ -48,22 +48,44 @@ class ThemeController extends Controller
         $theme = Theme::find($request->input('id'));
 
         $request->validate([
-            'title' => '|max:255|required|unique:themes,title,'.$theme->id,
+            'title-edit' => '|max:255|required|unique:themes,title,'.$theme->id,
         ]);
-        
+
         $locationPicture = $theme->picture;
 
         if (Input::file('picture') != null) {
             $item = $_FILES['picture'];
             $imageHandler = new ImageHandler();
-            Storage::disk('images')->delete($theme->sound);
             $locationPicture = $imageHandler->updateImageOnDisk($item, $theme->picture);
         }
 
         $theme->update([
-           "title" => $request->input('title'),
+           "title" => $request->input('title-edit'),
            "picture" => $locationPicture
         ]);
+
+        return redirect()->back();
+    }
+
+    public function removeImage($id) {
+
+        $theme = Theme::find($id);
+
+        Storage::disk('images')->delete($theme->picture);
+
+        $theme->update([
+           "picture" => null
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function delete($id) {
+
+        $theme = Theme::find($id);
+        Storage::disk('images')->delete($theme->picture);
+
+        Theme::destroy($id);
 
         return redirect()->back();
     }

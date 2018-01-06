@@ -55,9 +55,9 @@ class ImageHandler
         $this->resizeImage($fileToUpload['tmp_name']);
         $imageData = addslashes($fileToUpload['tmp_name']);
         $imageData = file_get_contents($imageData);
-        $imageName = addslashes($fileToUpload['name']);
+        $imageName = uniqid() . htmlentities(addslashes($fileToUpload['name']));
         Storage::disk('images')->delete($previousImgName);
-        Storage::disk('images')->put(uniqid() . $imageName, $imageData);
+        Storage::disk('images')->put($imageName, $imageData);
         return $imageName;
     }
 
