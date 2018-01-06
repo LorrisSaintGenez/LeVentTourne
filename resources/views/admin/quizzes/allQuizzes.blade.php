@@ -27,6 +27,7 @@
 
                     @foreach ($quizzes_by_theme as $quiz_by_theme)
                     <div class="title text-center"><h2>{{ $quiz_by_theme['theme'] }}</h2></div>
+                    <br>
                     <div class="row">
                         @if (count($quiz_by_theme['quiz']) > 0)
                         @foreach ($quiz_by_theme['quiz'] as $quiz)
