@@ -36,7 +36,7 @@
                             <div class="col-md-6">
                                 <select id="theme" name="theme" required autofocus>
                                     @foreach ($themes as $theme)
-                                        <option value={{$theme->title}}>{{ $theme->title }}</option>
+                                        <option value="<?php echo str_replace(" ", "_", $theme->title); ?>">{{ $theme->title }}</option>
                                     @endforeach
                                 </select>
 

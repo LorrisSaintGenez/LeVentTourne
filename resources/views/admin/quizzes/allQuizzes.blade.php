@@ -35,13 +35,13 @@
                                     <b>{{ $quiz->title }}</b>
                                 </h3>
                                 @if ($quiz->picture)
-                                <img src="/images/picture.svg" width="25" class="svg-icon svg-photo">
+                                <img src="/images/picture.svg" width="25" class="svg-icon svg-photo" style="cursor: default;">
                                 @endif
                                 @if ($quiz->sound)
-                                <img src="/images/sound.svg" width="25" class="svg-icon svg-sound">
+                                <img src="/images/sound.svg" width="25" class="svg-icon svg-sound" style="cursor: default;">
                                 @endif
                                 @if ($quiz->video)
-                                <img src="/images/video.svg" width="25" class="svg-icon svg-video">
+                                <img src="/images/video.svg" width="25" class="svg-icon svg-video" style="cursor: default;">
                                 @endif
                                 <a href="{{ route('quizEdit', $quiz->id) }}" type="submit">
                                     <img src="/images/edit.svg" width="25" class="svg-icon svg-edit">

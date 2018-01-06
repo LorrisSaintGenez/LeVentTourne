@@ -43,9 +43,9 @@
                                 <select id="theme" name="theme" required autofocus>
                                     @foreach ($themes as $theme)
                                         @if ($quiz->theme == $theme->id)
-                                            <option selected value={{$theme->title}}>{{ $theme->title }}</option>
+                                            <option selected value="<?php echo str_replace(" ", "_", $theme->title); ?>">{{ $theme->title }}</option>
                                         @else
-                                            <option value={{$theme->title}}>{{ $theme->title }}</option>
+                                            <option value="<?php echo str_replace(" ", "_", $theme->title); ?>">{{ $theme->title }}</option>
                                         @endif
                                     @endforeach
                                 </select>
