@@ -31,7 +31,6 @@ class QuizStudentController extends Controller
                 'isSuccess' => true,
                 'hasAnswered' => true
             ]);
-            return view('/quizzes/getExplanation', ['quiz' => $quiz, 'isSuccess' => true]);
         }
         else {
             $quiz_student_update->update([
@@ -40,7 +39,8 @@ class QuizStudentController extends Controller
                 'isSuccess' => false,
                 'hasAnswered' => true
             ]);
-            return view('/quizzes/getExplanation', ['quiz' => $quiz, 'isSuccess' => false]);
         }
+
+        return redirect()->route('quizGet', $request->input('theme_id'));
     }
 }

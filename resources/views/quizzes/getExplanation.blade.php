@@ -14,9 +14,9 @@
                         </div>
                         <div class="col-md-12 text-center">
                         @if ($isSuccess)
-                            <h3 style="color:green;">Bonne réponse !</h3>
+                            <h3 style="color:green;">Bonne réponse ! :D</h3>
                         @else
-                            <h3 style="color:red;"><b>Mauvaise réponse !</b></h3>
+                            <h3 style="color:red;"><b>Mauvaise réponse ! :(</b></h3>
                         @endif
                         </div>
                         <div class="col-md-12">

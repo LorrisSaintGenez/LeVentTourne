@@ -5,9 +5,27 @@ div .panel .panel-primary:hover {
     cursor: pointer;
 }
 
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.blink-img {
+    animation: blink 0.5s;
+    animation-iteration-count: infinite;
+}
+
 div .timer {
     position: relative;
     text-align: right;
+    font-size: xx-large;
 }
 
 .quiz {

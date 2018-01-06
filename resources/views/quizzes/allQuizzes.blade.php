@@ -39,7 +39,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                                     @endif
                                 </h3>
                                 @if (count($theme_with_quizzes['quiz']) == 1)
-                                <h4><b>{{ count($theme_with_quizzes['quiz']) }} question est disponible !</b></h4>
+                                <h4 style="color: darkgreen;"><b>{{ count($theme_with_quizzes['quiz']) }} question est disponible !</b></h4>
                                 @else
                                 <h4><b>{{ count($theme_with_quizzes['quiz']) }} questions sont disponibles !</b></h4>
                                 @endif

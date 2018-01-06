@@ -10,8 +10,9 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
             <div class="panel panel-default">
                 <div class="panel-heading">Visualisation du quiz <b>{{ $quiz->title }}</b></div>
                 <div class="panel-body">
-                    <div class="timer">
-                        <span id="timer">Temps restant : {{ $quiz->timer }}</span>
+                    <div id="timer-div" class="timer">
+                        <img src="/images/Picto_Timer.png" width="30" />
+                        <span id="timer">{{ $quiz->timer }}</span>
                     </div>
                     <div class="col-md-12 text-center">
                         <h3>{{ $quiz->title }}</h3>
@@ -29,7 +30,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 
                     @if ($quiz->picture != null)
                     <div class="col-md-12 text-center">
-                        <img src="data:image/jpeg;base64,{{ $quiz->picture }}"/>
+                        <img src="data:image/jpeg;base64,{{ $quiz->picture }}"  class="image_theme"/>
                     </div>
                     @endif
 
@@ -47,21 +48,68 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
                         </div>
                     </div>
                     @foreach ($quiz->answers as $answer)
-                    <form name="{{ $answer }}" id="{{ $answer }}" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        <div class="col-md-6 text-center" onClick="answerQuiz('{{ $answer }}')">
+                        <div class="col-md-6 text-center" onClick="answerQuiz('{{ $answer }}');" data-toggle="modal" data-target="#<?php echo str_replace(" ", "_", $answer); ?>-modal">
+                            {{ csrf_field() }}
                             <div class="panel panel-primary">
-                                <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
                                 <h4>{{ $answer }}</h4>
                             </div>
                         </div>
-                    </form>
+
+                        <div id="<?php echo str_replace(" ", "_", $answer); ?>-modal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog">
+                                <form id="<?php echo str_replace(" ", "_", $answer); ?>-form" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
+                                    {{ csrf_field() }}
+                                    <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
+                                    <input id="theme_id" name="theme_id" type="hidden" value="{{ $quiz->theme_id }}">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">{{ $quiz->question }}</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            @if ($answer == $quiz->good_answer)
+                                            <h3 class="text-center" style="color:green;">Bonne réponse ! :D</h3>
+                                            @else
+                                            <h3 class="text-center" style="color:red;"><b>Mauvaise réponse ! :(</b></h3>
+                                            @endif
+                                            <br>
+                                            <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo str_replace(" ", "_", $answer); ?>-form')">J'ai compris !</button>
+                                        </div>
+                                     </div>
+                                </form>
+                            </div>
+                        </div>
                     @endforeach
 
-                    <form name="timer_ended" id="timer_ended" hidden method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-                    </form>
+                    <div id="out_of_time" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog">
+
+                            <form id="out_of_time-form" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
+                                <input id="theme_id" name="theme_id" type="hidden" value="{{ $quiz->theme_id }}">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">{{ $quiz->question }}</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h3 class="text-center" style="color:red;"><b>Temps dépassé ! :(</b></h3>
+                                        <br>
+                                        <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('out_of_time-form')">J'ai compris !</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
 
                     <audio id="victory" hidden preload="auto" onended="onAudioEnded()" autoplay loop>
                         <source src="data:audio/mp3;base64, {{ $quiz->victory_sound }}">
@@ -84,13 +132,22 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 
     var timerLimit = '{{ $quiz->timer }}';
 
+    function form_submit(form_id) {
+      document.forms[form_id].submit();
+    }
+
     function setTimer() {
       if (timerLimit > 0) {
         timerLimit--;
-        document.getElementById('timer').innerHTML = "Temps restant : " + timerLimit;
+        document.getElementById('timer').innerHTML = timerLimit;
       }
       else {
+        $('#out_of_time').modal('show');
         answerQuiz("timer_ended");
+      }
+
+      if (timerLimit === 5) {
+        document.getElementById('timer-div').setAttribute("class", "timer blink-img");
       }
     }
 
@@ -101,22 +158,13 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
       if (answer === '{{ $quiz->good_answer }}') {
         if ('{{ $quiz->victory_sound }}')
           triggerAudio(victory);
-        else
-          document.forms[answer].submit();
       }
       else {
         if ('{{ $quiz->defeat_sound }}')
           triggerAudio(defeat);
-        else
-          document.forms[answer].submit();
-      }
-      $("[onClick]").removeAttr("onClick");
-      response = answer;
-    }
 
-    function onAudioEnded() {
-      if (response !== null)
-        document.forms[response].submit();
+      }
+      response = answer;
     }
 
     function triggerAudio(audio) {

@@ -278,9 +278,6 @@ class QuizController extends Controller
             if ($quiz_student) {
                 if (!$quiz_student->hasAnswered) {
                     $quiz_student->update([
-                        'student_id' => $user->id,
-                        'quiz_id' => $id,
-                        'isSuccess' => $quiz_student->isSuccess,
                         'hasAnswered' => true
                     ]);
                 }
@@ -324,9 +321,8 @@ class QuizController extends Controller
                 $quiz->sound = base64_encode(Storage::disk('sounds')->get($quiz->sound));
             if ($quiz->picture != null)
                 $quiz->picture = base64_encode(Storage::disk('images')->get($quiz->picture));
+            return view($view, ['quiz' => $quiz]);
         }
-
-        return view($view, ['quiz' => $quiz]);
     }
 
     public function delete($id) {
