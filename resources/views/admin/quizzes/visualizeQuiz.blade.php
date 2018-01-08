@@ -23,7 +23,7 @@
 
                         @if ($quiz->video != null)
                         <div class="col-md-12 text-center">
-                            <iframe src="http://www.youtube.com/embed/{{$quiz->video}}" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="http://www.youtube.com/embed/{{$quiz->video}}" width="100%" height="350" frameborder="0" allowfullscreen></iframe>
                         </div>
                         @endif
 
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         @foreach ($quiz->answers as $answer)
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6 col-xs-6 text-center">
                             @if ($answer == $quiz->good_answer)
                             <div class="panel panel-success">
                                 <h4>{{ $answer }}</h4>

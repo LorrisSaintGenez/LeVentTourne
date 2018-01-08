@@ -127,7 +127,7 @@
                                 </a>
                             </li>
                             <li class="links">
-                                <a href="{{ url('/quiz/map') }}">Ma Map</a>
+                                <a href="{{ url('/quiz/map') }}">Jeux</a>
                             </li>
                             <li class="links">
                                 <a href="{{ url('/student') }}">Mon Compte</a>

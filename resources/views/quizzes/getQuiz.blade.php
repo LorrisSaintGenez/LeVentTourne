@@ -30,7 +30,7 @@ function string_sanitize($s) {
 
                     @if ($quiz->video != null)
                     <div class="col-md-12 text-center">
-                        <iframe src="http://www.youtube.com/embed/{{$quiz->video}}" frameborder="0" allowfullscreen></iframe>
+                        <iframe src="http://www.youtube.com/embed/{{$quiz->video}}" width="100%" height="350" frameborder="0" allowfullscreen></iframe>
                     </div>
                     @endif
 
@@ -54,9 +54,9 @@ function string_sanitize($s) {
                         </div>
                     </div>
                     @foreach ($quiz->answers as $answer)
-                        <div class="col-md-6 text-center" onclick="answerQuiz('<?php echo string_sanitize($answer); ?>')" data-toggle="modal" data-target="#<?php echo string_sanitize($answer); ?>-modal">
+                        <div class="col-md-6 col-xs-6 text-center">
                             {{ csrf_field() }}
-                            <div class="panel panel-primary">
+                            <div class="panel panel-primary" onclick="answerQuiz('<?php echo string_sanitize($answer); ?>')" data-toggle="modal" data-target="#<?php echo string_sanitize($answer); ?>-modal">
                                 <h4>{{ $answer }}</h4>
                             </div>
                         </div>
@@ -80,10 +80,10 @@ function string_sanitize($s) {
                                             <h3 class="text-center" style="color:red;"><b>Mauvaise réponse !</b></h3>
                                             @endif
                                             <br>
-                                            <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
+                                            <h4>{{ $quiz->explanation }}</h4>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo string_sanitize($answer); ?>-form')">J'ai compris !</button>
+                                            <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('<?php echo string_sanitize($answer); ?>-form')">>></button>
                                         </div>
                                      </div>
                                 </form>
@@ -106,10 +106,10 @@ function string_sanitize($s) {
                                     <div class="modal-body">
                                         <h3 class="text-center" style="color:red;"><b>Temps dépassé !</b></h3>
                                         <br>
-                                        <h4><b>Explications</b> : {{ $quiz->explanation }}</h4>
+                                        <h4>{{ $quiz->explanation }}</h4>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('out_of_time-form')">J'ai compris !</button>
+                                        <button type="submit" class="btn btn-default" data-dismiss="modal" onclick="form_submit('out_of_time-form')">>></button>
                                     </div>
                                 </div>
                             </form>
