@@ -48,6 +48,66 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
+                            <label for="picture" class="col-md-4 control-label">Photo</label>
+
+                            <div class="col-md-6">
+                                @if ($page->picture != null)
+                                <img src="data:image/jpeg;base64,{{ $page->picture }}"/>
+                                @endif
+
+                                <input type="file" id="picture" class="form-control" name="picture" autofocus>
+
+                                @if ($errors->has('picture'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('picture') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('sound') ? ' has-error' : '' }}">
+                            <label for="sound" class="col-md-4 control-label">Son</label>
+
+                            <div class="col-md-6">
+                                @if ($page->sound != null)
+                                <audio controls preload="metadata">
+                                    <source src="data:audio/mp3;base64, {{ $page->sound }}">
+                                </audio>
+                                @endif
+
+                                <input type="file" id="sound" class="form-control" name="sound" autofocus>
+
+                                @if ($errors->has('sound'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('sound') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
+                            <label for="video" class="col-md-4 control-label">Vidéo (lien YouTube)</label>
+
+                            <div class="col-md-6">
+                                @if ($page->video != null)
+                                <div class="container">
+                                    <iframe src="http://www.youtube.com/embed/{{$page->video}}" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <input id="video" class="form-control" name="video" value="https://www.youtube.com/watch?v={{ $page->video }}" autofocus>
+                                @else
+                                <input id="video" class="form-control" name="video" autofocus>
+                                @endif
+
+
+                                @if ($errors->has('video'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('video') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

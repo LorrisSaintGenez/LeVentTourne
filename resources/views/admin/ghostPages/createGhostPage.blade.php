@@ -44,6 +44,48 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
+                            <label for="picture" class="col-md-4 control-label">Image</label>
+
+                            <div class="col-md-6">
+                                <input type="file" id="picture" class="form-control" name="picture" value="{{ old('picture') }}" autofocus>
+
+                                @if ($errors->has('picture'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('picture') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('sound') ? ' has-error' : '' }}">
+                            <label for="sound" class="col-md-4 control-label">Son</label>
+
+                            <div class="col-md-6">
+                                <input type="file" id="sound" class="form-control" name="sound" value="{{ old('sound') }}" autofocus>
+
+                                @if ($errors->has('sound'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('sound') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
+                            <label for="video" class="col-md-4 control-label">Vidéo (lien YouTube)</label>
+
+                            <div class="col-md-6">
+                                <input id="video" class="form-control" name="video" value="{{ old('video') }}" autofocus>
+
+                                @if ($errors->has('video'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('video') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

@@ -43,9 +43,9 @@
                                 <select id="theme" name="theme" required autofocus>
                                     @foreach ($themes as $theme)
                                         @if ($quiz->theme == $theme->id)
-                                            <option selected value="<?php echo str_replace(" ", "_", $theme->title); ?>">{{ $theme->title }}</option>
+                                            <option selected value="<?php echo htmlentities($theme->title); ?>">{{ $theme->title }}</option>
                                         @else
-                                            <option value="<?php echo str_replace(" ", "_", $theme->title); ?>">{{ $theme->title }}</option>
+                                            <option value="<?php echo htmlentities($theme->title); ?>">{{ $theme->title }}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -209,7 +209,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('video') ? ' has-error' : '' }}">
-                            <label for="video" class="col-md-4 control-label">Vidéo</label>
+                            <label for="video" class="col-md-4 control-label">Vidéo (lien YouTube)</label>
 
                             <div class="col-md-6">
                                 @if ($quiz->video != null)

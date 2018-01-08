@@ -19,6 +19,27 @@
                     <div class="col-md-12 text-center">
                         <h4 style="white-space: pre-wrap;">{{ $page->description }}</h4>
                     </div>
+
+                    @if ($page->video != null)
+                    <div class="col-md-12 text-center">
+                        <iframe src="http://www.youtube.com/embed/{{$page->video}}" width="100%" height="350" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    @endif
+
+                    @if ($page->picture != null)
+                    <div class="col-md-12 text-center">
+                        <img src="data:image/jpeg;base64,{{ $page->picture }}"/>
+                    </div>
+                    @endif
+
+                    @if ($page->sound != null)
+                    <div class="col-md-12 text-center">
+                        <audio controls preload="metadata">
+                            <source src="data:audio/mp3;base64, {{ $page->sound }}">
+                        </audio>
+                    </div>
+                    @endif
+
                     <div class="form-group">
                         <div class="col-md-2">
                             <a href="{{ route('ghostPageEdition', $page->id) }}" type="submit" class="btn btn-lg btn-info">

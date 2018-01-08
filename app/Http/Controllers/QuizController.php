@@ -58,7 +58,7 @@ class QuizController extends Controller
         if ($request->input('video') != "")
             $videoPath = $this->YoutubeID($request->input('video'));
 
-        $theme_title = str_replace("_", " ", $request->input('theme'));
+        $theme_title = html_entity_decode($request->input('theme'));
 
         $theme = Theme::where('title', $theme_title)->first();
 
@@ -212,7 +212,7 @@ class QuizController extends Controller
         if ($request->input('video') != "")
             $videoPath = $this->YoutubeID($request->input('video'));
 
-        $theme_title = str_replace("_", " ", $request->input('theme'));
+        $theme_title = html_entity_decode($request->input('theme'));
 
         $new_theme = Theme::where('title', $theme_title)->first();
         $previous_theme = Theme::find($quiz->theme_id);

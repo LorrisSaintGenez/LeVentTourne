@@ -9,6 +9,6 @@ class GhostPage extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'title', 'description'
+        'title', 'description', 'picture', 'sound', 'video'
     ];
 }
