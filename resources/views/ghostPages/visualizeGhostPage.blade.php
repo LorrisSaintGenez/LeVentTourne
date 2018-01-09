@@ -29,7 +29,7 @@
 
                     @if ($page->sound != null)
                     <div class="col-md-12 text-center">
-                        <audio hidden autoplay controls preload="auto">
+                        <audio style="width: 100%;" controls preload="auto">
                             <source src="data:audio/mp3;base64, {{ $page->sound }}">
                         </audio>
                     </div>
