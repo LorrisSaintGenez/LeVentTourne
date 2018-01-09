@@ -90,19 +90,27 @@ class TeacherController extends Controller
 
         if (isset($_POST['classroom_id'])) {
 
+            foreach ($_POST['classroom_id'] as $index=>$class) {
+                $classroom = Classroom::find($class);
+
+                if ($classroom) {
+                    if ($classroom->teacher_id && $classroom->teacher_id != $teacher->id) {
+                        unset($_POST['classroom_id'][$index]);
+                    }
+                    else {
+                        $classroom->update([
+                            'teacher_id' => $teacher->id
+                        ]);
+                    }
+                }
+            }
+
             $removedClasses = array_diff($classroomsOfTeacher, $_POST['classroom_id']);
 
             foreach ($removedClasses as $removedClass) {
                 $classroom = Classroom::find($removedClass);
                 $classroom->update([
                     'teacher_id' => null
-                ]);
-            }
-
-            foreach ($_POST['classroom_id'] as $class) {
-                $classroom = Classroom::find($class);
-                $classroom->update([
-                    'teacher_id' => $teacher->id
                 ]);
             }
         }

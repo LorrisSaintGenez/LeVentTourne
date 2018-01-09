@@ -124,8 +124,6 @@ class StudentController extends Controller
         $classStudent = ClassStudent::where('student_id', $user->id)->get();
 
         if ($classStudent->count() > 0) {
-
-
             $classStudent->first()->update([
                 'classroom_id' => $request->input('classroom_id')
             ]);
