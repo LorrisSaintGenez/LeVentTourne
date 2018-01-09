@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="col-md-12 text-center">
-                        <h4 style="white-space: pre-wrap;">Lien de la page : {{ url('/') }}/ghostpage/<?php echo str_replace(' ', '-', strtolower($page->title)) ?></h4>
+                        <h4 style="white-space: pre-wrap;"><b>Lien de la page (pour le Bleam Code)</b><br>{{ url('/') }}/ghostpage/<?php echo str_replace(' ', '-', strtolower($page->title)) ?></h4>
                     </div>
 
                     @if ($page->video != null)
