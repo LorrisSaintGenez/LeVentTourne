@@ -17,6 +17,17 @@ use Illuminate\Support\Facades\Storage;
 
 class Misc
 {
+
+    public static function mulSort($a,$b)
+    {
+        if(count($a['quiz']) > count($b['quiz']))
+            return -1;
+        else if(count($a['quiz']) < count($b['quiz']))
+            return 1;
+        else
+            return 0;
+    }
+
     public static function getThemesWithQuizzes($quizzes, $quizzes_done) {
         $themes = array();
 
@@ -58,6 +69,8 @@ class Misc
                 $themes[array_search($theme->id, array_column($themes, "id"))]["score"] += (int) $quiz->point;
             }
         }
+
+        usort($themes, array("App\Http\Misc", "mulSort"));
 
         return $themes;
     }
