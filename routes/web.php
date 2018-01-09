@@ -11,8 +11,6 @@
 |
 */
 
-use App\Quiz;
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,18 +24,12 @@ Route::group(['prefix' => 'backoffice', 'middleware' => 'admin'], function() {
     Route::prefix('quiz')->group(function() {
 
         Route::get('/', 'QuizController@getAllQuizzesAdmin')->name('getAllQuizzesAdmin');
-
         Route::get('create', 'QuizController@creation')->name('quizCreation');
-
         Route::post('create', 'QuizController@create')->name('quizCreate');
-
         Route::get('edit/{id}', 'QuizController@edit')->name('quizEdit');
         Route::post('update', 'QuizController@update')->name('quizUpdate');
-
         Route::delete('delete/{id}', 'QuizController@delete')->name('quizDelete');
-
         Route::get('visualize/{id}', 'QuizController@visualize')->name('quizVisualize');
-
     });
 
     Route::prefix('users')->group(function () {
@@ -123,3 +115,5 @@ Route::group(['middleware' => 'teacher'], function () {
         });
     });
 });
+
+Route::get('ghostpage/{title}', 'GhostPageController@loggedOffGhostPage')->name('ghostPageLoggedOff');

@@ -109,13 +109,31 @@ class GhostPageController extends Controller
     }
 
     public function visualize($id) {
-        $page = GhostPage::find($id);;
+        $page = GhostPage::find($id);
         if ($page->sound != null)
             $page->sound = base64_encode(Storage::disk('sounds')->get($page->sound));
         if ($page->picture != null)
             $page->picture = base64_encode(Storage::disk('images')->get($page->picture));
 
         return view('admin/ghostPages/visualizeGhostPage', ['page' => $page]);
+    }
+
+    public function loggedOffGhostPage($title) {
+
+        $regularTitle = str_replace('-', ' ', strtolower($title));
+
+        $page = GhostPage::where('title', $regularTitle)->first();
+
+        if ($page != null) {
+            if ($page->sound != null)
+                $page->sound = base64_encode(Storage::disk('sounds')->get($page->sound));
+            if ($page->picture != null)
+                $page->picture = base64_encode(Storage::disk('images')->get($page->picture));
+
+            return view('ghostPages/visualizeGhostPage', ['page' => $page]);
+        }
+
+        return view('home');
     }
 
     public function delete($id)

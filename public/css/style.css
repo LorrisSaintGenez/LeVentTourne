@@ -112,3 +112,20 @@ div .timer {
 .image_theme {
     max-height: 150px;
 }
+
+iframe {
+    height: 350px;
+}
+
+@media (max-width: 425px) {
+    iframe {
+        height: 200px;
+    }
+}
+
+@media (max-width: 320px) {
+    iframe {
+        height: 150px;
+    }
+
+}
