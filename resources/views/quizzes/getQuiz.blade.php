@@ -56,8 +56,8 @@ function string_sanitize($s) {
                     @foreach ($quiz->answers as $answer)
                         <div class="col-md-6 col-xs-6 text-center">
                             {{ csrf_field() }}
-                            <div class="panel panel-primary" onclick="answerQuiz('<?php echo string_sanitize($answer); ?>')" data-toggle="modal" data-target="#<?php echo string_sanitize($answer); ?>-modal">
-                                <h4>{{ $answer }}</h4>
+                            <div class="panel panel-primary quiz-box" onclick="answerQuiz('<?php echo string_sanitize($answer); ?>')" data-toggle="modal" data-target="#<?php echo string_sanitize($answer); ?>-modal">
+                                <h4 style="padding: 0 10px;">{{ $answer }}</h4>
                             </div>
                         </div>
 
