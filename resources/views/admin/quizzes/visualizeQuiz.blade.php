@@ -23,7 +23,7 @@
 
                         @if ($quiz->video != null)
                         <div class="col-md-12 text-center">
-                            <iframe src="http://www.youtube.com/embed/{{$quiz->video}}" width="100%" height="350" frameborder="0" allowfullscreen></iframe>
+                            <iframe src="https://www.youtube.com/embed/{{$quiz->video}}" width="100%" height="350" frameborder="0" allowfullscreen></iframe>
                         </div>
                         @endif
 

@@ -214,7 +214,7 @@
                             <div class="col-md-6">
                                 @if ($quiz->video != null)
                                     <div class="container">
-                                        <iframe src="http://www.youtube.com/embed/{{$quiz->video}}" frameborder="0" allowfullscreen></iframe>
+                                        <iframe src="https://www.youtube.com/embed/{{$quiz->video}}" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                     <input id="video" class="form-control" name="video" value="https://www.youtube.com/watch?v={{ $quiz->video }}" autofocus>
                                 @else
