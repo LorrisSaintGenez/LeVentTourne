@@ -24,12 +24,13 @@ class QuizStudentController extends Controller
 
         $quiz_student_update = QuizStudent::where([['student_id', $user->id], ['quiz_id', $id]])->first();
 
-        $ar = array();
-
-        $ar = [
-          "request" => $request,
-          "good_answer" => $quiz->good_answer
-        ];
+        if ($request['time_overflow'] === "time_overflow") {
+            $quiz_student_update->update([
+                'isSuccess' => false,
+                'hasAnswered' => true
+            ]);
+            return redirect()->route('quizGet', $request->input('theme_id'));
+        }
 
         if ($request->input(str_replace(' ', '_', $quiz->good_answer)) != null) {
             $quiz_student_update->update([

@@ -96,7 +96,7 @@ function string_sanitize($s) {
 
                             <form id="out_of_time-form" class="form-horizontal" method="POST" action="{{ route('quizAnswer', $quiz->id) }}" enctype="multipart/form-data">
                                 {{ csrf_field() }}
-                                <input id="{{ $answer }}" name="{{ $answer }}" type="hidden" value="{{ $answer }}">
+                                <input id="{{ $answer }}" name="time_overflow" type="hidden" value="time_overflow">
                                 <input id="theme_id" name="theme_id" type="hidden" value="{{ $quiz->theme_id }}">
                                 <!-- Modal content-->
                                 <div class="modal-content">
