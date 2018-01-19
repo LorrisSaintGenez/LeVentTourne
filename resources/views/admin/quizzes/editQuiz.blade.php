@@ -132,7 +132,7 @@
                             <label for="answer_4" class="col-md-4 control-label">Réponse 4</label>
 
                             <div class="col-md-6">
-                                <input id="answer_4" type="text" class="form-control" name="answer_4" value="<?php if (array_count_values($quiz->answers) > 3) echo $quiz->answers[3];?>" autofocus>
+                                <input id="answer_4" type="text" class="form-control" name="answer_4" value="<?php if ($quiz->answers[3] != null) echo $quiz->answers[3];?>" autofocus>
 
                                 @if ($errors->has('answer_4'))
                                 <span class="help-block">
